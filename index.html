@@ -3,2077 +3,1224 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="Sport"/>
 <meta name="theme-color" content="#07090f"/>
-<title>Sport Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<title>Dashboard Sport</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:#07090f;
-  color:#e8edf5;
-  font-family:'DM Sans',sans-serif;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-::-webkit-scrollbar{width:3px;height:3px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#243050;border-radius:10px}
-button,input,textarea,select{font-family:'DM Sans',sans-serif;cursor:pointer}
+body{background:#07090f;color:#e8edf5;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#243050;border-radius:10px}
+button,input,textarea{font-family:inherit;cursor:pointer;outline:none}
 textarea{resize:none}
 
-/* ── SPLASH ─────────────────────────────────────────── */
-#splash{
-position:fixed;inset:0;z-index:9999;
-background:#07090f;
-display:flex;flex-direction:column;
-align-items:center;justify-content:center;
-transition:opacity 0.6s ease, transform 0.6s ease;
-}
-#splash.hide{opacity:0;transform:scale(1.05);pointer-events:none}
-.splash-logo{
-width:90px;height:90px;border-radius:24px;
-background:linear-gradient(135deg,#ff6b35,#ff4757);
-display:flex;align-items:center;justify-content:center;
-font-size:44px;
-box-shadow:0 0 60px #ff6b3560, 0 0 120px #ff475730;
-animation:splashPop 0.7s cubic-bezier(.175,.885,.32,1.275) both;
-}
-.splash-title{
-font-family:‘Barlow Condensed’,Arial;
-font-size:32px;font-weight:900;color:#e8edf5;
-letter-spacing:0.08em;text-transform:uppercase;
-margin-top:20px;
-animation:splashFade 0.5s 0.3s ease both;
-}
-.splash-sub{
-font-size:12px;color:#7a8fad;margin-top:6px;
-animation:splashFade 0.5s 0.5s ease both;
-}
-.splash-bar{
-width:120px;height:2px;background:#1a2438;
-border-radius:2px;margin-top:32px;overflow:hidden;
-animation:splashFade 0.5s 0.5s ease both;
-}
-.splash-bar-fill{
-height:100%;background:linear-gradient(90deg,#ff6b35,#00d4ff);
-border-radius:2px;
-animation:splashLoad 1.2s 0.4s ease-out both;
-}
+/* SPLASH */
+#splash{position:fixed;inset:0;z-index:9999;background:#07090f;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,transform .6s ease}
+#splash.hide{opacity:0;transform:scale(1.06);pointer-events:none}
+.sp-logo{width:88px;height:88px;border-radius:22px;background:linear-gradient(135deg,#ff6b35,#ff4757);display:flex;align-items:center;justify-content:center;font-size:42px;box-shadow:0 0 50px #ff6b3555,0 0 100px #ff475730;animation:spPop .7s cubic-bezier(.175,.885,.32,1.275) both}
+.sp-title{font-family:‘Barlow Condensed’,Arial;font-size:30px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-top:18px;animation:spFade .5s .3s ease both}
+.sp-sub{font-size:12px;color:#7a8fad;margin-top:5px;animation:spFade .5s .5s ease both}
+.sp-bar{width:120px;height:2px;background:#1a2438;border-radius:2px;margin-top:30px;overflow:hidden;animation:spFade .5s .4s ease both}
+.sp-fill{height:100%;background:linear-gradient(90deg,#ff6b35,#00d4ff);animation:spLoad 1.4s .4s ease-out both}
+@keyframes spPop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+@keyframes spFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spLoad{from{width:0}to{width:100%}}
 
-/* ── ANIMATIONS ─────────────────────────────────────── */
-@keyframes splashPop{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
-@keyframes splashFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes splashLoad{from{width:0}to{width:100%}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-@keyframes glow{0%,100%{box-shadow:0 0 8px currentColor}50%{box-shadow:0 0 20px currentColor, 0 0 40px currentColor}}
-@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+/* AMBIENT */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.06}
+
+/* ANIMATIONS */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes countUp{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
-@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-@keyframes barFill{from{width:0%}to{width:var(–w)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-
-.slide-up{animation:slideUp 0.35s cubic-bezier(.2,.8,.2,1) both}
-.slide-up-1{animation:slideUp 0.35s 0.05s cubic-bezier(.2,.8,.2,1) both}
-.slide-up-2{animation:slideUp 0.35s 0.10s cubic-bezier(.2,.8,.2,1) both}
-.slide-up-3{animation:slideUp 0.35s 0.15s cubic-bezier(.2,.8,.2,1) both}
-.fade-in{animation:fadeIn 0.4s ease both}
-.live-dot{animation:pulse 2s infinite}
+@keyframes barIn{from{width:0}to{width:var(–w,0%)}}
+.slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1) both}
+.fade-in{animation:fadeIn .3s ease both}
 .float{animation:float 3s ease-in-out infinite}
+.pulse{animation:pulse 2s infinite}
 
-/* ── GLASSMORPHISM CARDS ─────────────────────────────── */
-.glass{
-background:rgba(15,22,35,0.85);
-backdrop-filter:blur(12px);
--webkit-backdrop-filter:blur(12px);
-border:1px solid rgba(255,255,255,0.06);
-}
-.glass-bright{
-background:rgba(18,26,46,0.9);
-backdrop-filter:blur(16px);
--webkit-backdrop-filter:blur(16px);
-border:1px solid rgba(255,255,255,0.08);
-}
+/* LAYOUT */
+#app{position:relative;z-index:1;min-height:100vh}
+.header{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.93);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05);padding:12px 16px 0}
+.header-inner{max-width:1100px;margin:0 auto}
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none;gap:0}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:transparent;color:#334060;border-top:2px solid transparent;border-left:none;border-right:none;border-bottom:none;padding:10px 12px;font-size:11px;font-weight:500;white-space:nowrap;transition:color .2s,border-color .2s}
+.tab:hover{color:#7a8fad}
+.tab.active{color:#e8edf5;border-top-color:#ff6b35;font-weight:700}
+.content{max-width:1100px;margin:0 auto;padding:18px 14px 60px}
+.page{display:none}.page.active{display:block}
 
-/* ── AMBIENT BACKGROUND ─────────────────────────────── */
-.ambient{
-position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-}
-.ambient-orb{
-position:absolute;border-radius:50%;filter:blur(80px);opacity:0.07;
-}
-
-/* ── PROGRESS BARS ───────────────────────────────────── */
-.bar-animated{
-height:100%;border-radius:inherit;
-animation:barFill 0.8s cubic-bezier(.2,.8,.2,1) both;
-}
-
-/* ── TABS ────────────────────────────────────────────── */
-.tab-btn{
-background:transparent;
-color:#334060;
-border-top:2px solid transparent;
-border-left:none;border-right:none;border-bottom:none;
-padding:10px 12px;
-font-weight:500;font-size:11px;
-white-space:nowrap;
-transition:color 0.2s, border-color 0.2s;
-letter-spacing:0.02em;
-}
-.tab-btn:hover{color:#7a8fad}
-.tab-btn.active{
-color:#e8edf5;
-border-top-color:#ff6b35;
-font-weight:700;
-}
-
-/* ── CARDS ───────────────────────────────────────────── */
-.card{
-background:#0f1623;
-border:1px solid #1a2438;
-border-radius:16px;
-padding:18px;
-transition:border-color 0.2s, transform 0.15s;
-}
+/* CARDS */
+.card{background:#0f1623;border:1px solid #1a2438;border-radius:16px;padding:18px;transition:border-color .2s}
 .card:hover{border-color:#243050}
-.card-hover:active{transform:scale(0.98)}
+.card-click{cursor:pointer;transition:border-color .2s,transform .15s}
+.card-click:active{transform:scale(.98)}
+.grad-card{border-radius:16px;padding:18px;border:1px solid}
 
-/* ── BUTTONS ─────────────────────────────────────────── */
-.btn-primary{
-background:linear-gradient(135deg,#ff6b35,#ff4757);
-color:#07090f;border:none;border-radius:12px;
-padding:12px 20px;font-weight:700;font-size:14px;
-transition:transform 0.15s, box-shadow 0.15s;
-box-shadow:0 4px 20px #ff6b3530;
-}
-.btn-primary:active{transform:scale(0.97)}
-.btn-primary:hover{box-shadow:0 4px 30px #ff6b3550}
+/* BUTTONS */
+.btn-primary{background:linear-gradient(135deg,#ff6b35,#ff4757);color:#07090f;border:none;border-radius:12px;padding:12px 20px;font-weight:700;font-size:14px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 20px #ff6b3530}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{background:rgba(255,255,255,.04);color:#7a8fad;border:1px solid #1a2438;border-radius:10px;padding:8px 14px;font-size:12px;transition:all .15s}
+.btn-ghost:hover{background:rgba(255,255,255,.08);color:#e8edf5}
 
-.btn-ghost{
-background:rgba(255,255,255,0.04);
-color:#7a8fad;border:1px solid #1a2438;
-border-radius:10px;padding:8px 14px;
-font-weight:500;font-size:12px;
-transition:all 0.15s;
-}
-.btn-ghost:hover{background:rgba(255,255,255,0.07);color:#e8edf5}
-
-/* ── INPUTS ──────────────────────────────────────────── */
-.inp{
-background:#0d1220;
-border:1px solid #1a2438;
-border-radius:10px;color:#e8edf5;
-padding:10px 14px;font-size:13px;
-width:100%;outline:none;
-transition:border-color 0.2s, box-shadow 0.2s;
-}
+/* INPUTS */
+.inp{background:#0d1220;border:1px solid #1a2438;border-radius:10px;color:#e8edf5;padding:10px 14px;font-size:13px;width:100%;transition:border-color .2s,box-shadow .2s}
 .inp:focus{border-color:#ff6b3560;box-shadow:0 0 0 3px #ff6b3515}
 
-/* ── TAG CHIPS ───────────────────────────────────────── */
-.tag{
-display:inline-flex;align-items:center;gap:4px;
-padding:3px 10px;border-radius:20px;
-font-size:10px;font-weight:700;
-white-space:nowrap;
-border:1px solid currentColor;
-opacity:0.9;
-}
+/* TAGS */
+.tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid;white-space:nowrap}
 
-/* ── SHIMMER LOADING ─────────────────────────────────── */
-.shimmer{
-background:linear-gradient(90deg,#1a2438 25%,#243050 50%,#1a2438 75%);
-background-size:200% auto;
-animation:shimmer 1.5s infinite;
-}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px;overflow-y:auto;animation:fadeIn .2s ease}
+.modal-box{background:#0d1220;border-radius:20px;width:100%;max-width:600px;padding:24px;margin-top:20px;animation:slideUp .3s cubic-bezier(.2,.8,.2,1)}
 
-/* ── STAT NUMBER ─────────────────────────────────────── */
-.stat-num{
-font-family:‘Barlow Condensed’,Arial;
-font-size:38px;font-weight:900;line-height:1;
-animation:countUp 0.5s cubic-bezier(.2,.8,.2,1) both;
-}
+/* PROGRESS BAR */
+.bar-wrap{height:var(–h,5px);background:#1a2438;border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;animation:barIn .7s cubic-bezier(.2,.8,.2,1) both;transition:width .5s ease}
 
-/* ── BADGE CARD ──────────────────────────────────────── */
-.badge-unlocked{
-position:relative;overflow:hidden;
-transition:transform 0.2s;
-}
-.badge-unlocked::before{
-content:’’;position:absolute;inset:0;
-background:linear-gradient(135deg,rgba(255,255,255,0.04),transparent);
-border-radius:inherit;
-}
-.badge-unlocked:hover{transform:translateY(-2px)}
-
-/* ── MODAL ───────────────────────────────────────────── */
-.modal-overlay{
-position:fixed;inset:0;
-background:rgba(0,0,0,0.85);
-backdrop-filter:blur(8px);
--webkit-backdrop-filter:blur(8px);
-z-index:1000;
-display:flex;align-items:flex-start;justify-content:center;
-padding:20px 16px;overflow-y:auto;
-animation:fadeIn 0.2s ease;
-}
-.modal-content{
-background:#0d1220;
-border-radius:20px;
-width:100%;max-width:600px;
-padding:24px;margin-top:20px;
-animation:slideUp 0.3s cubic-bezier(.2,.8,.2,1);
-}
-
-/* ── HEADER ──────────────────────────────────────────── */
-.header{
-position:sticky;top:0;z-index:100;
-background:rgba(7,9,15,0.92);
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-border-bottom:1px solid rgba(255,255,255,0.05);
-}
-
-/* ── SCROLLABLE TABS ─────────────────────────────────── */
-.tabs-scroll{
-display:flex;overflow-x:auto;
-scrollbar-width:none;
-}
-.tabs-scroll::-webkit-scrollbar{display:none}
+/* GRID HELPERS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.g7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.flex{display:flex}.flex-col{flex-direction:column}.gap4{gap:4px}.gap6{gap:6px}.gap8{gap:8px}.gap10{gap:10px}.gap12{gap:12px}.gap16{gap:16px}
+.wrap{flex-wrap:wrap}.center{align-items:center}.between{justify-content:space-between}.mb4{margin-bottom:4px}.mb6{margin-bottom:6px}.mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}.mb14{margin-bottom:14px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}
+.f9{font-size:9px}.f10{font-size:10px}.f11{font-size:11px}.f12{font-size:12px}.f13{font-size:13px}.f14{font-size:14px}
+.bold{font-weight:700}.bolder{font-weight:900}
+.dim{color:#7a8fad}.muted{color:#334060}.text{color:#e8edf5}
+.upper{text-transform:uppercase}.tracked{letter-spacing:.07em}
+.bc{font-family:‘Barlow Condensed’,Arial}
 </style>
 
 </head>
 <body>
+
+<!-- SPLASH -->
+
 <div id="splash">
-  <div class="splash-logo float">⚡</div>
-  <div class="splash-title">Dashboard Sport</div>
-  <div class="splash-sub">27 ans · 71kg · Mars–Octobre 2025</div>
-  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  <div class="sp-logo float">⚡</div>
+  <div class="sp-title">Dashboard Sport</div>
+  <div class="sp-sub">27 ans · 71kg · Mars–Octobre 2025</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
 </div>
+
+<!-- AMBIENT ORBS -->
+
 <div class="ambient">
-  <div class="ambient-orb" style="width:400px;height:400px;background:#ff6b35;top:-100px;right:-100px"></div>
-  <div class="ambient-orb" style="width:300px;height:300px;background:#00d4ff;bottom:20%;left:-80px"></div>
-  <div class="ambient-orb" style="width:200px;height:200px;background:#a3ff4f;bottom:-50px;right:20%"></div>
+  <div class="orb" style="width:400px;height:400px;background:#ff6b35;top:-100px;right:-80px"></div>
+  <div class="orb" style="width:280px;height:280px;background:#00d4ff;bottom:25%;left:-60px"></div>
+  <div class="orb" style="width:200px;height:200px;background:#a3ff4f;bottom:-40px;right:18%"></div>
 </div>
-<div id="root" style="position:relative;z-index:1"></div>
-<script type="text/babel">
-const {useState, useEffect, useCallback} = React;
 
-// Splash screen dismiss — wait for React to be ready
-function hideSplash(){
-const s=document.getElementById(‘splash’);
-if(s){s.classList.add(‘hide’);setTimeout(()=>{if(s.parentNode)s.remove();},700);}
-}
-// Fallback: hide after 5s no matter what
-setTimeout(hideSplash, 5000);
+<div id="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="flex between center mb10">
+        <div>
+          <div class="flex gap6 center mb4">
+            <span style="background:linear-gradient(135deg,#ff6b35,#ff4757);color:#07090f;font-weight:900;font-size:9px;padding:2px 8px;border-radius:4px;font-family:'Barlow Condensed',Arial;letter-spacing:.08em">⚡ PRÉPA ATHLÈTE</span>
+          </div>
+          <h1 class="bc bolder upper" style="font-size:20px;letter-spacing:.04em">DASHBOARD SPORT</h1>
+          <div class="f9 dim" style="margin-top:1px;letter-spacing:.03em">27 ans · 1m72 · 71kg · Mars–Oct 2025</div>
+        </div>
+        <div class="flex gap6">
+          <div style="background:#00d4ff10;border:1px solid #00d4ff25;border-radius:10px;padding:6px 10px;text-align:center">
+            <div class="bc bolder f14" style="color:#00d4ff">Sub 45'</div>
+            <div class="f8 dim upper" style="letter-spacing:.06em;font-size:8px">10km</div>
+          </div>
+          <div style="background:#ff6b3510;border:1px solid #ff6b3525;border-radius:10px;padding:6px 10px;text-align:center">
+            <div class="bc bolder f14" style="color:#ff6b35">Sub 1h15</div>
+            <div class="f8 dim upper" style="letter-spacing:.06em;font-size:8px">Hyrox</div>
+          </div>
+        </div>
+      </div>
+      <div class="tabs" id="tabs"></div>
+    </div>
+  </div>
 
-const T={
-bg:”#07090f”,s1:”#0d1220”,s2:”#121a2e”,card:”#0f1623”,
-border:”#1a2438”,borderL:”#243050”,
-orange:”#ff6b35”,cyan:”#00d4ff”,lime:”#a3ff4f”,
-red:”#ff4757”,yellow:”#ffd32a”,purple:”#a55eea”,pink:”#ff6eb4”,
-text:”#e8edf5”,textDim:”#7a8fad”,muted:”#334060”,
+  <!-- PAGES -->
+
+  <div class="content">
+    <div class="page active" id="page-0"></div>
+    <div class="page" id="page-1"></div>
+    <div class="page" id="page-2"></div>
+    <div class="page" id="page-3"></div>
+    <div class="page" id="page-4"></div>
+    <div class="page" id="page-5"></div>
+    <div class="page" id="page-6"></div>
+    <div class="page" id="page-7"></div>
+    <div class="page" id="page-8"></div>
+    <div class="page" id="page-9"></div>
+    <div class="page" id="page-10"></div>
+    <div class="page" id="page-11"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+
+<div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<script>
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+const S = {
+  get:(k)=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch{return null;}},
+  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}},
 };
+let checked   = S.get('sp_c')   ||{};
+let pb        = S.get('sp_pb')  ||{};
+let logs      = S.get('sp_logs')||[];
+let notes     = S.get('sp_notes')||[];
+let hydra     = S.get('sp_hydra')||{};
+let goalP     = S.get('sp_goalp')||{};
+let mealC     = S.get('sp_mealc')||{};
+let progD     = S.get('sp_prog') ||{};
 
-// ── FULL SCHEDULE DATA ────────────────────────────────────────────────────────
-// Phase 1: 10 mars → 15 juin 2025
-// Phase 2: 16 juin → 31 août 2025
-// 10km: 20 septembre 2025
-// Phase 3: 22 sept → 17 octobre 2025
-// Hyrox: 18 octobre 2025
+// ── COLORS / HELPERS ──────────────────────────────────────────────────────────
+const C={bg:"#07090f",s1:"#0d1220",s2:"#121a2e",card:"#0f1623",border:"#1a2438",
+  orange:"#ff6b35",cyan:"#00d4ff",lime:"#a3ff4f",red:"#ff4757",
+  yellow:"#ffd32a",purple:"#a55eea",pink:"#ff6eb4",
+  text:"#e8edf5",dim:"#7a8fad",muted:"#334060"};
 
-const PHASE_RANGES = [
-{phase:0, start: new Date(2025,2,10), end: new Date(2025,5,15), label:“Phase 1”, color:T.yellow, icon:“⚽”},
-{phase:1, start: new Date(2025,5,16), end: new Date(2025,7,31), label:“Phase 2”, color:T.cyan, icon:“🏃”},
-{phase:2, start: new Date(2025,8,20), end: new Date(2025,8,20), label:“10KM”, color:T.lime, icon:“🏁”},
-{phase:3, start: new Date(2025,8,22), end: new Date(2025,9,17), label:“Phase 3”, color:T.orange, icon:“🔥”},
-{phase:4, start: new Date(2025,9,18), end: new Date(2025,9,18), label:“HYROX”, color:T.red, icon:“🔥”},
+const h=(tag,attrs={},children=[])=>{
+  const el=document.createElement(tag);
+  Object.entries(attrs).forEach(([k,v])=>{
+    if(k==='style'&&typeof v==='object') Object.assign(el.style,v);
+    else if(k==='className') el.className=v;
+    else if(k.startsWith('on')) el.addEventListener(k.slice(2).toLowerCase(),v);
+    else el.setAttribute(k,v);
+  });
+  children.forEach(c=>{
+    if(c===null||c===undefined||c===false) return;
+    if(typeof c==='string'||typeof c==='number') el.appendChild(document.createTextNode(c));
+    else if(c instanceof Node) el.appendChild(c);
+  });
+  return el;
+};
+const div=(a,c)=>h('div',a,c);
+const span=(a,c)=>h('span',a,c);
+const btn=(a,c)=>h('button',a,c);
+
+const today = new Date();
+const todayKey = today.toISOString().split('T')[0];
+const DAY_NAMES_FR = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const DAY_SHORT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const MONTH_NAMES = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const isSameDay=(a,b)=>a.getDate()===b.getDate()&&a.getMonth()===b.getMonth()&&a.getFullYear()===b.getFullYear();
+const formatFull=(d)=>d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+function getWeekDates(ref){
+  const d=new Date(ref),dow=d.getDay(),mon=new Date(d);
+  mon.setDate(d.getDate()-(dow===0?6:dow-1));
+  return Array.from({length:7},(_,i)=>{const x=new Date(mon);x.setDate(mon.getDate()+i);return x;});
+}
+
+// ── PHASE / SESSION DATA ──────────────────────────────────────────────────────
+const PHASE_RANGES=[
+  {phase:0,start:new Date(2025,2,10),end:new Date(2025,5,15),label:"Phase 1",color:C.yellow,icon:"⚽"},
+  {phase:1,start:new Date(2025,5,16),end:new Date(2025,7,31),label:"Phase 2",color:C.cyan,icon:"🏃"},
+  {phase:2,start:new Date(2025,8,20),end:new Date(2025,8,20),label:"10KM",color:C.lime,icon:"🏁"},
+  {phase:3,start:new Date(2025,8,22),end:new Date(2025,9,17),label:"Phase 3",color:C.orange,icon:"🔥"},
+  {phase:4,start:new Date(2025,9,18),end:new Date(2025,9,18),label:"HYROX",color:C.red,icon:"🔥"},
 ];
 
-// Day of week sessions per phase
-const DAY_SESSIONS = {
-0: { // Phase 1
-1: {label:“FORCE HAUT”, icon:“🏋️”, color:T.orange, focus:“Gym haut du corps”, duration:“60 min”,
-blocks:[
-{title:“Échauffement”,items:[“Mobilité épaules 5 min”,“Tirages poulie 2×15”,“Band pull-apart 2×20”]},
-{title:“Force 80%”,items:[“Développé couché 4×5”,“Tractions lestées 4×5”,“Rowing barre 4×6”]},
-{title:“Hypertrophie”,items:[“Dips 3×10”,“Curl haltères 3×10”,“Face pull 3×15”]},
-{title:“Core”,items:[“Planche 3×45s”,“Ab wheel 3×10”,“Pallof press 2×12”]},
-],note:“48h avant foot. Ne pas aller à l’échec.”},
-2: {label:“RUN RÉCUP”, icon:“🏃”, color:T.cyan, focus:“Zone 2 facile”, duration:“45 min”,
-blocks:[
-{title:“Run facile”,items:[“6-8 km Zone 2”,“FC 130-145 bpm”,“5’45-6’15/km”]},
-{title:“Mobilité post”,items:[“Hanches 5 min”,“Foam roller 5 min”]},
-],note:“Zone 2 strict. Réduire si jambes lourdes après match.”},
-3: {label:“HYROX INIT”, icon:“🔥”, color:T.lime, focus:“Stations Hyrox”, duration:“70 min”,
-blocks:[
-{title:“Warm-up”,items:[“Corde à sauter 5 min”,“2× KB swing + step-up”]},
-{title:“Circuit 2 rounds”,items:[“500m Ski Erg”,“1km run 4’45/km”,“25m Sled Push”,“50m Farmer carry 2×20kg”,“50m Burpee Jump”]},
-{title:“Finisher”,items:[“3×20 Wall Ball 6kg”,“500m Rowing cool-down”]},
-],note:“Technique avant performance en phase 1.”},
-4: {label:“FORCE BAS”, icon:“🏋️”, color:T.orange, focus:“Gym bas du corps”, duration:“60 min”,
-blocks:[
-{title:“Activation”,items:[“Hip thrust 2×20”,“Monster walk 2×15m”,“Goblet squat 2×10”]},
-{title:“Force”,items:[“Squat back 4×5 @ 75-80%”,“SDT roumain 3×6 @ 70%”]},
-{title:“Fonctionnel”,items:[“Bulgarian split 3×8/jambe”,“Step-up 3×10/jambe”,“KB swing 3×15”]},
-],note:“Finir 24h avant foot vendredi.”},
-5: {label:“⚽ FOOT”, icon:“⚽”, color:T.yellow, focus:“Entraînement football”, duration:“90 min”,
-blocks:[
-{title:“Avant (2h avant)”,items:[“Repas glucidique — pâtes ou riz”,“500ml eau 2h avant”,“Activation 10 min”]},
-{title:“Entraînement”,items:[“Séance club normale”,“Intensité maximale”]},
-{title:“Post (30 min)”,items:[“Glucides 50g + protéines 25g”,“Étirements 10 min”]},
-],note:“Zéro gym. Sommeil 8h minimum.”},
-6: {label:“LONG RUN”, icon:“🏃”, color:T.cyan, focus:“Sortie longue endurance”, duration:“60-75 min”,
-blocks:[
-{title:“12-15 km”,items:[“3km échauffement 6’/km”,“6-9km endurance 5’30/km”,“3km retour progressif”]},
-],note:“Run le plus important. Ne jamais sauter.”},
-0: {label:“⚽ MATCH”, icon:“⚽”, color:T.yellow, focus:“Match + récupération”, duration:“Journée”,
-blocks:[
-{title:“Post-match”,items:[“Shake recovery 30 min”,“Bain froid 10 min si dispo”,“Sommeil 8h minimum”]},
-],note:“Récupération = entraînement.”},
-},
-1: { // Phase 2
-1: {label:“REPOS ACTIF”, icon:“😴”, color:T.purple, focus:“Récupération”, duration:“30 min”,
-blocks:[{title:“Actif”,items:[“Yoga 20 min”,“Foam roller 10 min”]}],
-note:“Le corps progresse en récupérant.”},
-2: {label:“FRACTIONNÉ”, icon:“🏃”, color:T.red, focus:“VMA / Seuil”, duration:“60 min”,
-blocks:[
-{title:“Seuil S1-4”,items:[“3km échauffement”,“4×1500m @ 4’28/km”,“Récup 2 min”,“2km retour”]},
-{title:“VMA S5-8”,items:[“8×400m @ VMA”,“Récup 90s trot”]},
-{title:“Race pace S9-11”,items:[“2×3km allure 10km”,“1km accélération finale”]},
-],note:“Séance dure. Pas de gym le lendemain.”},
-3: {label:“FORCE LÉGÈRE”, icon:“🏋️”, color:T.orange, focus:“Maintenance”, duration:“50 min”,
-blocks:[{title:“Circuit 3 rounds”,items:[“Squat 3×5 @ 75%”,“Tractions 3×8”,“Développé couché 3×8”,“KB swing 3×15”]}],
-note:“Maintenance seulement — énergie pour les runs.”},
-4: {label:“RUN RÉCUP”, icon:“🏃”, color:T.cyan, focus:“Zone 2 doux”, duration:“40 min”,
-blocks:[{title:“Run doux”,items:[“6-8km Zone 2”,“FC < 145 bpm”,“5’45-6’15/km”]}],
-note:“Récupération active du fractionné.”},
-5: {label:“REPOS”, icon:“😴”, color:T.purple, focus:“Repos complet”, duration:“Off”,
-blocks:[{title:“Off”,items:[“Marche 20 min max”,“Étirements doux”]}],
-note:“Préserve les jambes pour le long run samedi.”},
-6: {label:“LONG RUN”, icon:“🏃”, color:T.cyan, focus:“Sortie longue allure”, duration:“80-100 min”,
-blocks:[{title:“Évolution”,items:[“S1-2 : 16km facile”,“S3-5 : 18km avec 8km allure”,“S6-8 : 20km progression”,“S9-10 : 16km décharge”,“S11 : 10km très facile”]}],
-note:“Clé absolue. Gel toutes les 45 min si +1h.”},
-0: {label:“CROSS-TRAINING”, icon:“🔥”, color:T.lime, focus:“Endurance croisée”, duration:“45 min”,
-blocks:[{title:“Options”,items:[“Vélo 45 min Zone 2”,“Natation 2000m”,“Repos si fatigue”]}],
-note:“Choix selon ressenti.”},
-},
-3: { // Phase 3
-1: {label:“REPOS ACTIF”, icon:“😴”, color:T.purple, focus:“Décompression”, duration:“30 min”,
-blocks:[{title:“Post 10km”,items:[“Mobilité 20 min”,“Pas de sport intense avant J+7”]}],
-note:“Récupérer du 10km avant la prépa Hyrox.”},
-2: {label:“FORCE HYROX”, icon:“🏋️”, color:T.orange, focus:“Force fonctionnelle lourde”, duration:“75 min”,
-blocks:[
-{title:“Force”,items:[“Deadlift 4×4 @ 85%”,“Squat front 3×6”,“Rowing barre 4×6 lourd”]},
-{title:“Stations lourdes”,items:[“Farmer carry 4×40m (2×28kg)”,“Sled push 4×25m charge max”,“Wall ball 4×25 (9kg)”]},
-],note:“Charges maximales sur les stations.”},
-3: {label:“RUN TRANSITIONS”, icon:“🏃”, color:T.cyan, focus:“Allure Hyrox + transitions”, duration:“55 min”,
-blocks:[
-{title:“Run Hyrox”,items:[“6×1km @ 4’30-4’45/km”,“Récup 90s entre répétitions”]},
-{title:“Transitions”,items:[“5× : 200m sprint → 20 Wall Ball → récup 2 min”]},
-],note:“Apprivoiser jambes lourdes en entrant sur station.”},
-4: {label:“SIMULATION”, icon:“🔥”, color:T.red, focus:“Simulation complète Hyrox”, duration:“80-100 min”,
-blocks:[
-{title:“8 stations”,items:[“1km + Ski Erg 1000m”,“1km + Sled Push 50m”,“1km + Sled Pull 50m”,“1km + Burpee Jump 80m”,“1km + Rowing 1000m”,“1km + Farmer Carry 200m”,“1km + Sandbag Lunges 100m”,“1km + Wall Ball 100 reps”]},
-],note:“Séance reine. Note ton temps total.”},
-5: {label:“RUN LÉGER”, icon:“🏃”, color:T.cyan, focus:“Récupération course”, duration:“40 min”,
-blocks:[{title:“Doux”,items:[“6km Zone 2”,“FC < 140 bpm”]}],
-note:“Légèreté obligatoire après simulation jeudi.”},
-6: {label:“FORCE BAS”, icon:“🏋️”, color:T.orange, focus:“Jambes + puissance”, duration:“65 min”,
-blocks:[
-{title:“Force”,items:[“Squat back 5×4 @ 85%”,“SDT 3×4 @ 85%”]},
-{title:“Accessoires”,items:[“Fentes KB 3×12/jambe”,“Step-up 3×10”,“Leg curl 3×12”]},
-],note:“Jambes puissantes = sled + sandbag.”},
-0: {label:“LONG RUN”, icon:“🏃”, color:T.cyan, focus:“Endurance Hyrox”, duration:“70 min”,
-blocks:[{title:“14-16km”,items:[“S1-3 : 14km facile”,“S4-5 : 16km avec 4km allure Hyrox”,“S6 : 10km très facile”]}],
-note:“Ne pas descendre sous 25 km/sem.”},
-},
+function getPhase(date){
+  for(const r of PHASE_RANGES){
+    const d=new Date(date);d.setHours(12);
+    if(d>=r.start&&d<=r.end)return r;
+  }
+  return null;
+}
+
+const DAY_SESSIONS={
+  0:{
+    1:{label:"FORCE HAUT",icon:"🏋️",color:C.orange,focus:"Gym haut du corps",duration:"60 min",blocks:[{title:"Échauffement",items:["Mobilité épaules 5 min","Tirages poulie 2×15","Band pull-apart 2×20"]},{title:"Force 80%",items:["Développé couché 4×5","Tractions 4×5","Rowing barre 4×6"]},{title:"Hypertrophie",items:["Dips 3×10","Curl haltères 3×10","Face pull 3×15"]},{title:"Core",items:["Planche 3×45s","Ab wheel 3×10"]}],note:"48h avant foot. Ne pas aller à l'échec."},
+    2:{label:"RUN RÉCUP",icon:"🏃",color:C.cyan,focus:"Zone 2 facile",duration:"45 min",blocks:[{title:"Run facile",items:["6-8km Zone 2","FC 130-145 bpm","5'45-6'15/km"]},{title:"Mobilité",items:["Hanches 5 min","Foam roller 5 min"]}],note:"Zone 2 strict. Réduire si jambes lourdes."},
+    3:{label:"HYROX INIT",icon:"🔥",color:C.lime,focus:"Stations Hyrox",duration:"70 min",blocks:[{title:"Warm-up",items:["Corde à sauter 5 min","2× KB swing + step-up"]},{title:"Circuit 2 rounds",items:["500m Ski Erg","1km run 4'45/km","25m Sled Push","50m Farmer carry 2×20kg","50m Burpee Jump"]},{title:"Finisher",items:["3×20 Wall Ball 6kg","500m Rowing"]}],note:"Technique avant performance."},
+    4:{label:"FORCE BAS",icon:"🏋️",color:C.orange,focus:"Gym bas du corps",duration:"60 min",blocks:[{title:"Activation",items:["Hip thrust 2×20","Monster walk 2×15m","Goblet squat 2×10"]},{title:"Force",items:["Squat back 4×5 75-80%","SDT roumain 3×6"]},{title:"Fonctionnel",items:["Bulgarian split 3×8","Step-up 3×10","KB swing 3×15"]}],note:"Finir 24h avant foot vendredi."},
+    5:{label:"FOOT",icon:"⚽",color:C.yellow,focus:"Entraînement football",duration:"90 min",blocks:[{title:"Avant",items:["Repas glucidique 2h avant","Hydratation 500ml","Activation 10 min"]},{title:"Post",items:["30g glucides + 25g protéines","Étirements 10 min"]}],note:"Zéro gym. Sommeil 8h minimum."},
+    6:{label:"LONG RUN",icon:"🏃",color:C.cyan,focus:"Sortie longue",duration:"60-75 min",blocks:[{title:"12-15km",items:["3km échauffement 6'/km","6-9km endurance 5'30/km","3km retour progressif"]}],note:"Run le plus important. Ne jamais sauter."},
+    0:{label:"MATCH",icon:"⚽",color:C.yellow,focus:"Match + récupération",duration:"Journée",blocks:[{title:"Post-match",items:["Shake recovery 30 min","Bain froid 10 min","Sommeil 8h"]}],note:"Récupération = entraînement."},
+  },
+  1:{
+    1:{label:"REPOS ACTIF",icon:"😴",color:C.purple,focus:"Récupération",duration:"30 min",blocks:[{title:"Actif",items:["Yoga 20 min","Foam roller 10 min"]}],note:"Le corps progresse en récupérant."},
+    2:{label:"FRACTIONNÉ",icon:"🏃",color:C.red,focus:"VMA / Seuil",duration:"60 min",blocks:[{title:"Seuil S1-4",items:["3km échauffement","4×1500m @ 4'28/km","Récup 2 min","2km retour"]},{title:"VMA S5-8",items:["8×400m @ VMA","Récup 90s trot"]},{title:"Race pace S9-11",items:["2×3km allure 10km","1km accélération"]}],note:"Séance dure. Pas de gym le lendemain."},
+    3:{label:"FORCE LÉGÈRE",icon:"🏋️",color:C.orange,focus:"Maintenance",duration:"50 min",blocks:[{title:"Circuit 3 rounds",items:["Squat 3×5 @ 75%","Tractions 3×8","Développé couché 3×8","KB swing 3×15"]}],note:"Maintenance seulement."},
+    4:{label:"RUN RÉCUP",icon:"🏃",color:C.cyan,focus:"Zone 2 doux",duration:"40 min",blocks:[{title:"Run doux",items:["6-8km Zone 2","FC < 145 bpm"]}],note:"Récupération du fractionné."},
+    5:{label:"REPOS",icon:"😴",color:C.purple,focus:"Repos complet",duration:"Off",blocks:[{title:"Off",items:["Marche 20 min max","Étirements doux"]}],note:"Préserve les jambes pour samedi."},
+    6:{label:"LONG RUN",icon:"🏃",color:C.cyan,focus:"Sortie longue allure",duration:"80-100 min",blocks:[{title:"Évolution",items:["S1-2: 16km facile","S3-5: 18km avec 8km allure","S6-8: 20km progression","S9-10: 16km décharge","S11: 10km très facile"]}],note:"Gel toutes les 45 min si +1h."},
+    0:{label:"CROSS",icon:"🔥",color:C.lime,focus:"Endurance croisée",duration:"45 min",blocks:[{title:"Options",items:["Vélo 45 min Zone 2","Natation 2000m","Repos si fatigue"]}],note:"Choix selon ressenti."},
+  },
+  3:{
+    1:{label:"REPOS ACTIF",icon:"😴",color:C.purple,focus:"Décompression",duration:"30 min",blocks:[{title:"Post 10km",items:["Mobilité 20 min","Pas de sport intense avant J+7"]}],note:"Récupérer du 10km."},
+    2:{label:"FORCE HYROX",icon:"🏋️",color:C.orange,focus:"Force fonctionnelle",duration:"75 min",blocks:[{title:"Force",items:["Deadlift 4×4 @ 85%","Squat front 3×6","Rowing barre 4×6"]},{title:"Stations",items:["Farmer carry 4×40m (2×28kg)","Sled push 4×25m","Wall ball 4×25 (9kg)"]}],note:"Charges maximales."},
+    3:{label:"RUN TRANSITIONS",icon:"🏃",color:C.cyan,focus:"Allure Hyrox",duration:"55 min",blocks:[{title:"Run Hyrox",items:["6×1km @ 4'30-4'45/km"]},{title:"Transitions",items:["5×: 200m sprint → 20 Wall Ball"]}],note:"Apprivoiser jambes lourdes."},
+    4:{label:"SIMULATION",icon:"🔥",color:C.red,focus:"Simulation complète",duration:"80-100 min",blocks:[{title:"8 stations",items:["1km + Ski Erg 1000m","1km + Sled Push 50m","1km + Sled Pull 50m","1km + Burpee Jump 80m","1km + Rowing 1000m","1km + Farmer Carry 200m","1km + Sandbag Lunges 100m","1km + Wall Ball 100 reps"]}],note:"Séance reine. Note ton temps total."},
+    5:{label:"RUN LÉGER",icon:"🏃",color:C.cyan,focus:"Récupération",duration:"40 min",blocks:[{title:"Doux",items:["6km Zone 2","FC < 140 bpm"]}],note:"Légèreté après simulation."},
+    6:{label:"FORCE BAS",icon:"🏋️",color:C.orange,focus:"Jambes puissance",duration:"65 min",blocks:[{title:"Force",items:["Squat 5×4 @ 85%","SDT 3×4 @ 85%"]},{title:"Accessoires",items:["Fentes KB 3×12","Step-up 3×10","Leg curl 3×12"]}],note:"Jambes puissantes = sled + lunges."},
+    0:{label:"LONG RUN",icon:"🏃",color:C.cyan,focus:"Endurance Hyrox",duration:"70 min",blocks:[{title:"14-16km",items:["S1-3: 14km facile","S4-5: 16km avec 4km allure Hyrox","S6: 10km très facile"]}],note:"Ne pas descendre sous 25 km/sem."},
+  },
 };
+
+function getSession(date){
+  const phase=getPhase(date);
+  if(!phase)return null;
+  const sessions=DAY_SESSIONS[phase.phase];
+  if(!sessions)return null;
+  return sessions[date.getDay()]||null;
+}
 
 const STATIONS=[
-{name:“Ski Erg”,dist:“1000m”,tips:“Poussée hanches, bras raides. 55 coups/min constant.”,target:“3’45”,color:T.cyan},
-{name:“Sled Push”,dist:“50m”,tips:“Hanche basse, pas courts rapides. Respire.”,target:“1’45”,color:T.orange},
-{name:“Sled Pull”,dist:“50m”,tips:“Tirage vertical, gainage maximal. Alterne les mains.”,target:“2’00”,color:T.orange},
-{name:“Burpee Jump”,dist:“80m”,tips:“Explosivité sur le saut. Rythme régulier > sprint/pause.”,target:“4’00”,color:T.red},
-{name:“Rowing”,dist:“1000m”,tips:“Jambes d’abord puis bras. Drive fort. 85-90% FCmax.”,target:“3’40”,color:T.cyan},
-{name:“Farmer Carry”,dist:“200m”,tips:“2×24kg min. Gainage maximal. Marche rapide.”,target:“2’30”,color:T.lime},
-{name:“Sandbag Lunges”,dist:“100m”,tips:“Sac sur une épaule. Genou au sol. Alterner.”,target:“5’00”,color:T.yellow},
-{name:“Wall Ball”,dist:“100 reps”,tips:“Squat profond. 15 reps pause 5s. Évite l’arrêt long.”,target:“7’00”,color:T.purple},
+  {name:"Ski Erg",dist:"1000m",tips:"55 coups/min. Poussée hanches, bras raides.",target:"3'45",color:C.cyan},
+  {name:"Sled Push",dist:"50m",tips:"Hanche basse, pas courts rapides.",target:"1'45",color:C.orange},
+  {name:"Sled Pull",dist:"50m",tips:"Tirage vertical, gainage maximal.",target:"2'00",color:C.orange},
+  {name:"Burpee Jump",dist:"80m",tips:"Explosivité sur le saut. Rythme régulier.",target:"4'00",color:C.red},
+  {name:"Rowing",dist:"1000m",tips:"Jambes d'abord. Drive fort. 85-90% FCmax.",target:"3'40",color:C.cyan},
+  {name:"Farmer Carry",dist:"200m",tips:"2×24kg min. Gainage maximal.",target:"2'30",color:C.lime},
+  {name:"Sandbag Lunges",dist:"100m",tips:"Sac sur épaule. Genou au sol. Alterner.",target:"5'00",color:C.yellow},
+  {name:"Wall Ball",dist:"100 reps",tips:"Squat profond. 15 reps pause 5s.",target:"7'00",color:C.purple},
 ];
 
-const TEN_K=[
-{w:1,km:32,focus:“Zone 2 dominant”,color:T.cyan},
-{w:2,km:36,focus:“Base aérobie”,color:T.cyan},
-{w:3,km:40,focus:“Seuil 4×1500m”,color:T.yellow},
-{w:4,km:32,focus:“Récupération”,color:T.cyan},
-{w:5,km:44,focus:“Blocs allure”,color:T.yellow},
-{w:6,km:48,focus:“VMA 8×400m”,color:T.yellow},
-{w:7,km:52,focus:“Tempo long”,color:T.orange},
-{w:8,km:42,focus:“Décharge”,color:T.cyan},
-{w:9,km:50,focus:“Simulation 7km”,color:T.red},
-{w:10,km:54,focus:“Peak week”,color:T.red},
-{w:11,km:36,focus:“Affûtage -30%”,color:T.yellow},
-{w:12,km:18,focus:“SEMAINE COURSE”,color:T.lime},
-];
+const TEN_K=[{w:1,km:32,color:C.cyan,focus:"Zone 2 dominant"},{w:2,km:36,color:C.cyan,focus:"Base aérobie"},{w:3,km:40,color:C.yellow,focus:"Seuil 4×1500m"},{w:4,km:32,color:C.cyan,focus:"Récupération"},{w:5,km:44,color:C.yellow,focus:"Blocs allure"},{w:6,km:48,color:C.yellow,focus:"VMA 8×400m"},{w:7,km:52,color:C.orange,focus:"Tempo long"},{w:8,km:42,color:C.cyan,focus:"Décharge"},{w:9,km:50,color:C.red,focus:"Simulation 7km"},{w:10,km:54,color:C.red,focus:"Peak week"},{w:11,km:36,color:C.yellow,focus:"Affûtage -30%"},{w:12,km:18,color:C.lime,focus:"SEMAINE COURSE"}];
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-function getPhaseForDate(date) {
-for (const r of PHASE_RANGES) {
-const d = new Date(date); d.setHours(12);
-const s = new Date(r.start); const e = new Date(r.end);
-if (d >= s && d <= e) return r;
+// ── UI HELPERS ────────────────────────────────────────────────────────────────
+function mkTag(text,color){
+  return span({className:'tag',style:{color,borderColor:color+'50',background:color+'12'}},text);
 }
-// Before start
-if (date < PHASE_RANGES[0].start) return null;
-// Between phases - find closest upcoming
-return null;
+function mkCard(content,style={}){
+  const c=div({className:'card',style});
+  if(typeof content==='string') c.innerHTML=content;
+  else if(Array.isArray(content)) content.forEach(x=>x&&c.appendChild(x));
+  else if(content instanceof Node) c.appendChild(content);
+  return c;
+}
+function mkSection(title,subtitle=''){
+  return div({className:'mb16'},[
+    h('h2',{className:'bc bolder upper',style:{fontSize:'22px',letterSpacing:'.03em',margin:0}},title),
+    subtitle&&div({className:'dim f12',style:{marginTop:'3px'}},subtitle),
+  ]);
+}
+function mkBar(pct,color,height='5px'){
+  const w=div({className:'bar-wrap',style:{'--h':height}});
+  const f=div({className:'bar-fill',style:{width:pct+'%','--w':pct+'%',background:color,boxShadow:`0 0 8px ${color}60`}});
+  w.appendChild(f);
+  return w;
 }
 
-function getSessionForDate(date) {
-const phase = getPhaseForDate(date);
-if (!phase) return null;
-const dow = date.getDay(); // 0=Sun, 1=Mon…
-const sessions = DAY_SESSIONS[phase.phase];
-if (!sessions) return null;
-return sessions[dow] || null;
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(content){
+  const box=document.getElementById('modal-box');
+  box.innerHTML='';
+  if(Array.isArray(content)) content.forEach(x=>x&&box.appendChild(x));
+  else box.appendChild(content);
+  document.getElementById('modal').style.display='flex';
+}
+function closeModal(){document.getElementById('modal').style.display='none';}
+
+function sessionModal(session,date){
+  const box=div({className:'modal-box',style:{border:`1px solid ${session.color}40`}},[
+    div({className:'flex between center mb8'},[
+      div({},[
+        div({className:'f10 dim upper tracked mb4'},date?formatFull(date):''),
+        h('h3',{className:'bc bolder upper',style:{fontSize:'24px',color:session.color,margin:0,letterSpacing:'.03em'}},session.icon+' '+session.label),
+      ]),
+      btn({className:'btn-ghost',style:{padding:'6px 10px',fontSize:'16px'},onClick:closeModal},'✕'),
+    ]),
+    div({className:'flex gap6 mb16 wrap'},[
+      mkTag('⏱ '+session.duration,session.color),
+      mkTag(session.focus,session.color),
+    ]),
+    ...session.blocks.map(b=>div({style:{background:'rgba(255,255,255,.03)',border:'1px solid rgba(255,255,255,.06)',borderRadius:'12px',padding:'12px 16px',marginBottom:'10px'}},[
+      div({className:'f10 bold upper tracked mb8',style:{color:session.color}},b.title),
+      h('ul',{style:{margin:0,paddingLeft:'18px'}},b.items.map(it=>h('li',{style:{color:C.dim,fontSize:'13px',lineHeight:'2'}},it))),
+    ])),
+    session.note&&div({style:{background:session.color+'10',border:`1px solid ${session.color}25`,borderRadius:'10px',padding:'10px 14px',fontSize:'12px',color:C.dim,lineHeight:'1.6'}},'💡 '+session.note),
+  ]);
+  openModal(box);
 }
 
-function getWeekDates(referenceDate) {
-const d = new Date(referenceDate);
-const day = d.getDay();
-const monday = new Date(d);
-monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
-const week = [];
-for (let i = 0; i < 7; i++) {
-const dd = new Date(monday);
-dd.setDate(monday.getDate() + i);
-week.push(dd);
-}
-return week;
-}
+// ── TAB 0: AUJOURD'HUI ───────────────────────────────────────────────────────
+function renderToday(){
+  const weekDates=getWeekDates(today);
+  const todaySession=getSession(today);
+  const todayPhase=getPhase(today);
+  const d10k=Math.ceil((new Date(2025,8,20)-today)/(864e5));
+  const dHyrox=Math.ceil((new Date(2025,9,18)-today)/(864e5));
+  const hydraGoal=todaySession?(todaySession.duration==='Off'?2:3):2.5;
+  const hydraToday=(hydra[todayKey]||0);
+  const GOALS_DEF=[
+    {key:'10km',label:'10km sub 45 min',icon:'🏁',color:C.cyan,target:null},
+    {key:'hyrox',label:'Hyrox sub 1h15',icon:'🔥',color:C.orange,target:null},
+    {key:'squat',label:'Squat 120 kg',icon:'🏋️',color:C.lime,target:120},
+    {key:'dl',label:'Deadlift 160 kg',icon:'🏋️',color:C.red,target:160},
+    {key:'bench',label:'Bench 100 kg',icon:'🏋️',color:C.yellow,target:100},
+    {key:'skierg',label:'Ski Erg sub 3\'45',icon:'🎿',color:C.cyan,target:null},
+    {key:'wallball',label:'100 Wall Ball',icon:'🏀',color:C.purple,target:100},
+    {key:'farmer',label:'Farmer 2×28 kg',icon:'💪',color:C.lime,target:28},
+  ];
 
-function formatDate(d) {
-return d.toLocaleDateString(‘fr-FR’, {weekday:‘short’, day:‘numeric’, month:‘short’});
-}
+  const wrap=div({className:'slide-up fade-in'});
 
-function formatFullDate(d) {
-return d.toLocaleDateString(‘fr-FR’, {weekday:‘long’, day:‘numeric’, month:‘long’, year:‘numeric’});
-}
+  // Countdowns
+  const cdRow=div({className:'g2 mb16'},[
+    div({style:{background:`linear-gradient(135deg,${C.cyan}20,${C.s1})`,border:`1px solid ${C.cyan}40`,borderRadius:'12px',padding:'14px 16px',textAlign:'center'}},[
+      div({className:'f10 upper dim',style:{letterSpacing:'.08em',marginBottom:'4px'}},'🏁 10km — 20 Sept'),
+      div({className:'bc bolder',style:{fontSize:'36px',color:C.text,lineHeight:'1'}},d10k>0?d10k:"C'EST AUJOURD'HUI"),
+      d10k>0&&div({className:'f11 dim',style:{marginTop:'2px'}},'jours restants'),
+    ]),
+    div({style:{background:`linear-gradient(135deg,${C.orange}20,${C.s1})`,border:`1px solid ${C.orange}40`,borderRadius:'12px',padding:'14px 16px',textAlign:'center'}},[
+      div({className:'f10 upper dim',style:{letterSpacing:'.08em',marginBottom:'4px'}},'🔥 Hyrox — 18 Oct'),
+      div({className:'bc bolder',style:{fontSize:'36px',color:C.text,lineHeight:'1'}},dHyrox>0?dHyrox:"C'EST AUJOURD'HUI"),
+      dHyrox>0&&div({className:'f11 dim',style:{marginTop:'2px'}},'jours restants'),
+    ]),
+  ]);
+  wrap.appendChild(cdRow);
 
-function isSameDay(a, b) {
-return a.getDate()===b.getDate() && a.getMonth()===b.getMonth() && a.getFullYear()===b.getFullYear();
-}
+  // Date + phase
+  const dateRow=div({className:'flex between center mb12 wrap gap8'},[
+    div({},[
+      div({className:'flex center gap6 f11 dim upper mb4',style:{letterSpacing:'.08em'}},[
+        span({className:'pulse',style:{display:'inline-block',width:'6px',height:'6px',borderRadius:'50%',background:C.lime,marginRight:'4px'}}),
+        "Aujourd'hui",
+      ]),
+      h('h2',{className:'bc bolder upper',style:{fontSize:'20px',margin:0}},formatFull(today)),
+    ]),
+    todayPhase&&mkTag(todayPhase.icon+' '+todayPhase.label,todayPhase.color),
+  ]);
+  wrap.appendChild(dateRow);
 
-function getDayLabel(i) {
-return [‘Dim’,‘Lun’,‘Mar’,‘Mer’,‘Jeu’,‘Ven’,‘Sam’][i];
-}
-
-// ── COMPONENTS ────────────────────────────────────────────────────────────────
-function Tag({c, children}) {
-return React.createElement(‘span’, {
-className:“tag”,
-style:{color:c,borderColor:c+“50”,background:c+“12”}
-}, children);
-}
-
-function Card({children, style={}, className=””, onClick}) {
-return React.createElement(‘div’, {
-className:“card “+(onClick?“card-hover “:””)+className,
-style,
-onClick
-}, children);
-}
-
-function GradientCard({children, color, style={}}) {
-return React.createElement(‘div’, {
-className:“card”,
-style:{
-background:`linear-gradient(135deg,${color}14 0%,#0f1623 60%)`,
-borderColor:color+“30”,
-…style
-}
-}, children);
-}
-
-function SessionModal({session, date, onClose}) {
-if (!session) return null;
-return React.createElement(‘div’, {
-className:“modal-overlay”,
-onClick:(e)=>e.target===e.currentTarget&&onClose()
-},
-React.createElement(‘div’, {
-className:“modal-content”,
-style:{border:`1px solid ${session.color}40`}
-},
-React.createElement(‘div’, {style:{display:“flex”,justifyContent:“space-between”,alignItems:“center”,marginBottom:8}},
-React.createElement(‘div’, null,
-React.createElement(‘div’, {style:{fontSize:10,color:T.textDim,marginBottom:4,textTransform:“uppercase”,letterSpacing:“0.08em”}},
-date ? formatFullDate(date) : “”
-),
-React.createElement(‘h3’, {
-style:{fontFamily:”‘Barlow Condensed’,Arial”,fontSize:24,fontWeight:900,color:session.color,textTransform:“uppercase”,margin:0,letterSpacing:“0.03em”}
-}, session.icon+” “+session.label),
-),
-React.createElement(‘button’, {
-onClick:onClose,
-className:“btn-ghost”,
-style:{padding:“6px 10px”,fontSize:16}
-}, “✕”)
-),
-React.createElement(‘div’, {style:{display:“flex”,gap:6,marginBottom:18,flexWrap:“wrap”}},
-React.createElement(Tag, {c:session.color}, “⏱ “+session.duration),
-React.createElement(Tag, {c:session.color}, session.focus),
-),
-…session.blocks.map((b,i)=>
-React.createElement(‘div’, {
-key:i,
-style:{background:“rgba(255,255,255,0.03)”,border:“1px solid rgba(255,255,255,0.06)”,borderRadius:12,padding:“12px 16px”,marginBottom:10}
-},
-React.createElement(‘div’, {style:{fontSize:10,color:session.color,fontWeight:700,textTransform:“uppercase”,letterSpacing:“0.09em”,marginBottom:8}}, b.title),
-React.createElement(‘ul’, {style:{margin:0,paddingLeft:18}},
-…b.items.map((it,j)=>React.createElement(‘li’, {key:j,style:{color:T.textDim,fontSize:13,lineHeight:2}}, it))
-)
-)
-),
-session.note && React.createElement(‘div’, {
-style:{background:session.color+“10”,border:`1px solid ${session.color}25`,borderRadius:10,padding:“10px 14px”,fontSize:12,color:T.textDim,lineHeight:1.6}
-}, “💡 “+session.note)
-)
-);
-}
-
-// ── TABS ──────────────────────────────────────────────────────────────────────
-const TABS = [“📍 Aujourd’hui”, “📅 Semaine”, “🗓️ Calendrier”, “🔥 Hyrox”, “🏃 10km”, “🍽️ Nutrition”, “✅ Suivi”, “📝 Carnet”, “📊 Stats”, “🗒️ Notes”, “🍕 Repas”, “📈 Progrès”];
-
-function App() {
-const [tab, setTab] = useState(0);
-const [today] = useState(new Date());
-const [selectedDate, setSelectedDate] = useState(new Date());
-const [selSession, setSelSession] = useState(null);
-const [selSessionDate, setSelSessionDate] = useState(null);
-const [calMonth, setCalMonth] = useState(new Date(2025, 2, 1)); // Start March 2025
-const [checked, setChecked] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_c”)||”{}”);}catch{return{};}});
-const [pb, setPb] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_pb”)||”{}”);}catch{return{};}});
-const [pbInput, setPbInput] = useState({});
-const [notifGranted, setNotifGranted] = useState(false);
-
-const [logs, setLogs] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_logs”)||”[]”);}catch{return[];}});
-const [logType, setLogType] = useState(“course”);
-const [logForm, setLogForm] = useState({});
-const [showLogForm, setShowLogForm] = useState(false);
-const [chartType, setChartType] = useState(“allure”);
-
-// Hydration — stored per day key YYYY-MM-DD
-const todayKey = today.toISOString().split(‘T’)[0];
-const [hydration, setHydration] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_hydra”)||”{}”);}catch{return{};}});
-const hydraGoal = todaySession ? (todaySession.duration===“Off”?2.0:3.0) : 2.5;
-const hydraToday = hydration[todayKey] || 0;
-const addWater = (ml) => {
-const n = {…hydration, [todayKey]: Math.min(hydraGoal*1000, (hydration[todayKey]||0)+ml)};
-setHydration(n);
-try{localStorage.setItem(“sp_hydra”,JSON.stringify(n));}catch{}
-};
-const resetWater = () => {
-const n = {…hydration, [todayKey]: 0};
-setHydration(n);
-try{localStorage.setItem(“sp_hydra”,JSON.stringify(n));}catch{}
-};
-
-// Goals with progress
-const GOALS_DEF = [
-{key:“10km”, label:“10km sub 45 min”, icon:“🏁”, color:T.cyan, target:“45:00”, unit:“min”},
-{key:“hyrox”, label:“Hyrox sub 1h15”, icon:“🔥”, color:T.orange, target:“1:15:00”, unit:“h”},
-{key:“squat”, label:“Squat 120 kg”, icon:“🏋️”, color:T.lime, target:120, unit:“kg”},
-{key:“dl”, label:“Deadlift 160 kg”, icon:“🏋️”, color:T.red, target:160, unit:“kg”},
-{key:“bench”, label:“Bench 100 kg”, icon:“🏋️”, color:T.yellow, target:100, unit:“kg”},
-{key:“skierg”, label:“Ski Erg sub 3’45”, icon:“🎿”, color:T.cyan, target:“3:45”, unit:“min”},
-{key:“wallball”, label:“100 Wall Ball”, icon:“🏀”, color:T.purple, target:100, unit:“reps”},
-{key:“farmer”, label:“Farmer 2×28 kg”, icon:“💪”, color:T.lime, target:28, unit:“kg/main”},
-];
-const [goalProgress, setGoalProgress] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_goalp”)||”{}”);}catch{return{};}});
-const saveGoalProgress = (key, val) => {
-const n = {…goalProgress, [key]: val};
-setGoalProgress(n);
-try{localStorage.setItem(“sp_goalp”,JSON.stringify(n));}catch{}
-};
-
-const toggle = (k) => { const n={…checked,[k]:!checked[k]}; setChecked(n); try{localStorage.setItem(“sp_c”,JSON.stringify(n));}catch{} };
-const savePB = (k,v) => { const n={…pb,[k]:v}; setPb(n); try{localStorage.setItem(“sp_pb”,JSON.stringify(n));}catch{} };
-
-const saveLog = () => {
-const entry = {…logForm, type:logType, date: new Date().toISOString().split(‘T’)[0], id: Date.now()};
-const n = [entry, …logs];
-setLogs(n);
-try{localStorage.setItem(“sp_logs”,JSON.stringify(n));}catch{}
-setLogForm({});
-setShowLogForm(false);
-};
-const deleteLog = (id) => {
-const n = logs.filter(l=>l.id!==id);
-setLogs(n);
-try{localStorage.setItem(“sp_logs”,JSON.stringify(n));}catch{}
-};
-
-const todaySession = getSessionForDate(today);
-const todayPhase = getPhaseForDate(today);
-const weekDates = getWeekDates(today);
-
-const requestNotif = async () => {
-if (‘Notification’ in window) {
-const perm = await Notification.requestPermission();
-if (perm === ‘granted’) {
-setNotifGranted(true);
-new Notification(“Sport Dashboard”, {body: todaySession ? `Aujourd'hui : ${todaySession.label} — ${todaySession.focus}` : “Pas de séance aujourd’hui. Récupère bien !”, icon:”/favicon.ico”});
-}
-} else {
-alert(“Les notifications ne sont pas supportées sur Safari iOS. Ajoute l’app à l’écran d’accueil d’abord.”);
-}
-};
-
-// ── TAB 0: AUJOURD’HUI ────────────────────────────────────────────────────
-const renderToday = () => {
-const daysUntil10k = Math.ceil((new Date(2025,8,20) - today) / (1000*60*60*24));
-const daysUntilHyrox = Math.ceil((new Date(2025,9,18) - today) / (1000*60*60*24));
-
-```
-return React.createElement('div', {className:"slide-up fade-in"},
-  // Countdown cards
-  React.createElement('div', {style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}},
-    React.createElement('div', {style:{background:`linear-gradient(135deg,${T.cyan}20,${T.s1})`,border:`1px solid ${T.cyan}40`,borderRadius:12,padding:"14px 16px",textAlign:"center"}},
-      React.createElement('div', {style:{fontSize:10,color:T.cyan,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:4}},"🏁 10km — 20 Sept"),
-      React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:36,fontWeight:900,color:T.text,lineHeight:1}}, daysUntil10k > 0 ? daysUntil10k : "C'EST AUJOURD'HUI"),
-      daysUntil10k > 0 && React.createElement('div', {style:{fontSize:11,color:T.textDim,marginTop:2}},"jours restants"),
-    ),
-    React.createElement('div', {style:{background:`linear-gradient(135deg,${T.orange}20,${T.s1})`,border:`1px solid ${T.orange}40`,borderRadius:12,padding:"14px 16px",textAlign:"center"}},
-      React.createElement('div', {style:{fontSize:10,color:T.orange,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:4}},"🔥 Hyrox — 18 Oct"),
-      React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:36,fontWeight:900,color:T.text,lineHeight:1}}, daysUntilHyrox > 0 ? daysUntilHyrox : "C'EST AUJOURD'HUI"),
-      daysUntilHyrox > 0 && React.createElement('div', {style:{fontSize:11,color:T.textDim,marginTop:2}},"jours restants"),
-    ),
-  ),
-
-  // Today's date + phase
-  React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12,flexWrap:"wrap",gap:8}},
-    React.createElement('div', null,
-      React.createElement('div', {style:{fontSize:11,color:T.textDim,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:2}},
-        React.createElement('span', {className:"live-dot",style:{display:"inline-block",width:6,height:6,borderRadius:"50%",background:T.lime,marginRight:6}}),
-        "Aujourd'hui"
-      ),
-      React.createElement('h2', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:22,fontWeight:900,color:T.text,margin:0,textTransform:"uppercase"}},
-        formatFullDate(today)
-      ),
-    ),
-    todayPhase && React.createElement(Tag, {c:todayPhase.color}, todayPhase.icon+" "+todayPhase.label),
-  ),
-
-  // Today's session
-  todaySession ? React.createElement('div', {
-    onClick:()=>{setSelSession(todaySession);setSelSessionDate(today);},
-    style:{background:`linear-gradient(135deg,${todaySession.color}15,${T.card})`,border:`2px solid ${todaySession.color}50`,borderRadius:14,padding:"18px 20px",cursor:"pointer",marginBottom:16}
-  },
-    React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}},
-      React.createElement('div', null,
-        React.createElement('div', {style:{fontSize:12,color:T.textDim,marginBottom:4}},"Séance du jour"),
-        React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:28,fontWeight:900,color:todaySession.color,textTransform:"uppercase",letterSpacing:"0.03em",marginBottom:6}},
-          todaySession.icon+" "+todaySession.label
-        ),
-        React.createElement('div', {style:{fontSize:13,color:T.textDim,marginBottom:10}}, todaySession.focus),
-        React.createElement('div', {style:{display:"flex",gap:6,flexWrap:"wrap"}},
-          React.createElement(Tag, {c:todaySession.color}, todaySession.duration),
-          React.createElement(Tag, {c:todaySession.color}, "Voir détails →"),
-        ),
-      ),
-      React.createElement('div', {style:{fontSize:40,opacity:0.8}}, todaySession.icon),
-    )
-  ) : React.createElement(Card, {style:{textAlign:"center",padding:"28px 20px",marginBottom:16}},
-    React.createElement('div', {style:{fontSize:32,marginBottom:8}},"😴"),
-    React.createElement('div', {style:{fontSize:16,fontWeight:700,color:T.text,marginBottom:4}},"Pas de séance prévue"),
-    React.createElement('div', {style:{fontSize:13,color:T.textDim}},"Profites-en pour récupérer et bien dormir."),
-  ),
-
-  // Notification button
-  React.createElement('button', {
-    onClick: requestNotif,
-    style:{width:"100%",background:T.s1,border:`1px solid ${T.border}`,borderRadius:10,padding:"12px 16px",color:T.textDim,fontSize:13,display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:16}
-  },
-    React.createElement('span', null, "🔔"),
-    React.createElement('span', null, "Activer le rappel de séance"),
-  ),
-
-  // ── HYDRATION ──────────────────────────────────────────────────────────
-  React.createElement(Card, {style:{marginBottom:16}},
-    React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
-      React.createElement('div', null,
-        React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.text}},"💧 Hydratation du jour"),
-        React.createElement('div', {style:{fontSize:10,color:T.textDim,marginTop:2}},
-          "Objectif : "+hydraGoal+"L"+(todaySession?" (jour d'entraînement)":"")
-        ),
-      ),
-      React.createElement('button', {onClick:resetWater, style:{background:"none",border:`1px solid ${T.border}`,borderRadius:6,color:T.muted,fontSize:10,padding:"3px 8px"}},"Reset"),
-    ),
-    // Big number
-    React.createElement('div', {style:{display:"flex",alignItems:"flex-end",gap:6,marginBottom:10}},
-      React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:44,fontWeight:900,color:hydraToday/1000>=hydraGoal?T.lime:T.cyan,lineHeight:1}},
-        (hydraToday/1000).toFixed(2).replace('.',',')
-      ),
-      React.createElement('div', {style:{fontSize:14,color:T.textDim,paddingBottom:6}}, "/ "+hydraGoal+"L"),
-    ),
-    // Progress bar
-    React.createElement('div', {style:{height:8,background:T.border,borderRadius:4,marginBottom:12,overflow:"hidden"}},
-      React.createElement('div', {style:{
-        height:"100%",
-        width: Math.min(100,(hydraToday/1000/hydraGoal)*100)+"%",
-        background: hydraToday/1000>=hydraGoal
-          ? `linear-gradient(90deg,${T.lime},${T.cyan})`
-          : `linear-gradient(90deg,${T.cyan},${T.cyan}88)`,
-        borderRadius:4,
-        transition:"width 0.4s ease"
-      }}),
-    ),
-    // Water glasses visual
-    React.createElement('div', {style:{display:"flex",gap:4,marginBottom:12,flexWrap:"wrap"}},
-      ...Array.from({length:Math.round(hydraGoal*4)},(_,i)=>{
-        const filled = (hydraToday/1000) >= (i+1)*0.25;
-        return React.createElement('div',{key:i,style:{
-          fontSize:18,
-          opacity:filled?1:0.2,
-          filter:filled?"none":"grayscale(1)",
-          transition:"all 0.2s"
-        }},"🥤");
-      })
-    ),
-    // Quick add buttons
-    React.createElement('div', {style:{display:"flex",gap:6}},
-      ...[[150,"150ml"],[250,"250ml"],[330,"33cl"],[500,"500ml"]].map(([ml,lb])=>
-        React.createElement('button',{
-          key:ml,
-          onClick:()=>addWater(ml),
-          style:{flex:1,background:T.s1,border:`1px solid ${T.cyan}40`,borderRadius:8,color:T.cyan,fontSize:11,fontWeight:700,padding:"8px 4px"}
-        },"+"+lb)
-      )
-    )
-  ),
-
-  // ── OBJECTIFS PROGRESSION ──────────────────────────────────────────────
-  React.createElement(Card, {style:{marginBottom:16}},
-    React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:14}},"🎯 Objectifs — Progression"),
-    React.createElement('div', {style:{display:"flex",flexDirection:"column",gap:10}},
-      ...GOALS_DEF.map(g=>{
-        const current = parseFloat(goalProgress[g.key]||0);
-        const target = typeof g.target==="number" ? g.target : 100;
-        const pct = typeof g.target==="number" ? Math.min(100,Math.round((current/target)*100)) : (goalProgress[g.key+"_done"]?100:0);
-        const done = pct>=100 || goalProgress[g.key+"_done"];
-        return React.createElement('div',{key:g.key},
-          React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}},
-            React.createElement('div',{style:{display:"flex",alignItems:"center",gap:6}},
-              React.createElement('span',{style:{fontSize:14}},g.icon),
-              React.createElement('span',{style:{fontSize:12,color:done?g.color:T.text,fontWeight:done?700:400,textDecoration:done?"none":"none"}},g.label),
-              done && React.createElement('span',{style:{fontSize:12}},"✅"),
-            ),
-            React.createElement('div',{style:{display:"flex",alignItems:"center",gap:6}},
-              typeof g.target==="number" && React.createElement('input',{
-                placeholder:"actuel",
-                value:goalProgress[g.key]||"",
-                onChange:(e)=>saveGoalProgress(g.key,e.target.value),
-                style:{width:52,background:T.s1,border:`1px solid ${T.border}`,borderRadius:5,color:T.text,padding:"3px 6px",fontSize:11,outline:"none",textAlign:"center"}
-              }),
-              typeof g.target!=="number" && React.createElement('button',{
-                onClick:()=>saveGoalProgress(g.key+"_done", !goalProgress[g.key+"_done"]),
-                style:{background:done?g.color:T.s1,border:`1px solid ${done?g.color:T.border}`,borderRadius:5,color:done?T.bg:T.muted,fontSize:10,padding:"3px 8px",fontWeight:700}
-              },done?"✓ Atteint":"Marquer"),
-              React.createElement('span',{style:{fontSize:11,color:g.color,fontWeight:700,minWidth:32,textAlign:"right"}},
-                typeof g.target==="number" ? pct+"%" : (done?"100%":"0%")
-              ),
-            )
-          ),
-          React.createElement('div',{style:{height:5,background:T.border,borderRadius:3,overflow:"hidden"}},
-            React.createElement('div',{style:{
-              height:"100%",
-              width:(typeof g.target==="number"?pct:(done?100:0))+"%",
-              background:done?`linear-gradient(90deg,${g.color},${g.color}99)`:g.color,
-              borderRadius:3,
-              transition:"width 0.5s ease",
-              boxShadow:done?`0 0 6px ${g.color}80`:"none"
-            }})
-          )
-        );
-      })
-    )
-  ),
-
-  // Week mini preview
-  React.createElement(Card, null,
-    React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:12}},"Cette semaine"),
-    React.createElement('div', {style:{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4}},
-      ...weekDates.map((d,i)=>{
-        const s = getSessionForDate(d);
-        const isToday = isSameDay(d, today);
-        const c = s ? s.color : T.muted;
-        return React.createElement('div', {
-          key:i,
-          onClick:()=>{if(s){setSelSession(s);setSelSessionDate(d);}},
-          style:{textAlign:"center",cursor:s?"pointer":"default"}
-        },
-          React.createElement('div', {style:{fontSize:9,color:isToday?T.lime:T.textDim,marginBottom:3,fontWeight:isToday?700:400}}, getDayLabel(d.getDay())),
-          React.createElement('div', {style:{width:"100%",paddingBottom:"100%",position:"relative",borderRadius:8,background:isToday?c+"30":c+"15",border:`1px solid ${isToday?c+"80":c+"30"}`}},
-            React.createElement('div', {style:{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}},
-              s ? s.icon : "·"
-            )
-          ),
-          React.createElement('div', {style:{fontSize:8,color:isToday?T.lime:T.muted,marginTop:3,fontWeight:isToday?700:400}}, d.getDate()),
-        );
-      })
-    )
-  )
-);
-```
-
-};
-
-// ── TAB 1: SEMAINE ────────────────────────────────────────────────────────
-const renderSemaine = () => {
-return React.createElement(‘div’, {className:“slide-up fade-in”},
-React.createElement(‘div’, {style:{marginBottom:16}},
-React.createElement(‘h2’, {style:{fontFamily:”‘Barlow Condensed’,Arial”,fontSize:22,fontWeight:900,color:T.text,textTransform:“uppercase”,margin:0}},“SEMAINE EN COURS”),
-React.createElement(‘div’, {style:{color:T.textDim,fontSize:12,marginTop:3}},“Clique sur une séance pour voir les détails”),
-),
-React.createElement(‘div’, {style:{display:“flex”,flexDirection:“column”,gap:8}},
-…weekDates.map((d,i)=>{
-const s = getSessionForDate(d);
-const isToday = isSameDay(d, today);
-const isPast = d < today && !isToday;
-const jLabel = [“J1”,“J2”,“J3”,“J4”,“J5”,“J6”,“J7”][i];
-const dayNames = [“Lundi”,“Mardi”,“Mercredi”,“Jeudi”,“Vendredi”,“Samedi”,“Dimanche”];
-const c = s ? s.color : T.muted;
-
-```
-      return React.createElement('div', {
-        key:i,
-        onClick:()=>{if(s){setSelSession(s);setSelSessionDate(d);}},
-        style:{
-          background:isToday?c+"18":T.card,
-          border:`1px solid ${isToday?c+"60":T.border}`,
-          borderLeft:`4px solid ${c}`,
-          borderRadius:12,
-          padding:"14px 16px",
-          cursor:s?"pointer":"default",
-          opacity:isPast?0.6:1,
-          display:"flex",
-          alignItems:"center",
-          gap:14,
-        }
-      },
-        React.createElement('div', {style:{minWidth:36,textAlign:"center"}},
-          React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:16,fontWeight:900,color:isToday?T.lime:T.muted}},"J"+(i+1)),
-          React.createElement('div', {style:{fontSize:9,color:T.muted}}),
-        ),
-        React.createElement('div', {style:{flex:1}},
-          React.createElement('div', {style:{display:"flex",alignItems:"center",gap:6,marginBottom:3}},
-            React.createElement('div', {style:{fontSize:10,color:isToday?T.lime:T.textDim,fontWeight:isToday?700:400}},
-              dayNames[i]+" "+d.getDate()+" "+(d.toLocaleDateString('fr-FR',{month:'short'}))
-            ),
-            isToday && React.createElement('span', {style:{background:T.lime,color:T.bg,fontSize:8,fontWeight:900,padding:"1px 6px",borderRadius:10}},"AUJOURD'HUI"),
-            isPast && s && React.createElement('span', {style:{fontSize:12}},"✅"),
-          ),
-          s ? React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:17,fontWeight:900,color:c,textTransform:"uppercase"}},
-            s.icon+" "+s.label
-          ) : React.createElement('div', {style:{fontSize:13,color:T.muted}},"— Repos —"),
-          s && React.createElement('div', {style:{fontSize:11,color:T.textDim,marginTop:2}}, s.focus+" · "+s.duration),
-        ),
-        s && React.createElement('div', {style:{color:T.muted,fontSize:18}},"›"),
-      );
-    })
-  )
-);
-```
-
-};
-
-// ── TAB 2: CALENDRIER ─────────────────────────────────────────────────────
-const renderCalendrier = () => {
-const months = [];
-for (let m = 2; m <= 9; m++) { // March (2) to October (9) 2025
-months.push(new Date(2025, m, 1));
-}
-
-```
-return React.createElement('div', {className:"slide-up fade-in"},
-  React.createElement('div', {style:{marginBottom:16}},
-    React.createElement('h2', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:22,fontWeight:900,color:T.text,textTransform:"uppercase",margin:0}},"CALENDRIER MARS → OCTOBRE"),
-    React.createElement('div', {style:{color:T.textDim,fontSize:12,marginTop:3}},"Clique sur un jour pour voir la séance"),
-  ),
-  React.createElement('div', {style:{display:"flex",gap:6,flexWrap:"wrap",marginBottom:16}},
-    ...[{c:T.yellow,l:"Phase 1 ⚽"},{c:T.cyan,l:"Phase 2 🏃"},{c:T.lime,l:"10km 🏁"},{c:T.orange,l:"Phase 3 🔥"},{c:T.red,l:"Hyrox 🔥"}].map(({c,l})=>
-      React.createElement('div', {key:l,style:{display:"flex",alignItems:"center",gap:4,fontSize:10,color:T.textDim}},
-        React.createElement('div', {style:{width:8,height:8,borderRadius:2,background:c}}),
-        l
-      )
-    )
-  ),
-  ...months.map(monthStart=>{
-    const monthName = monthStart.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-    const firstDay = monthStart.getDay(); // 0=Sun
-    const offset = firstDay === 0 ? 6 : firstDay - 1; // Mon start
-    const daysInMonth = new Date(2025, monthStart.getMonth()+1, 0).getDate();
-    const cells = [];
-    for (let i=0;i<offset;i++) cells.push(null);
-    for (let d=1;d<=daysInMonth;d++) cells.push(new Date(2025,monthStart.getMonth(),d));
-
-    return React.createElement(Card, {key:monthStart.toISOString(),style:{marginBottom:12}},
-      React.createElement('div', {style:{fontSize:13,fontWeight:700,color:T.text,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:12,fontFamily:"'Barlow Condensed',Arial"}}, monthName),
-      React.createElement('div', {style:{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,marginBottom:4}},
-        ...["L","M","M","J","V","S","D"].map((d,i)=>React.createElement('div',{key:i,style:{textAlign:"center",fontSize:9,color:T.muted,padding:"0 0 4px"}},d))
-      ),
-      React.createElement('div', {style:{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2}},
-        ...cells.map((d,i)=>{
-          if (!d) return React.createElement('div',{key:i});
-          const s = getSessionForDate(d);
-          const phase = getPhaseForDate(d);
-          const isToday = isSameDay(d, today);
-          const c = phase ? phase.color : T.border;
-          return React.createElement('div', {
-            key:i,
-            onClick:()=>{if(s){setSelSession(s);setSelSessionDate(d);}},
-            style:{
-              textAlign:"center",
-              padding:"4px 2px",
-              borderRadius:6,
-              background:isToday?T.lime+"30":phase?c+"12":"transparent",
-              border:`1px solid ${isToday?T.lime:phase?c+"40":"transparent"}`,
-              cursor:s?"pointer":"default",
-            }
-          },
-            React.createElement('div', {style:{fontSize:9,fontWeight:isToday?900:400,color:isToday?T.lime:T.text,marginBottom:2}}, d.getDate()),
-            s ? React.createElement('div', {style:{fontSize:10}}, s.icon) : React.createElement('div', {style:{fontSize:8,color:c,opacity:0.4}}, phase?"·":""),
-          );
-        })
-      )
-    );
-  })
-);
-```
-
-};
-
-// ── TAB 3: HYROX ─────────────────────────────────────────────────────────
-const renderHyrox = () => React.createElement(‘div’, {className:“slide-up fade-in”},
-React.createElement(‘div’, {style:{background:`linear-gradient(135deg,${T.orange}18,transparent)`,border:`1px solid ${T.orange}35`,borderRadius:12,padding:18,marginBottom:16}},
-React.createElement(‘div’, {style:{fontSize:10,color:T.orange,textTransform:“uppercase”,marginBottom:4}},“Objectif 18 Octobre 2025 · 27 ans 71kg”),
-React.createElement(‘div’, {style:{fontFamily:”‘Barlow Condensed’,Arial”,fontSize:40,fontWeight:900,color:T.text}},“SUB 1H15”),
-React.createElement(‘div’, {style:{color:T.textDim,fontSize:12,marginTop:4}},“Run : 4’30-4’45/km · Stations : ~52 min”),
-),
-React.createElement(‘div’, {style:{display:“grid”,gridTemplateColumns:“repeat(auto-fill,minmax(240px,1fr))”,gap:10}},
-…STATIONS.map((s,i)=>React.createElement(Card, {key:s.name},
-React.createElement(‘div’, {style:{display:“flex”,justifyContent:“space-between”,marginBottom:8}},
-React.createElement(‘div’, null,
-React.createElement(‘div’, {style:{fontSize:9,color:T.muted,marginBottom:2}},“Station “+(i+1)),
-React.createElement(‘div’, {style:{fontSize:15,fontWeight:800,color:s.color}}, s.name),
-),
-React.createElement(‘div’, {style:{textAlign:“right”}},
-React.createElement(Tag, {c:s.color}, s.dist),
-React.createElement(‘div’, {style:{fontSize:11,color:T.textDim,marginTop:4,fontWeight:700}},“Objectif < “+s.target),
-)
-),
-React.createElement(‘div’, {style:{fontSize:11,color:T.textDim,lineHeight:1.6,marginBottom:10}}, s.tips),
-React.createElement(‘div’, {style:{borderTop:`1px solid ${T.border}`,paddingTop:8}},
-React.createElement(‘div’, {style:{fontSize:9,color:T.muted,marginBottom:4,textTransform:“uppercase”}},“Mon record”),
-React.createElement(‘div’, {style:{display:“flex”,gap:6}},
-React.createElement(‘input’, {
-placeholder:“ex: 3’42”,
-value:pbInput[s.name]!==undefined?pbInput[s.name]:(pb[s.name]||””),
-onChange:(e)=>setPbInput(p=>({…p,[s.name]:e.target.value})),
-style:{flex:1,background:T.s1,border:`1px solid ${T.border}`,borderRadius:7,color:T.text,padding:“6px 8px”,fontSize:12,outline:“none”}
-}),
-React.createElement(‘button’, {
-onClick:()=>{savePB(s.name,pbInput[s.name]||pb[s.name]);setPbInput(p=>({…p,[s.name]:undefined}));},
-style:{background:s.color,color:T.bg,border:“none”,borderRadius:7,padding:“6px 12px”,fontWeight:700,fontSize:11}
-}, “OK”)
-),
-pb[s.name] && React.createElement(‘div’, {style:{fontSize:11,color:s.color,marginTop:4,fontWeight:700}},“🏆 PB : “+pb[s.name])
-)
-))
-)
-);
-
-// ── TAB 4: 10KM ──────────────────────────────────────────────────────────
-const render10km = () => React.createElement(‘div’, {className:“slide-up fade-in”},
-React.createElement(‘div’, {style:{background:`linear-gradient(135deg,${T.cyan}15,transparent)`,border:`1px solid ${T.cyan}30`,borderRadius:12,padding:18,marginBottom:16}},
-React.createElement(‘div’, {style:{fontFamily:”‘Barlow Condensed’,Arial”,fontSize:40,fontWeight:900,color:T.text}},“SUB 45 MIN”),
-React.createElement(‘div’, {style:{color:T.textDim,fontSize:12}},“4’28/km · 12 semaines · Volume max 54km/sem”),
-),
-React.createElement(Card, {style:{marginBottom:12}},
-React.createElement(‘div’, {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:10}},“Volume hebdomadaire”),
-React.createElement(‘div’, {style:{display:“flex”,alignItems:“flex-end”,gap:4,height:70}},
-…TEN_K.map(w=>React.createElement(‘div’, {key:w.w,style:{flex:1,display:“flex”,flexDirection:“column”,alignItems:“center”}},
-React.createElement(‘div’, {style:{fontSize:7,color:T.textDim,marginBottom:1}}, w.km),
-React.createElement(‘div’, {style:{width:“100%”,height:(w.km/54)*56,background:w.color,borderRadius:“2px 2px 0 0”,opacity:0.85}}),
-React.createElement(‘div’, {style:{fontSize:7,color:T.muted,marginTop:2}}, “S”+w.w),
-))
-)
-),
-React.createElement(‘div’, {style:{display:“grid”,gridTemplateColumns:“repeat(auto-fill,minmax(180px,1fr))”,gap:8}},
-…TEN_K.map(w=>React.createElement(‘div’, {
-key:w.w,
-onClick:()=>toggle(“10k_w”+w.w),
-style:{background:checked[“10k_w”+w.w]?T.lime+“10”:T.card,border:`1px solid ${checked["10k_w"+w.w]?T.lime+"50":T.border}`,borderRadius:8,padding:“12px 14px”,cursor:“pointer”}
-},
-React.createElement(‘div’, {style:{display:“flex”,justifyContent:“space-between”,marginBottom:4}},
-React.createElement(‘span’, {style:{fontSize:10,color:T.muted}},“Semaine “+w.w),
-React.createElement(‘span’, {style:{fontSize:13}}, checked[“10k_w”+w.w]?“✅”:“○”),
-),
-React.createElement(‘div’, {style:{fontSize:22,fontWeight:900,color:checked[“10k_w”+w.w]?T.lime:w.color}}, w.km+” km”),
-React.createElement(‘div’, {style:{fontSize:11,color:T.textDim,marginTop:4}}, w.focus),
-))
-)
-);
-
-// ── TAB 5: NUTRITION ─────────────────────────────────────────────────────
-const renderNutrition = () => React.createElement(‘div’, {className:“slide-up fade-in”},
-React.createElement(‘div’, {style:{display:“grid”,gridTemplateColumns:“repeat(auto-fit,minmax(155px,1fr))”,gap:10,marginBottom:14}},
-…[{l:“Repos”,p:135,g:240,f:75,k:2200,c:T.purple},{l:“Entraîn. léger”,p:148,g:320,f:78,k:2600,c:T.yellow},{l:“Entraîn. dur”,p:160,g:400,f:80,k:2950,c:T.orange},{l:“Jour Hyrox”,p:165,g:440,f:82,k:3100,c:T.red},{l:“Veille course”,p:140,g:470,f:72,k:3000,c:T.lime}].map(n=>
-React.createElement(Card, {key:n.l,style:{borderTop:`3px solid ${n.c}`}},
-React.createElement(‘div’, {style:{fontSize:9,color:n.c,textTransform:“uppercase”,marginBottom:6}}, n.l),
-React.createElement(‘div’, {style:{fontSize:22,fontWeight:900,color:T.text,marginBottom:6}}, n.k+” kcal”),
-React.createElement(‘div’, {style:{display:“flex”,gap:8}},
-…[[“P”,n.p+“g”,”#ff8f70”],[“G”,n.g+“g”,T.cyan],[“L”,n.f+“g”,T.yellow]].map(([k,v,c])=>
-React.createElement(‘div’, {key:k},
-React.createElement(‘div’, {style:{fontSize:13,fontWeight:700,color:c}}, v),
-React.createElement(‘div’, {style:{fontSize:8,color:T.muted}}, k===“P”?“Prot”:k===“G”?“Gluc”:“Lip”),
-)
-)
-)
-)
-)
-),
-React.createElement(‘div’, {style:{display:“grid”,gridTemplateColumns:“1fr 1fr”,gap:12}},
-React.createElement(Card, null,
-React.createElement(‘div’, {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:10}},“⏱️ Timing jour intense”),
-…[[“7h”,“Petit-déj”,“Avoine 80g + banane + 3 oeufs”,T.yellow],[“12h30”,“Déjeuner”,“Riz 150g + poulet + légumes”,T.cyan],[“16h”,“Pré-training”,“Pain + beurre cacahuète + banane”,T.lime],[“J+30’”,“Post ⚠️”,“Whey 30g + lait + banane CRITIQUE”,T.red],[“19h30”,“Dîner”,“Saumon + patate douce + légumes”,T.orange]].map(([t,m,d,c])=>
-React.createElement(‘div’, {key:t,style:{display:“flex”,gap:8,marginBottom:8}},
-React.createElement(‘div’, {style:{minWidth:40,fontSize:10,color:c,fontWeight:700}}, t),
-React.createElement(‘div’, null,
-React.createElement(‘div’, {style:{fontSize:11,fontWeight:700,color:T.text}}, m),
-React.createElement(‘div’, {style:{fontSize:10,color:T.textDim}}, d),
-)
-)
-)
-),
-React.createElement(Card, null,
-React.createElement(‘div’, {style:{fontSize:12,fontWeight:700,color:T.lime,marginBottom:10}},“💊 Suppléments”),
-…[[“Créatine”,“5g/j tous les jours”,T.orange],[“Magnésium”,“300mg soir”,T.cyan],[“Caféine”,“200mg avant compét.”,T.lime],[“Vitamine D3”,“2000 UI/j”,T.yellow],[“Whey”,“Si besoin post-training”,T.purple]].map(([s,d,c])=>
-React.createElement(‘div’, {key:s,style:{marginBottom:8}},
-React.createElement(‘div’, {style:{fontSize:11,fontWeight:700,color:c}}, s),
-React.createElement(‘div’, {style:{fontSize:10,color:T.textDim}}, d),
-)
-)
-)
-)
-);
-
-// ── TAB 6: SUIVI ─────────────────────────────────────────────────────────
-const renderSuivi = () => React.createElement(‘div’, {className:“slide-up fade-in”},
-React.createElement(‘div’, {style:{display:“grid”,gridTemplateColumns:“1fr 1fr”,gap:12,marginBottom:12}},
-React.createElement(Card, null,
-React.createElement(‘div’, {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:10}},“📋 Checklist semaine”),
-…weekDates.map((d,i)=>{
-const s = getSessionForDate(d);
-const dayNames=[“Lundi”,“Mardi”,“Mercredi”,“Jeudi”,“Vendredi”,“Samedi”,“Dimanche”];
-const k = “week_”+d.toISOString().split(‘T’)[0];
-const c = s ? s.color : T.muted;
-const isToday = isSameDay(d, today);
-return React.createElement(‘div’, {
-key:i,
-onClick:()=>toggle(k),
-style:{display:“flex”,alignItems:“center”,gap:8,padding:“8px 10px”,background:checked[k]?c+“12”:T.s1,border:`1px solid ${checked[k]?c+"40":isToday?c+"50":T.border}`,borderRadius:7,cursor:“pointer”,marginBottom:5}
-},
-React.createElement(‘div’, {style:{width:16,height:16,borderRadius:4,border:`2px solid ${checked[k]?c:T.muted}`,background:checked[k]?c:“transparent”,display:“flex”,alignItems:“center”,justifyContent:“center”,fontSize:10,color:T.bg,fontWeight:900}}, checked[k]?“✓”:””),
-React.createElement(‘div’, {style:{flex:1}},
-React.createElement(‘div’, {style:{fontSize:10,color:isToday?T.lime:T.muted}}, dayNames[i]+” “+d.getDate()),
-s && React.createElement(‘div’, {style:{fontSize:11,color:checked[k]?c:T.textDim}}, s.icon+” “+s.label),
-)
-);
-})
-),
-React.createElement(Card, null,
-React.createElement(‘div’, {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:10}},“🎯 Objectifs”),
-…[[“10km sub 45 min”,T.cyan,“goal_10k”],[“Hyrox sub 1h15”,T.orange,“goal_hyrox”],[“Squat 120 kg”,T.lime,“goal_squat”],[“SDT 160 kg”,T.red,“goal_dl”],[“Bench 100 kg”,T.yellow,“goal_bench”],[“Ski Erg sub 3’45”,T.cyan,“goal_ski”],[“100 Wall Ball”,T.purple,“goal_wb”],[“Farmer 2×28kg”,T.lime,“goal_fc”]].map(([g,c,k])=>
-React.createElement(‘div’, {key:k,onClick:()=>toggle(k),style:{display:“flex”,alignItems:“center”,gap:8,padding:“6px 0”,borderBottom:`1px solid ${T.border}`,cursor:“pointer”}},
-React.createElement(‘div’, {style:{width:14,height:14,borderRadius:“50%”,border:`2px solid ${checked[k]?c:T.muted}`,background:checked[k]?c:“transparent”,display:“flex”,alignItems:“center”,justifyContent:“center”,fontSize:8,color:T.bg,fontWeight:900}}, checked[k]?“✓”:””),
-React.createElement(‘span’, {style:{fontSize:11,color:checked[k]?c:T.textDim,textDecoration:checked[k]?“line-through”:“none”}}, g)
-)
-)
-)
-),
-React.createElement(Card, null,
-React.createElement(‘div’, {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:10}},“🏆 Records Hyrox”),
-React.createElement(‘div’, {style:{display:“flex”,flexWrap:“wrap”,gap:8}},
-…STATIONS.map(s=>pb[s.name]?React.createElement(‘div’,{key:s.name,style:{background:s.color+“12”,border:`1px solid ${s.color}30`,borderRadius:7,padding:“6px 10px”}},
-React.createElement(‘div’,{style:{fontSize:9,color:T.muted}},s.name),
-React.createElement(‘div’,{style:{fontSize:14,fontWeight:800,color:s.color}},pb[s.name])
-):null),
-STATIONS.every(s=>!pb[s.name])&&React.createElement(‘div’,{style:{color:T.muted,fontSize:12}},“Aucun record. Va dans l’onglet Hyrox !”)
-)
-)
-);
-
-// ── TAB 7: CARNET ─────────────────────────────────────────────────────────
-const LOG_TYPES = [
-{id:“course”, label:“Course”, icon:“🏃”, color:T.cyan},
-{id:“muscu”, label:“Muscu”, icon:“🏋️”, color:T.orange},
-{id:“hyrox”, label:“Hyrox”, icon:“🔥”, color:T.red},
-{id:“foot”, label:“Football”, icon:“⚽”, color:T.yellow},
-];
-
-const LOG_FIELDS = {
-course: [
-{key:“distance”, label:“Distance (km)”, placeholder:“ex: 8.5”, unit:“km”},
-{key:“duree”, label:“Durée (min)”, placeholder:“ex: 45”, unit:“min”},
-{key:“allure”, label:“Allure moyenne”, placeholder:“ex: 5’30”, unit:”/km”},
-{key:“bpm”, label:“BPM moyen”, placeholder:“ex: 148”, unit:“bpm”},
-{key:“bpmMax”, label:“BPM max”, placeholder:“ex: 172”, unit:“bpm”},
-{key:“type”, label:“Type de séance”, placeholder:“ex: Zone 2, Fractionné, Tempo”},
-{key:“ressenti”, label:“Ressenti (1-10)”, placeholder:“ex: 7”},
-{key:“note”, label:“Note libre”, placeholder:“ex: Bonnes jambes…”},
-],
-muscu: [
-{key:“seance”, label:“Séance”, placeholder:“ex: Force haut, Force bas”},
-{key:“exercice1”, label:“Exercice 1”, placeholder:“ex: Squat 4×5 @ 90kg”},
-{key:“exercice2”, label:“Exercice 2”, placeholder:“ex: SDT 4×4 @ 120kg”},
-{key:“exercice3”, label:“Exercice 3”, placeholder:“ex: Bench 4×5 @ 75kg”},
-{key:“exercice4”, label:“Exercice 4”, placeholder:“ex: Tractions 4×8”},
-{key:“rpe”, label:“RPE global (1-10)”, placeholder:“ex: 7”},
-{key:“note”, label:“Note libre”, placeholder:“ex: PR sur squat !”},
-],
-hyrox: [
-{key:“skierg”, label:“Ski Erg 1000m”, placeholder:“ex: 3’42”, unit:””},
-{key:“sledpush”, label:“Sled Push 50m”, placeholder:“ex: 1’38”, unit:””},
-{key:“sledpull”, label:“Sled Pull 50m”, placeholder:“ex: 1’52”, unit:””},
-{key:“burpee”, label:“Burpee Jump 80m”, placeholder:“ex: 3’55”, unit:””},
-{key:“rowing”, label:“Rowing 1000m”, placeholder:“ex: 3’35”, unit:””},
-{key:“farmer”, label:“Farmer Carry 200m”, placeholder:“ex: 2’20”, unit:””},
-{key:“sandbag”, label:“Sandbag Lunges 100m”, placeholder:“ex: 4’50”, unit:””},
-{key:“wallball”, label:“Wall Ball 100 reps”, placeholder:“ex: 6’45”, unit:””},
-{key:“total”, label:“Temps total”, placeholder:“ex: 1h12’30”},
-{key:“note”, label:“Note libre”, placeholder:“ex: Crampes station 6…”},
-],
-foot: [
-{key:“resultat”, label:“Résultat”, placeholder:“ex: Victoire 3-1”},
-{key:“buts”, label:“Buts marqués”, placeholder:“ex: 1”},
-{key:“passes”, label:“Passes décisives”, placeholder:“ex: 0”},
-{key:“note_perf”, label:“Note perso (1-10)”, placeholder:“ex: 7”},
-{key:“duree”, label:“Temps de jeu (min)”, placeholder:“ex: 75”},
-{key:“note”, label:“Note libre”, placeholder:“ex: Bonne pression haute…”},
-],
-};
-
-// Mini bar chart renderer
-const MiniChart = ({data, color, unit=””}) => {
-if (!data || data.length < 2) return React.createElement(‘div’,{style:{color:T.muted,fontSize:12,textAlign:“center”,padding:“20px 0”}},“Pas assez de données (min. 2 séances)”);
-const max = Math.max(…data.map(d=>d.val));
-const min = Math.min(…data.map(d=>d.val));
-const range = max - min || 1;
-return React.createElement(‘div’,{style:{display:“flex”,alignItems:“flex-end”,gap:4,height:80,paddingBottom:16,position:“relative”}},
-…data.slice(-12).map((d,i)=>{
-const h = ((d.val - min) / range) * 60 + 10;
-return React.createElement(‘div’,{key:i,style:{flex:1,display:“flex”,flexDirection:“column”,alignItems:“center”,gap:2}},
-React.createElement(‘div’,{style:{fontSize:7,color:T.textDim,marginBottom:2}},d.val+unit),
-React.createElement(‘div’,{style:{width:“100%”,height:h,background:color,borderRadius:“3px 3px 0 0”,opacity:0.85}}),
-React.createElement(‘div’,{style:{fontSize:7,color:T.muted,marginTop:2,whiteSpace:“nowrap”}},d.label),
-);
-})
-);
-};
-
-const renderCarnet = () => {
-const courseLogs = logs.filter(l=>l.type===“course”);
-const muscuLogs = logs.filter(l=>l.type===“muscu”);
-const hyroxLogs = logs.filter(l=>l.type===“hyrox”);
-const footLogs = logs.filter(l=>l.type===“foot”);
-
-```
-// Chart data
-const allureData = courseLogs.filter(l=>l.allure).slice(0,12).reverse().map((l,i)=>{
-  const parts = l.allure.replace("'","'").split(/[':]/);
-  const mins = parseFloat(parts[0]||0);
-  const secs = parseFloat(parts[1]||0)/60;
-  return {val: Math.round((mins+secs)*100)/100, label: l.date.slice(5)};
-});
-const bpmData = courseLogs.filter(l=>l.bpm).slice(0,12).reverse().map(l=>({val:parseInt(l.bpm), label:l.date.slice(5)}));
-const distData = courseLogs.filter(l=>l.distance).slice(0,12).reverse().map(l=>({val:parseFloat(l.distance), label:l.date.slice(5)}));
-const hyroxTotalData = hyroxLogs.filter(l=>l.total).slice(0,8).reverse().map(l=>({val:l.total, label:l.date.slice(5)}));
-
-const curType = LOG_TYPES.find(t=>t.id===logType);
-const fields = LOG_FIELDS[logType] || [];
-
-return React.createElement('div', {className:"slide-up fade-in"},
-  // Header + add button
-  React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
-    React.createElement('div', null,
-      React.createElement('h2', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:22,fontWeight:900,color:T.text,textTransform:"uppercase",margin:0}},"CARNET D'ENTRAÎNEMENT"),
-      React.createElement('div', {style:{color:T.textDim,fontSize:12,marginTop:3}}, logs.length+" séance"+(logs.length!==1?"s":"")+" enregistrée"+(logs.length!==1?"s":"")),
-    ),
-    React.createElement('button', {
-      onClick:()=>setShowLogForm(!showLogForm),
-      style:{background:T.orange,color:T.bg,border:"none",borderRadius:10,padding:"10px 16px",fontWeight:700,fontSize:13,display:"flex",alignItems:"center",gap:6}
-    }, showLogForm ? "✕ Annuler" : "+ Ajouter")
-  ),
-
-  // LOG FORM
-  showLogForm && React.createElement(Card, {style:{marginBottom:16,border:`1px solid ${curType.color}40`}},
-    // Type selector
-    React.createElement('div', {style:{display:"flex",gap:6,marginBottom:14}},
-      ...LOG_TYPES.map(t=>React.createElement('button', {
-        key:t.id,
-        onClick:()=>{setLogType(t.id);setLogForm({});},
-        style:{flex:1,background:logType===t.id?t.color:T.s1,color:logType===t.id?T.bg:T.textDim,border:`1px solid ${logType===t.id?t.color:T.border}`,borderRadius:8,padding:"8px 4px",fontSize:11,fontWeight:700}
-      }, t.icon+" "+t.label))
-    ),
-    React.createElement('div', {style:{fontSize:11,color:curType.color,fontWeight:700,marginBottom:12,textTransform:"uppercase",letterSpacing:"0.06em"}},
-      curType.icon+" Logger une séance — "+curType.label
-    ),
-    // Date
-    React.createElement('div', {style:{marginBottom:10}},
-      React.createElement('div', {style:{fontSize:10,color:T.textDim,marginBottom:4}},"Date"),
-      React.createElement('input', {
-        type:"date",
-        defaultValue:new Date().toISOString().split('T')[0],
-        onChange:(e)=>setLogForm(f=>({...f,date:e.target.value})),
-        style:{background:T.s1,border:`1px solid ${T.border}`,borderRadius:7,color:T.text,padding:"8px 10px",fontSize:13,width:"100%",outline:"none"}
-      })
-    ),
-    // Dynamic fields
-    React.createElement('div', {style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}},
-      ...fields.map(f=>React.createElement('div', {key:f.key, style:{gridColumn: f.key==="note"||f.key==="note_perf"?"span 2":"span 1"}},
-        React.createElement('div', {style:{fontSize:10,color:T.textDim,marginBottom:3}}, f.label),
-        React.createElement('input', {
-          placeholder:f.placeholder,
-          value:logForm[f.key]||"",
-          onChange:(e)=>setLogForm(ff=>({...ff,[f.key]:e.target.value})),
-          style:{background:T.s1,border:`1px solid ${T.border}`,borderRadius:7,color:T.text,padding:"8px 10px",fontSize:12,width:"100%",outline:"none"}
-        })
-      ))
-    ),
-    React.createElement('button', {
-      onClick:saveLog,
-      style:{width:"100%",background:curType.color,color:T.bg,border:"none",borderRadius:10,padding:"12px",fontWeight:700,fontSize:14}
-    }, "✓ Enregistrer la séance")
-  ),
-
-  // CHARTS
-  logs.length > 0 && React.createElement(Card, {style:{marginBottom:16}},
-    React.createElement('div', {style:{fontSize:13,fontWeight:700,color:T.text,marginBottom:12}},"📈 Graphiques de progression"),
-    React.createElement('div', {style:{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}},
-      ...([
-        {id:"allure",label:"Allure course",c:T.cyan},
-        {id:"bpm",label:"BPM course",c:T.red},
-        {id:"distance",label:"Distance course",c:T.lime},
-        {id:"hyrox",label:"Hyrox total",c:T.orange},
-      ]).map(ct=>React.createElement('button',{
-        key:ct.id,
-        onClick:()=>setChartType(ct.id),
-        style:{background:chartType===ct.id?ct.c:T.s1,color:chartType===ct.id?T.bg:T.textDim,border:`1px solid ${chartType===ct.id?ct.c:T.border}`,borderRadius:20,padding:"4px 10px",fontSize:10,fontWeight:700}
-      },ct.label))
-    ),
-    chartType==="allure" && React.createElement('div',null,
-      React.createElement('div',{style:{fontSize:11,color:T.textDim,marginBottom:8}},"Allure moyenne (min/km) — plus bas = plus rapide"),
-      React.createElement(MiniChart,{data:allureData,color:T.cyan,unit:"'"}),
-    ),
-    chartType==="bpm" && React.createElement('div',null,
-      React.createElement('div',{style:{fontSize:11,color:T.textDim,marginBottom:8}},"BPM moyen à l'effort"),
-      React.createElement(MiniChart,{data:bpmData,color:T.red,unit:""}),
-    ),
-    chartType==="distance" && React.createElement('div',null,
-      React.createElement('div',{style:{fontSize:11,color:T.textDim,marginBottom:8}},"Distance par sortie (km)"),
-      React.createElement(MiniChart,{data:distData,color:T.lime,unit:"km"}),
-    ),
-    chartType==="hyrox" && React.createElement('div',null,
-      React.createElement('div',{style:{fontSize:11,color:T.textDim,marginBottom:8}},"Temps total simulation Hyrox"),
-      React.createElement(MiniChart,{data:hyroxTotalData,color:T.orange,unit:""}),
-    ),
-  ),
-
-  // LOG HISTORY grouped by type
-  React.createElement('div', {style:{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}},
-    React.createElement('div',{style:{fontSize:12,fontWeight:700,color:T.text}},"Historique"),
-    ...LOG_TYPES.map(t=>React.createElement('span',{key:t.id,style:{background:t.color+"18",color:t.color,border:`1px solid ${t.color}30`,borderRadius:20,padding:"2px 8px",fontSize:10,fontWeight:700}},
-      t.icon+" "+logs.filter(l=>l.type===t.id).length
-    ))
-  ),
-
-  logs.length === 0 && React.createElement(Card, {style:{textAlign:"center",padding:"28px 20px"}},
-    React.createElement('div',{style:{fontSize:28,marginBottom:8}},"📋"),
-    React.createElement('div',{style:{fontSize:14,color:T.textDim}},"Aucune séance enregistrée"),
-    React.createElement('div',{style:{fontSize:12,color:T.muted,marginTop:4}},"Clique sur + Ajouter pour commencer"),
-  ),
-
-  React.createElement('div', {style:{display:"flex",flexDirection:"column",gap:8}},
-    ...logs.map(l=>{
-      const t = LOG_TYPES.find(t=>t.id===l.type)||LOG_TYPES[0];
-      return React.createElement(Card, {key:l.id, style:{borderLeft:`3px solid ${t.color}`}},
-        React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}},
-          React.createElement('div', null,
-            React.createElement('div', {style:{fontSize:10,color:T.muted,marginBottom:2}}, l.date),
-            React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:16,fontWeight:900,color:t.color,textTransform:"uppercase"}}, t.icon+" "+t.label),
-          ),
-          React.createElement('button', {
-            onClick:()=>deleteLog(l.id),
-            style:{background:"none",border:"none",color:T.muted,fontSize:16,cursor:"pointer",padding:"0 4px"}
-          }, "✕")
-        ),
-        // Show key fields per type
-        l.type==="course" && React.createElement('div', {style:{display:"flex",gap:12,flexWrap:"wrap"}},
-          l.distance && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:18,fontWeight:900,color:T.cyan}},l.distance), React.createElement('div',{style:{fontSize:9,color:T.muted}},"km")),
-          l.allure && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:18,fontWeight:900,color:T.lime}},l.allure), React.createElement('div',{style:{fontSize:9,color:T.muted}},"/km")),
-          l.bpm && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:18,fontWeight:900,color:T.red}},l.bpm), React.createElement('div',{style:{fontSize:9,color:T.muted}},"bpm moy")),
-          l.bpmMax && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:18,fontWeight:900,color:T.red}},l.bpmMax), React.createElement('div',{style:{fontSize:9,color:T.muted}},"bpm max")),
-          l.type_seance && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:13,fontWeight:700,color:T.textDim}},l.type_seance)),
-        ),
-        l.type==="muscu" && React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:3}},
-          ...(["exercice1","exercice2","exercice3","exercice4"]).filter(k=>l[k]).map(k=>
-            React.createElement('div',{key:k,style:{fontSize:12,color:T.textDim,padding:"3px 0",borderBottom:`1px solid ${T.border}`}},l[k])
-          ),
-          l.rpe && React.createElement('div',{style:{fontSize:11,color:T.orange,marginTop:4}},"RPE : "+l.rpe+"/10"),
-        ),
-        l.type==="hyrox" && React.createElement('div',{style:{display:"flex",gap:8,flexWrap:"wrap"}},
-          ...(["skierg","sledpush","sledpull","burpee","rowing","farmer","sandbag","wallball"]).filter(k=>l[k]).map(k=>
-            React.createElement('div',{key:k,style:{background:T.s1,borderRadius:6,padding:"4px 8px",textAlign:"center"}},
-              React.createElement('div',{style:{fontSize:11,fontWeight:700,color:T.orange}},l[k]),
-              React.createElement('div',{style:{fontSize:8,color:T.muted}},{skierg:"Ski",sledpush:"Push",sledpull:"Pull",burpee:"Burpee",rowing:"Row",farmer:"Farmer",sandbag:"Lunges",wallball:"WBall"}[k]),
-            )
-          ),
-          l.total && React.createElement('div',{style:{background:T.orange+"20",border:`1px solid ${T.orange}40`,borderRadius:6,padding:"4px 8px",textAlign:"center"}},
-            React.createElement('div',{style:{fontSize:14,fontWeight:900,color:T.orange}},l.total),
-            React.createElement('div',{style:{fontSize:8,color:T.muted}},"TOTAL"),
-          )
-        ),
-        l.type==="foot" && React.createElement('div',{style:{display:"flex",gap:12,flexWrap:"wrap"}},
-          l.resultat && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:14,fontWeight:900,color:T.yellow}},l.resultat)),
-          l.buts && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:18,fontWeight:900,color:T.lime}},l.buts), React.createElement('div',{style:{fontSize:9,color:T.muted}},"buts")),
-          l.passes && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:18,fontWeight:900,color:T.cyan}},l.passes), React.createElement('div',{style:{fontSize:9,color:T.muted}},"passes")),
-          l.note_perf && React.createElement('div',{style:{textAlign:"center"}}, React.createElement('div',{style:{fontSize:18,fontWeight:900,color:T.orange}},l.note_perf+"/10"), React.createElement('div',{style:{fontSize:9,color:T.muted}},"note")),
-        ),
-        l.note && React.createElement('div',{style:{fontSize:11,color:T.textDim,fontStyle:"italic",marginTop:8,borderTop:`1px solid ${T.border}`,paddingTop:6}},"💬 "+l.note),
-      );
-    })
-  )
-);
-```
-
-};
-
-// ── TAB 8: STATS + BADGES ─────────────────────────────────────────────────
-const renderStats = () => {
-// ── Computed stats from logs ──────────────────────────────────────────
-const courseLogs = logs.filter(l=>l.type===“course”);
-const muscuLogs  = logs.filter(l=>l.type===“muscu”);
-const hyroxLogs  = logs.filter(l=>l.type===“hyrox”);
-const footLogs   = logs.filter(l=>l.type===“foot”);
-
-```
-const totalKm = courseLogs.reduce((s,l)=>s+(parseFloat(l.distance)||0),0);
-const totalSessions = logs.length;
-const totalCourse = courseLogs.length;
-const totalMuscu  = muscuLogs.length;
-const totalHyrox  = hyroxLogs.length;
-const totalFoot   = footLogs.length;
-
-// Streak: consecutive days with at least one log
-const logDates = [...new Set(logs.map(l=>l.date))].sort();
-let streak = 0;
-let streakMax = 0;
-let cur = 0;
-for (let i = logDates.length-1; i >= 0; i--) {
-  const d = new Date(logDates[i]);
-  const prev = i < logDates.length-1 ? new Date(logDates[i+1]) : new Date(today);
-  const diff = Math.round((prev - d)/(1000*60*60*24));
-  if (i === logDates.length-1) {
-    const diffToday = Math.round((new Date(today) - d)/(1000*60*60*24));
-    if (diffToday <= 1) { cur = 1; streak = 1; }
-    else break;
+  // Today session card
+  if(todaySession){
+    const sc=div({className:'card card-click mb16',style:{background:`linear-gradient(135deg,${todaySession.color}15,${C.card})`,borderColor:todaySession.color+'50',borderWidth:'2px'},onClick:()=>sessionModal(todaySession,today)},[
+      div({className:'flex between'},[
+        div({},[
+          div({className:'f12 dim mb4'},'Séance du jour'),
+          div({className:'bc bolder upper mb6',style:{fontSize:'26px',color:todaySession.color,letterSpacing:'.03em'}},todaySession.icon+' '+todaySession.label),
+          div({className:'f13 dim mb10'},todaySession.focus),
+          div({className:'flex gap6 wrap'},[
+            mkTag('⏱ '+todaySession.duration,todaySession.color),
+            mkTag('Voir détails →',todaySession.color),
+          ]),
+        ]),
+        div({style:{fontSize:'38px',opacity:'.8'}},todaySession.icon),
+      ]),
+    ]);
+    wrap.appendChild(sc);
   } else {
-    if (diff === 1) { cur++; streak = cur; }
-    else { if(cur > streakMax) streakMax = cur; cur = 0; }
+    wrap.appendChild(mkCard([
+      div({style:{textAlign:'center',padding:'20px 0'}},[
+        div({style:{fontSize:'30px',marginBottom:'8px'}},'😴'),
+        div({className:'bold f14 mb4'},"Pas de séance prévue"),
+        div({className:'dim f13'},"Récupère et dors bien."),
+      ])
+    ],{marginBottom:'16px'}));
   }
-}
-if (cur > streakMax) streakMax = cur;
 
-const bestAllure = courseLogs.filter(l=>l.allure).reduce((best,l)=>{
-  const p = l.allure.replace("'","'").split(/[':]/);
-  const v = parseFloat(p[0]||99)+(parseFloat(p[1]||0)/60);
-  return v < best ? v : best;
-}, 99);
-const bestAllureStr = bestAllure < 99 ? Math.floor(bestAllure)+"'"+(Math.round((bestAllure%1)*60)+"").padStart(2,"0") : "—";
-
-const avgBpm = courseLogs.filter(l=>l.bpm).length
-  ? Math.round(courseLogs.filter(l=>l.bpm).reduce((s,l)=>s+(parseInt(l.bpm)||0),0)/courseLogs.filter(l=>l.bpm).length)
-  : null;
-
-// ── Badges definition ─────────────────────────────────────────────────
-const BADGES = [
-  // Volume course
-  {id:"km10",   icon:"👟", label:"Premiers 10km",     desc:"Logge 10km de course au total",       color:T.cyan,   unlocked: totalKm>=10},
-  {id:"km50",   icon:"🏃", label:"50km au compteur",  desc:"50km de course loggés",               color:T.cyan,   unlocked: totalKm>=50},
-  {id:"km100",  icon:"💯", label:"Century Runner",    desc:"100km de course loggés",              color:T.lime,   unlocked: totalKm>=100},
-  {id:"km200",  icon:"🔥", label:"200km de feu",      desc:"200km de course loggés",              color:T.orange, unlocked: totalKm>=200},
-  // Séances
-  {id:"s5",     icon:"⚡", label:"Lancé !",            desc:"5 séances loggées",                  color:T.yellow, unlocked: totalSessions>=5},
-  {id:"s20",    icon:"💪", label:"Régularité",         desc:"20 séances loggées",                 color:T.yellow, unlocked: totalSessions>=20},
-  {id:"s50",    icon:"🏅", label:"Athlète sérieux",    desc:"50 séances loggées",                 color:T.orange, unlocked: totalSessions>=50},
-  {id:"s100",   icon:"🏆", label:"Centurion",          desc:"100 séances loggées",                color:T.red,    unlocked: totalSessions>=100},
-  // Streak
-  {id:"str3",   icon:"🔥", label:"3 jours d'affilée", desc:"Streak de 3 jours",                  color:T.orange, unlocked: streakMax>=3},
-  {id:"str7",   icon:"🗓️", label:"Semaine parfaite",  desc:"7 jours consécutifs",                color:T.lime,   unlocked: streakMax>=7},
-  {id:"str14",  icon:"⚔️", label:"Guerrier",           desc:"14 jours sans arrêt",               color:T.red,    unlocked: streakMax>=14},
-  // Discipline
-  {id:"hyrox1", icon:"🔥", label:"Premier Hyrox",     desc:"1 simulation Hyrox loggée",          color:T.red,    unlocked: totalHyrox>=1},
-  {id:"hyrox5", icon:"🔥", label:"Machine Hyrox",     desc:"5 simulations Hyrox loggées",        color:T.red,    unlocked: totalHyrox>=5},
-  {id:"muscu10",icon:"🏋️", label:"Iron Man",          desc:"10 séances de muscu loggées",        color:T.orange, unlocked: totalMuscu>=10},
-  {id:"foot5",  icon:"⚽", label:"Joueur régulier",   desc:"5 matchs/entraînements loggés",      color:T.yellow, unlocked: totalFoot>=5},
-  // Allure
-  {id:"pace530",icon:"⏱️", label:"Sub 5'30/km",       desc:"Meilleure allure sous 5'30/km",      color:T.cyan,   unlocked: bestAllure<5.5},
-  {id:"pace500",icon:"💨", label:"Sub 5'00/km",       desc:"Meilleure allure sous 5'00/km",      color:T.cyan,   unlocked: bestAllure<5.0},
-  {id:"pace430",icon:"🚀", label:"Sub 4'30/km",       desc:"Allure objectif 10km atteinte !",    color:T.lime,   unlocked: bestAllure<4.5},
-  // Objectifs
-  {id:"goal10k",icon:"🏁", label:"10km validé !",     desc:"Objectif 10km marqué atteint",       color:T.lime,   unlocked: !!goalProgress["10km_done"]},
-  {id:"goalhrx",icon:"🔥", label:"Hyrox validé !",    desc:"Objectif Hyrox marqué atteint",      color:T.red,    unlocked: !!goalProgress["hyrox_done"]},
   // Hydration
-  {id:"hydra7", icon:"💧", label:"Hydrathète",        desc:"7 jours d'hydratation loggés",       color:T.cyan,   unlocked: Object.keys(hydration).filter(k=>hydration[k]>0).length>=7},
-];
+  const hydraPct=Math.min(100,(hydraToday/1000/hydraGoal)*100);
+  const hydCard=mkCard([],{marginBottom:'16px'});
+  hydCard.appendChild(div({className:'flex between center mb12'},[
+    div({},[
+      div({className:'bold f12 mb4'},'💧 Hydratation du jour'),
+      div({className:'f10 dim'},'Objectif : '+hydraGoal+'L'+(todaySession?' (entraînement)':'')),
+    ]),
+    btn({className:'btn-ghost',style:{fontSize:'10px',padding:'3px 8px'},onClick:()=>{hydra[todayKey]=0;S.set('sp_hydra',hydra);renderPage(0);}},'Reset'),
+  ]));
+  hydCard.appendChild(div({className:'flex center gap6 mb10'},[
+    div({className:'bc bolder',style:{fontSize:'44px',color:hydraToday/1000>=hydraGoal?C.lime:C.cyan,lineHeight:'1'}},(hydraToday/1000).toFixed(2).replace('.',',')),
+    div({className:'dim',style:{fontSize:'14px',paddingBottom:'6px'}},'/ '+hydraGoal+'L'),
+  ]));
+  hydCard.appendChild(mkBar(hydraPct,hydraToday/1000>=hydraGoal?C.lime:C.cyan,'8px'));
+  const glasses=div({className:'flex gap4 wrap mb12',style:{marginTop:'10px'}});
+  for(let i=0;i<Math.round(hydraGoal*4);i++){
+    const filled=(hydraToday/1000)>=(i+1)*0.25;
+    glasses.appendChild(span({style:{fontSize:'18px',opacity:filled?'1':'.2',filter:filled?'none':'grayscale(1)',transition:'all .2s'}},'🥤'));
+  }
+  hydCard.appendChild(glasses);
+  const wBtns=div({className:'flex gap6'});
+  [[150,'150ml'],[250,'250ml'],[330,'33cl'],[500,'500ml']].forEach(([ml,lb])=>{
+    wBtns.appendChild(btn({style:{flex:1,background:C.s1,border:`1px solid ${C.cyan}40`,borderRadius:'8px',color:C.cyan,fontSize:'11px',fontWeight:'700',padding:'8px 4px'},onClick:()=>{hydra[todayKey]=Math.min(hydraGoal*1000,(hydra[todayKey]||0)+ml);S.set('sp_hydra',hydra);renderPage(0);}},'+'+lb));
+  });
+  hydCard.appendChild(wBtns);
+  wrap.appendChild(hydCard);
 
-const unlockedBadges = BADGES.filter(b=>b.unlocked);
-const lockedBadges   = BADGES.filter(b=>!b.unlocked);
+  // Goals
+  const goalCard=mkCard([],{marginBottom:'16px'});
+  goalCard.appendChild(div({className:'bold f12 mb14'},'🎯 Objectifs — Progression'));
+  GOALS_DEF.forEach(g=>{
+    const cur=parseFloat(goalP[g.key]||0);
+    const pct=g.target?Math.min(100,Math.round((cur/g.target)*100)):(goalP[g.key+'_done']?100:0);
+    const done=pct>=100||goalP[g.key+'_done'];
+    const row=div({className:'mb10'});
+    const topRow=div({className:'flex between center mb4'});
+    topRow.appendChild(div({className:'flex center gap6'},[
+      span({},g.icon),
+      span({style:{fontSize:'12px',color:done?g.color:C.text,fontWeight:done?700:400}},g.label),
+      done&&span({},'✅'),
+    ]));
+    const right=div({className:'flex center gap6'});
+    if(g.target){
+      const inp=h('input',{className:'inp',style:{width:'52px',padding:'3px 6px',fontSize:'11px',textAlign:'center'},placeholder:'actuel'});
+      inp.value=goalP[g.key]||'';
+      inp.addEventListener('input',e=>{goalP[g.key]=e.target.value;S.set('sp_goalp',goalP);renderPage(0);});
+      right.appendChild(inp);
+    } else {
+      right.appendChild(btn({style:{background:done?g.color:C.s1,border:`1px solid ${done?g.color:C.border}`,borderRadius:'5px',color:done?C.bg:C.muted,fontSize:'10px',padding:'3px 8px',fontWeight:'700'},onClick:()=>{goalP[g.key+'_done']=!goalP[g.key+'_done'];S.set('sp_goalp',goalP);renderPage(0);}},done?'✓ Atteint':'Marquer'));
+    }
+    right.appendChild(span({className:'bold f11',style:{color:g.color,minWidth:'32px',textAlign:'right'}},pct+'%'));
+    topRow.appendChild(right);
+    row.appendChild(topRow);
+    row.appendChild(mkBar(pct,g.color,'5px'));
+    goalCard.appendChild(row);
+  });
+  wrap.appendChild(goalCard);
 
-const StatCard = ({value, label, sub, color}) =>
-  React.createElement(Card, {style:{textAlign:"center",padding:"14px 10px"}},
-    React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:34,fontWeight:900,color:color,lineHeight:1,marginBottom:4}}, value),
-    React.createElement('div', {style:{fontSize:11,fontWeight:700,color:T.text}}, label),
-    sub && React.createElement('div', {style:{fontSize:10,color:T.textDim,marginTop:2}}, sub),
-  );
+  // Week mini
+  const weekCard=mkCard([],{});
+  weekCard.appendChild(div({className:'bold f12 mb12'},'Cette semaine'));
+  const weekGrid=div({className:'g7'});
+  getWeekDates(today).forEach((d,i)=>{
+    const s=getSession(d);
+    const isT=isSameDay(d,today);
+    const col=s?s.color:C.muted;
+    const cell=div({style:{textAlign:'center',cursor:s?'pointer':'default'}});
+    cell.appendChild(div({className:'f9 mb4',style:{color:isT?C.lime:C.dim,fontWeight:isT?700:400}},DAY_SHORT[d.getDay()]));
+    const sq=div({style:{width:'100%',paddingBottom:'100%',position:'relative',borderRadius:'8px',background:isT?col+'30':col+'15',border:`1px solid ${isT?col+'80':col+'30'}`}});
+    const ic=div({style:{position:'absolute',inset:'0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px'}},s?s.icon:'·');
+    sq.appendChild(ic);
+    cell.appendChild(sq);
+    cell.appendChild(div({className:'f9 mt4',style:{color:isT?C.lime:C.muted,fontWeight:isT?700:400,marginTop:'3px'}},d.getDate()));
+    if(s) cell.addEventListener('click',()=>sessionModal(s,d));
+    weekGrid.appendChild(cell);
+  });
+  weekCard.appendChild(weekGrid);
+  wrap.appendChild(weekCard);
 
-return React.createElement('div', {className:"slide-up fade-in"},
-  React.createElement('div', {style:{marginBottom:16}},
-    React.createElement('h2', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:22,fontWeight:900,color:T.text,textTransform:"uppercase",margin:0}},"STATS & ACHIEVEMENTS"),
-    React.createElement('div', {style:{color:T.textDim,fontSize:12,marginTop:3}}, unlockedBadges.length+"/"+BADGES.length+" badges débloqués"),
-  ),
-
-  // ── KPI GRID ────────────────────────────────────────────────────────
-  React.createElement('div', {style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}},
-    React.createElement(StatCard, {value:Math.round(totalKm*10)/10, label:"km courus", color:T.cyan}),
-    React.createElement(StatCard, {value:totalSessions, label:"séances", sub:"au total", color:T.lime}),
-    React.createElement(StatCard, {value:streak+"🔥", label:"jours streak", sub:"record: "+streakMax, color:T.orange}),
-    React.createElement(StatCard, {value:totalCourse, label:"runs", color:T.cyan}),
-    React.createElement(StatCard, {value:totalMuscu, label:"muscus", color:T.orange}),
-    React.createElement(StatCard, {value:totalHyrox, label:"hyrox", color:T.red}),
-  ),
-
-  // ── BEST PERFS ───────────────────────────────────────────────────────
-  React.createElement(Card, {style:{marginBottom:16}},
-    React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:12}},"⚡ Meilleures perfs"),
-    React.createElement('div', {style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
-      ...[
-        {label:"Meilleure allure", value:bestAllureStr+"/km", color:T.cyan, icon:"🏃"},
-        {label:"BPM moyen course", value:avgBpm?avgBpm+" bpm":"—", color:T.red, icon:"❤️"},
-        {label:"Matchs foot", value:totalFoot, color:T.yellow, icon:"⚽"},
-        {label:"KM ce mois", value: Math.round(courseLogs.filter(l=>{
-          const d=new Date(l.date); return d.getMonth()===today.getMonth()&&d.getFullYear()===today.getFullYear();
-        }).reduce((s,l)=>s+(parseFloat(l.distance)||0),0)*10)/10+"km", color:T.lime, icon:"📅"},
-      ].map(({label,value,color,icon})=>
-        React.createElement('div', {key:label, style:{background:T.s1,borderRadius:8,padding:"10px 12px"}},
-          React.createElement('div', {style:{fontSize:11,color:T.textDim,marginBottom:4}},icon+" "+label),
-          React.createElement('div', {style:{fontSize:20,fontWeight:900,color:color,fontFamily:"'Barlow Condensed',Arial"}}, ""+value),
-        )
-      )
-    )
-  ),
-
-  // ── UNLOCKED BADGES ──────────────────────────────────────────────────
-  unlockedBadges.length > 0 && React.createElement('div', {style:{marginBottom:16}},
-    React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.text,marginBottom:10}},"🏅 Badges débloqués ("+unlockedBadges.length+")"),
-    React.createElement('div', {style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:8}},
-      ...unlockedBadges.map(b=>
-        React.createElement('div', {key:b.id, style:{
-          background:`linear-gradient(135deg,${b.color}20,${T.card})`,
-          border:`1px solid ${b.color}60`,
-          borderRadius:12,
-          padding:"14px 12px",
-          textAlign:"center",
-          position:"relative",
-          overflow:"hidden",
-        }},
-          React.createElement('div', {style:{fontSize:28,marginBottom:6}}, b.icon),
-          React.createElement('div', {style:{fontSize:12,fontWeight:700,color:b.color,marginBottom:3}}, b.label),
-          React.createElement('div', {style:{fontSize:9,color:T.textDim}}, b.desc),
-          React.createElement('div', {style:{position:"absolute",top:6,right:8,fontSize:10,color:b.color,fontWeight:700}},"✓"),
-        )
-      )
-    )
-  ),
-
-  unlockedBadges.length === 0 && React.createElement(Card, {style:{textAlign:"center",padding:"24px",marginBottom:16}},
-    React.createElement('div', {style:{fontSize:32,marginBottom:8}},"🔒"),
-    React.createElement('div', {style:{fontSize:14,fontWeight:700,color:T.text,marginBottom:4}},"Aucun badge encore"),
-    React.createElement('div', {style:{fontSize:12,color:T.textDim}},"Logge tes séances dans l'onglet 📝 Carnet pour débloquer tes premiers trophées !"),
-  ),
-
-  // ── LOCKED BADGES ────────────────────────────────────────────────────
-  React.createElement('div', null,
-    React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.textDim,marginBottom:10}},"🔒 Badges à débloquer ("+lockedBadges.length+")"),
-    React.createElement('div', {style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:8}},
-      ...lockedBadges.map(b=>
-        React.createElement('div', {key:b.id, style:{
-          background:T.s1,
-          border:`1px solid ${T.border}`,
-          borderRadius:12,
-          padding:"14px 12px",
-          textAlign:"center",
-          opacity:0.5,
-        }},
-          React.createElement('div', {style:{fontSize:28,marginBottom:6,filter:"grayscale(1)"}}, b.icon),
-          React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.muted,marginBottom:3}}, b.label),
-          React.createElement('div', {style:{fontSize:9,color:T.muted}}, b.desc),
-        )
-      )
-    )
-  )
-);
-```
-
-};
-
-// ── TAB 9: NOTES RAPIDES ──────────────────────────────────────────────────
-const [notes, setNotes] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_notes”)||”[]”);}catch{return[];}});
-const [noteForm, setNoteForm] = useState({text:””, tag:“general”, date: today.toISOString().split(‘T’)[0]});
-const [showNoteForm, setShowNoteForm] = useState(false);
-const [noteFilter, setNoteFilter] = useState(“all”);
-
-const NOTE_TAGS = [
-{id:“general”,  label:“Général”,   icon:“📝”, color:T.textDim},
-{id:“blessure”, label:“Blessure”,  icon:“🤕”, color:T.red},
-{id:“sensation”,label:“Sensation”, icon:“💡”, color:T.yellow},
-{id:“nutrition”,label:“Nutrition”, icon:“🥗”, color:T.lime},
-{id:“mental”,   label:“Mental”,    icon:“🧠”, color:T.purple},
-{id:“pr”,       label:“Record”,    icon:“🏆”, color:T.orange},
-];
-
-const saveNote = () => {
-if (!noteForm.text.trim()) return;
-const entry = {…noteForm, id: Date.now()};
-const n = [entry, …notes];
-setNotes(n);
-try{localStorage.setItem(“sp_notes”,JSON.stringify(n));}catch{}
-setNoteForm({text:””, tag:“general”, date: today.toISOString().split(‘T’)[0]});
-setShowNoteForm(false);
-};
-const deleteNote = (id) => {
-const n = notes.filter(n=>n.id!==id);
-setNotes(n);
-try{localStorage.setItem(“sp_notes”,JSON.stringify(n));}catch{}
-};
-
-const renderNotes = () => {
-const filtered = noteFilter===“all” ? notes : notes.filter(n=>n.tag===noteFilter);
-return React.createElement(‘div’, {className:“slide-up fade-in”},
-// Header
-React.createElement(‘div’, {style:{display:“flex”,justifyContent:“space-between”,alignItems:“center”,marginBottom:16}},
-React.createElement(‘div’, null,
-React.createElement(‘h2’, {style:{fontFamily:”‘Barlow Condensed’,Arial”,fontSize:22,fontWeight:900,color:T.text,textTransform:“uppercase”,margin:0}},“NOTES RAPIDES”),
-React.createElement(‘div’, {style:{color:T.textDim,fontSize:12,marginTop:3}}, notes.length+” note”+(notes.length!==1?“s”:””)),
-),
-React.createElement(‘button’, {
-onClick:()=>setShowNoteForm(!showNoteForm),
-style:{background:T.orange,color:T.bg,border:“none”,borderRadius:10,padding:“10px 16px”,fontWeight:700,fontSize:13}
-}, showNoteForm?“✕ Annuler”:”+ Note”),
-),
-
-```
-  // Add form
-  showNoteForm && React.createElement(Card, {style:{marginBottom:16,border:`1px solid ${T.orange}40`}},
-    React.createElement('div', {style:{fontSize:11,color:T.orange,fontWeight:700,marginBottom:12,textTransform:"uppercase"}},"Nouvelle note"),
-    // Tag selector
-    React.createElement('div', {style:{display:"flex",gap:5,flexWrap:"wrap",marginBottom:12}},
-      ...NOTE_TAGS.map(t=>React.createElement('button',{
-        key:t.id,
-        onClick:()=>setNoteForm(f=>({...f,tag:t.id})),
-        style:{background:noteForm.tag===t.id?t.color:T.s1,color:noteForm.tag===t.id?T.bg:T.textDim,border:`1px solid ${noteForm.tag===t.id?t.color:T.border}`,borderRadius:20,padding:"4px 10px",fontSize:11,fontWeight:700}
-      }, t.icon+" "+t.label))
-    ),
-    // Date
-    React.createElement('input',{
-      type:"date",
-      value:noteForm.date,
-      onChange:(e)=>setNoteForm(f=>({...f,date:e.target.value})),
-      style:{background:T.s1,border:`1px solid ${T.border}`,borderRadius:7,color:T.text,padding:"8px 10px",fontSize:12,width:"100%",outline:"none",marginBottom:10}
-    }),
-    // Text area
-    React.createElement('textarea',{
-      placeholder:"Ta note... (blessure, sensation, PR, observation)",
-      value:noteForm.text,
-      onChange:(e)=>setNoteForm(f=>({...f,text:e.target.value})),
-      rows:4,
-      style:{background:T.s1,border:`1px solid ${T.border}`,borderRadius:7,color:T.text,padding:"10px 12px",fontSize:13,width:"100%",outline:"none",resize:"none",lineHeight:1.6,marginBottom:12,fontFamily:"'DM Sans',sans-serif"}
-    }),
-    React.createElement('button',{
-      onClick:saveNote,
-      style:{width:"100%",background:T.orange,color:T.bg,border:"none",borderRadius:10,padding:"12px",fontWeight:700,fontSize:14}
-    },"✓ Enregistrer"),
-  ),
-
-  // Filter tabs
-  React.createElement('div', {style:{display:"flex",gap:5,flexWrap:"wrap",marginBottom:14}},
-    React.createElement('button',{
-      onClick:()=>setNoteFilter("all"),
-      style:{background:noteFilter==="all"?T.text:T.s1,color:noteFilter==="all"?T.bg:T.textDim,border:`1px solid ${noteFilter==="all"?T.text:T.border}`,borderRadius:20,padding:"4px 10px",fontSize:11,fontWeight:700}
-    },"Tout ("+notes.length+")"),
-    ...NOTE_TAGS.map(t=>{
-      const cnt = notes.filter(n=>n.tag===t.id).length;
-      if (!cnt) return null;
-      return React.createElement('button',{
-        key:t.id,
-        onClick:()=>setNoteFilter(t.id),
-        style:{background:noteFilter===t.id?t.color:T.s1,color:noteFilter===t.id?T.bg:T.textDim,border:`1px solid ${noteFilter===t.id?t.color:T.border}`,borderRadius:20,padding:"4px 10px",fontSize:11,fontWeight:700}
-      }, t.icon+" "+cnt);
-    })
-  ),
-
-  // Notes list
-  filtered.length===0 && React.createElement(Card,{style:{textAlign:"center",padding:"28px"}},
-    React.createElement('div',{style:{fontSize:28,marginBottom:8}},"🗒️"),
-    React.createElement('div',{style:{fontSize:13,color:T.textDim}}, notes.length===0 ? "Aucune note. Clique sur + Note !" : "Aucune note dans cette catégorie."),
-  ),
-  React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:8}},
-    ...filtered.map(n=>{
-      const tag = NOTE_TAGS.find(t=>t.id===n.tag)||NOTE_TAGS[0];
-      return React.createElement(Card,{key:n.id,style:{borderLeft:`3px solid ${tag.color}`}},
-        React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}},
-          React.createElement('div',{style:{display:"flex",gap:6,alignItems:"center"}},
-            React.createElement('span',{style:{background:tag.color+"18",color:tag.color,border:`1px solid ${tag.color}30`,borderRadius:20,padding:"2px 8px",fontSize:10,fontWeight:700}}, tag.icon+" "+tag.label),
-            React.createElement('span',{style:{fontSize:10,color:T.muted}}, n.date),
-          ),
-          React.createElement('button',{onClick:()=>deleteNote(n.id),style:{background:"none",border:"none",color:T.muted,fontSize:16,cursor:"pointer"}},"✕"),
-        ),
-        React.createElement('div',{style:{fontSize:13,color:T.text,lineHeight:1.7,whiteSpace:"pre-wrap"}}, n.text),
-      );
-    })
-  )
-);
-```
-
-};
-
-// ── TAB 10: MEAL PREP ────────────────────────────────────────────────────
-const MEAL_PLANS = {
-1: { // Lundi
-type:“Force haut”, kcal:2950, icon:“🏋️”,
-meals:[
-{time:“7h00”, name:“Petit-déj”, items:[“Avoine 80g + lait demi-écrémé”,“2 oeufs brouillés”,“Banane”,“Café noir”], kcal:680, p:32, g:95, f:18},
-{time:“10h00”, name:“Collation”, items:[“Yaourt grec 200g”,“Myrtilles 100g”,“Miel 1 càs”], kcal:250, p:18, g:30, f:4},
-{time:“12h30”, name:“Déjeuner”, items:[“Riz basmati 150g cru”,“Blanc de poulet 180g”,“Brocolis 200g”,“Huile d’olive 1 càs”], kcal:680, p:48, g:80, f:12},
-{time:“15h30”, name:“Pré-training”, items:[“Pain complet 2 tranches”,“Beurre de cacahuète 30g”,“Banane”], kcal:420, p:14, g:52, f:16},
-{time:“Après training”, name:“Post ⚠️”, items:[“Whey 30g + lait 300ml”,“Banane + miel”], kcal:380, p:38, g:42, f:6},
-{time:“19h30”, name:“Dîner”, items:[“Saumon 180g”,“Patate douce 250g”,“Haricots verts 200g”,“Citron + herbes”], kcal:540, p:42, g:58, f:14},
-]
-},
-2: { // Mardi
-type:“Run Zone 2”, kcal:2600, icon:“🏃”,
-meals:[
-{time:“7h00”, name:“Petit-déj”, items:[“Avoine 70g + eau”,“1 oeuf + blanc”,“Pomme”], kcal:550, p:24, g:82, f:10},
-{time:“12h30”, name:“Déjeuner”, items:[“Pâtes 130g”,“Thon 150g”,“Tomates cerises”,“Huile d’olive”], kcal:620, p:44, g:72, f:14},
-{time:“15h30”, name:“Pré-run”, items:[“Banane”,“Barre céréales”], kcal:280, p:6, g:52, f:4},
-{time:“Après run”, name:“Post”, items:[“Shake whey 25g”,“Lait + fruit”], kcal:320, p:30, g:36, f:5},
-{time:“19h30”, name:“Dîner”, items:[“Poulet 160g”,“Riz 120g”,“Légumes rôtis 300g”], kcal:580, p:42, g:62, f:12},
-]
-},
-3: { // Mercredi
-type:“Hyrox”, kcal:2950, icon:“🔥”,
-meals:[
-{time:“7h00”, name:“Petit-déj”, items:[“Flocons d’avoine 90g”,“Lait entier”,“Banane + miel”,“3 blancs d’oeufs”], kcal:700, p:36, g:105, f:14},
-{time:“10h00”, name:“Collation”, items:[“Fromage blanc 200g”,“Granola 40g”], kcal:300, p:22, g:34, f:6},
-{time:“12h30”, name:“Déjeuner”, items:[“Riz 150g”,“Boeuf haché 5% 180g”,“Poivrons + courgettes”], kcal:660, p:46, g:72, f:14},
-{time:“15h30”, name:“Pré-Hyrox”, items:[“Pâtes 80g”,“Sauce tomate”,“Banane”], kcal:450, p:14, g:82, f:4},
-{time:“Après Hyrox”, name:“Post ⚠️”, items:[“Whey 35g + lait”,“Riz au lait 150g”,“Banane”], kcal:480, p:42, g:58, f:8},
-{time:“19h30”, name:“Dîner”, items:[“Saumon 160g”,“Patate douce 200g”,“Brocolis”], kcal:520, p:40, g:52, f:14},
-]
-},
-4: { // Jeudi
-type:“Force bas”, kcal:2950, icon:“🏋️”,
-meals:[
-{time:“7h00”, name:“Petit-déj”, items:[“Avoine 80g”,“Lait”,“2 oeufs entiers”,“Banane”], kcal:670, p:30, g:92, f:18},
-{time:“10h00”, name:“Collation”, items:[“Yaourt grec 200g”,“Fruits rouges”], kcal:230, p:18, g:26, f:4},
-{time:“12h30”, name:“Déjeuner”, items:[“Riz 150g”,“Poulet 180g”,“Légumes 200g”], kcal:650, p:46, g:78, f:10},
-{time:“15h30”, name:“Pré-training”, items:[“Pain + beurre cacahuète”,“Banane”], kcal:420, p:14, g:52, f:16},
-{time:“Après training”, name:“Post ⚠️”, items:[“Whey 30g + lait”,“Banane”], kcal:380, p:38, g:42, f:6},
-{time:“19h30”, name:“Dîner”, items:[“Thon 160g”,“Patate douce 250g”,“Salade verte”], kcal:500, p:42, g:54, f:10},
-]
-},
-5: { // Vendredi
-type:“Football”, kcal:2950, icon:“⚽”,
-meals:[
-{time:“7h00”, name:“Petit-déj”, items:[“Avoine 90g + lait”,“Banane + miel”,“2 oeufs”], kcal:700, p:32, g:105, f:16},
-{time:“12h30”, name:“Déjeuner”, items:[“Pâtes 150g”,“Bolognaise maison”,“Parmesan 20g”], kcal:720, p:42, g:88, f:18},
-{time:“15h00”, name:“Pré-foot (2h avant)”, items:[“Riz 100g”,“Poulet 120g”,“Compote”], kcal:450, p:34, g:58, f:6},
-{time:“Après foot”, name:“Post ⚠️”, items:[“Boisson recovery”,“Whey 30g”,“Banane”], kcal:420, p:36, g:48, f:6},
-{time:“20h30”, name:“Dîner léger”, items:[“Oeufs brouillés 4”,“Toast complet”,“Avocat”], kcal:480, p:28, g:32, f:24},
-]
-},
-6: { // Samedi
-type:“Long Run”, kcal:2950, icon:“🏃”,
-meals:[
-{time:“7h00”, name:“Petit-déj (2h avant)”, items:[“Avoine 90g + lait”,“Banane + miel”,“Café”], kcal:680, p:26, g:115, f:14},
-{time:“Pendant run +45min”, name:“Ravitaillement”, items:[“Gel énergétique x2”,“Eau 500ml”], kcal:200, p:0, g:48, f:0},
-{time:“Après run”, name:“Post ⚠️ PRIORITÉ”, items:[“Whey 35g + lait”,“Riz au lait”,“Banane + miel”], kcal:580, p:44, g:72, f:10},
-{time:“12h30”, name:“Déjeuner”, items:[“Pâtes 160g”,“Viande rouge 180g”,“Légumes”], kcal:720, p:48, g:82, f:18},
-{time:“19h30”, name:“Dîner”, items:[“Saumon 180g”,“Riz 120g”,“Légumes verts”], kcal:580, p:44, g:58, f:16},
-]
-},
-0: { // Dimanche
-type:“Match / Récup”, kcal:2200, icon:“😴”,
-meals:[
-{time:“8h30”, name:“Petit-déj tranquille”, items:[“Pancakes avoine x3”,“Miel + fruits rouges”,“Café”], kcal:580, p:24, g:88, f:14},
-{time:“12h30”, name:“Déjeuner copieux”, items:[“Viande rouge 200g”,“Patate douce 300g”,“Légumes rôtis”], kcal:680, p:46, g:68, f:20},
-{time:“16h00”, name:“Collation”, items:[“Fromage blanc”,“Fruits”], kcal:220, p:18, g:24, f:4},
-{time:“19h30”, name:“Dîner léger”, items:[“Poulet 150g”,“Salade composée”,“Pain complet 1 tranche”], kcal:480, p:36, g:36, f:14},
-]
-},
-};
-
-const [mealDay, setMealDay] = useState(today.getDay());
-const [mealChecked, setMealChecked] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_mealc”)||”{}”);}catch{return{};}});
-const toggleMeal = (k) => {
-const n={…mealChecked,[k]:!mealChecked[k]};
-setMealChecked(n);
-try{localStorage.setItem(“sp_mealc”,JSON.stringify(n));}catch{}
-};
-
-const renderMealPrep = () => {
-const DAY_NAMES = [“Dimanche”,“Lundi”,“Mardi”,“Mercredi”,“Jeudi”,“Vendredi”,“Samedi”];
-const plan = MEAL_PLANS[mealDay];
-const todayDow = today.getDay();
-
-```
-return React.createElement('div', {className:"slide-up fade-in"},
-  React.createElement('div', {style:{marginBottom:16}},
-    React.createElement('h2', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:22,fontWeight:900,color:T.text,textTransform:"uppercase",margin:0}},"MEAL PREP"),
-    React.createElement('div', {style:{color:T.textDim,fontSize:12,marginTop:3}},"Plan repas adapté à tes séances"),
-  ),
-
-  // Day selector
-  React.createElement('div', {style:{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4,marginBottom:16}},
-    ...[1,2,3,4,5,6,0].map(d=>{
-      const mp = MEAL_PLANS[d];
-      const isToday = d===todayDow;
-      const isSel = d===mealDay;
-      return React.createElement('div',{
-        key:d,
-        onClick:()=>setMealDay(d),
-        style:{
-          background:isSel?mp.color||T.orange:T.s1,
-          border:`1px solid ${isSel?mp.color||T.orange:isToday?T.lime+"60":T.border}`,
-          borderRadius:8,padding:"8px 4px",textAlign:"center",cursor:"pointer",
-          transition:"all 0.15s",
-        }
-      },
-        React.createElement('div',{style:{fontSize:14,marginBottom:2}}, mp?mp.icon:"·"),
-        React.createElement('div',{style:{fontSize:8,fontWeight:700,color:isSel?T.bg:isToday?T.lime:T.textDim}},"LUN MAR MER JEU VEN SAM DIM".split(" ")[[1,2,3,4,5,6,0].indexOf(d)]),
-        isToday && !isSel && React.createElement('div',{style:{width:4,height:4,borderRadius:"50%",background:T.lime,margin:"2px auto 0"}}),
-      );
-    })
-  ),
-
-  // Day header
-  plan && React.createElement('div', {style:{background:`linear-gradient(135deg,${T.orange}15,${T.card})`,border:`1px solid ${T.orange}30`,borderRadius:12,padding:"14px 18px",marginBottom:16}},
-    React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"center"}},
-      React.createElement('div', null,
-        React.createElement('div', {style:{fontSize:10,color:T.textDim,marginBottom:2}},"Journée "+DAY_NAMES[mealDay]},),
-        React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:24,fontWeight:900,color:T.text}},"Jour "+plan.type),
-      ),
-      React.createElement('div', {style:{textAlign:"right"}},
-        React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:32,fontWeight:900,color:T.orange}}, plan.kcal),
-        React.createElement('div', {style:{fontSize:10,color:T.textDim}},"kcal"),
-      )
-    ),
-    // Macro summary
-    React.createElement('div', {style:{display:"flex",gap:12,marginTop:10}},
-      ...[["P", plan.meals.reduce((s,m)=>s+m.p,0)+"g", "#ff8f70"],["G", plan.meals.reduce((s,m)=>s+m.g,0)+"g", T.cyan],["L", plan.meals.reduce((s,m)=>s+m.f,0)+"g", T.yellow]].map(([k,v,c])=>
-        React.createElement('div',{key:k,style:{background:c+"15",border:`1px solid ${c}30`,borderRadius:6,padding:"4px 10px",textAlign:"center"}},
-          React.createElement('div',{style:{fontSize:14,fontWeight:900,color:c}},v),
-          React.createElement('div',{style:{fontSize:8,color:T.muted}},k==="P"?"Protéines":k==="G"?"Glucides":"Lipides"),
-        )
-      )
-    )
-  ),
-
-  // Meals list
-  plan && React.createElement('div',{style:{display:"flex",flexDirection:"column",gap:10}},
-    ...plan.meals.map((m,i)=>{
-      const mk = `meal_${mealDay}_${i}`;
-      const done = mealChecked[mk];
-      const isPost = m.name.includes("Post");
-      return React.createElement(Card,{key:i,style:{
-        borderLeft:`3px solid ${isPost?T.red:T.lime}`,
-        opacity:done?0.65:1,
-        transition:"opacity 0.2s",
-      }},
-        React.createElement('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}},
-          React.createElement('div',null,
-            React.createElement('div',{style:{fontSize:10,color:isPost?T.red:T.textDim,fontWeight:isPost?700:400,marginBottom:2}}, m.time),
-            React.createElement('div',{style:{fontSize:15,fontWeight:700,color:done?T.muted:T.text}}, m.name),
-          ),
-          React.createElement('div',{style:{display:"flex",gap:8,alignItems:"center"}},
-            React.createElement('div',{style:{textAlign:"right"}},
-              React.createElement('div',{style:{fontSize:14,fontWeight:700,color:T.orange}},m.kcal+" kcal"),
-              React.createElement('div',{style:{fontSize:9,color:T.muted}},"P:"+m.p+"g G:"+m.g+"g L:"+m.f+"g"),
-            ),
-            React.createElement('div',{
-              onClick:()=>toggleMeal(mk),
-              style:{width:26,height:26,borderRadius:"50%",border:`2px solid ${done?T.lime:T.border}`,background:done?T.lime:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:12,color:T.bg,fontWeight:900,flexShrink:0}
-            }, done?"✓":""),
-          )
-        ),
-        React.createElement('div',{style:{display:"flex",flexWrap:"wrap",gap:5}},
-          ...m.items.map((item,j)=>React.createElement('div',{key:j,style:{background:T.s1,borderRadius:5,padding:"3px 8px",fontSize:11,color:T.textDim}},item))
-        )
-      );
-    })
-  ),
-
-  // Shopping tip
-  React.createElement('div',{style:{marginTop:16,background:T.s1,border:`1px solid ${T.border}`,borderRadius:10,padding:"12px 14px"}},
-    React.createElement('div',{style:{fontSize:11,fontWeight:700,color:T.lime,marginBottom:6}},"💡 Meal prep tips"),
-    React.createElement('ul',{style:{margin:0,paddingLeft:16}},
-      ...["Cuis 400-500g de riz le dimanche pour la semaine","Prépare 1kg de poulet en début de semaine","Coupe tous tes légumes le dimanche","Garde toujours des bananes et du whey à portée","Le post-training est la fenêtre la plus importante — ne rate jamais !"].map((t,i)=>
-        React.createElement('li',{key:i,style:{color:T.textDim,fontSize:11,lineHeight:1.8}},t)
-      )
-    )
-  )
-);
-```
-
-};
-
-// ── TAB 11: COMPARAISON AVANT/APRÈS ──────────────────────────────────────
-const [progData, setProgData] = useState(()=>{try{return JSON.parse(localStorage.getItem(“sp_prog”)||”{}”);}catch{return{};}});
-const saveProgData = (key, val) => {
-const n={…progData,[key]:val};
-setProgData(n);
-try{localStorage.setItem(“sp_prog”,JSON.stringify(n));}catch{}
-};
-
-const PROG_METRICS = [
-{key:“allure”, label:“Allure 10km”, icon:“🏃”, color:T.cyan, unit:”/km”, placeholder:“ex: 5’45”, desc:“Allure de course sur 10km”},
-{key:“hyrox_t”, label:“Temps Hyrox”, icon:“🔥”, color:T.orange, unit:””, placeholder:“ex: 1h30”, desc:“Temps total simulation Hyrox”},
-{key:“squat”, label:“Squat”, icon:“🏋️”, color:T.lime, unit:“kg”, placeholder:“ex: 80”, desc:“Charge maximale 1RM”},
-{key:“deadlift”, label:“Deadlift”, icon:“🏋️”, color:T.red, unit:“kg”, placeholder:“ex: 100”, desc:“Charge maximale 1RM”},
-{key:“bench”, label:“Bench press”, icon:“🏋️”, color:T.yellow, unit:“kg”, placeholder:“ex: 70”, desc:“Charge maximale 1RM”},
-{key:“poids”, label:“Poids corporel”, icon:“⚖️”, color:T.purple, unit:“kg”, placeholder:“ex: 73”, desc:“Poids en kg”},
-{key:“skierg”, label:“Ski Erg 1000m”, icon:“🎿”, color:T.cyan, unit:””, placeholder:“ex: 4’10”, desc:“Temps 1000m Ski Erg”},
-{key:“vma”, label:“VMA estimée”, icon:“⚡”, color:T.pink, unit:“km/h”, placeholder:“ex: 14”, desc:“Vitesse maximale aérobie”},
-];
-
-const renderProgres = () => {
-return React.createElement(‘div’, {className:“slide-up fade-in”},
-React.createElement(‘div’, {style:{marginBottom:20}},
-React.createElement(‘h2’, {style:{fontFamily:”‘Barlow Condensed’,Arial”,fontSize:22,fontWeight:900,color:T.text,textTransform:“uppercase”,margin:0,letterSpacing:“0.03em”}},“PROGRESSION”),
-React.createElement(‘div’, {style:{color:T.textDim,fontSize:12,marginTop:4}},“Compare tes perfs de départ vs aujourd’hui”),
-),
-
-```
-  // Banner
-  React.createElement('div', {
-    style:{background:"linear-gradient(135deg,#ff6b3520,#00d4ff10)",border:"1px solid rgba(255,107,53,0.25)",borderRadius:16,padding:"18px 20px",marginBottom:20,display:"flex",alignItems:"center",gap:14}
-  },
-    React.createElement('div', {style:{fontSize:36}},"📈"),
-    React.createElement('div', null,
-      React.createElement('div', {style:{fontSize:13,fontWeight:700,color:T.text,marginBottom:3}},"Saisis tes valeurs de départ (Mars 2025) et actuelles"),
-      React.createElement('div', {style:{fontSize:11,color:T.textDim}},"La progression s'affiche automatiquement · Données sauvegardées localement"),
-    )
-  ),
-
-  // Metrics grid
-  React.createElement('div', {style:{display:"flex",flexDirection:"column",gap:12}},
-    ...PROG_METRICS.map(m=>{
-      const startVal = progData[m.key+"_start"]||"";
-      const nowVal   = progData[m.key+"_now"]||"";
-      // Try numeric progress
-      const sNum = parseFloat(startVal);
-      const nNum = parseFloat(nowVal);
-      const hasNum = !isNaN(sNum) && !isNaN(nNum) && sNum!==0;
-      const isTime = m.unit==="/km" || m.key==="skierg" || m.key==="hyrox_t";
-      const diff = hasNum ? nNum - sNum : null;
-      const pct  = hasNum ? Math.round(((nNum-sNum)/sNum)*100) : null;
-      const better = diff!==null ? (isTime||m.key==="poids" ? diff<0 : diff>0) : null;
-
-      return React.createElement(Card, {key:m.key, style:{borderLeft:`3px solid ${m.color}`}},
-        React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}},
-          React.createElement('div', null,
-            React.createElement('div', {style:{fontSize:11,color:T.textDim,marginBottom:2}}, m.icon+" "+m.desc),
-            React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:17,fontWeight:900,color:m.color,textTransform:"uppercase"}}, m.label),
-          ),
-          // Delta badge
-          diff!==null && React.createElement('div', {
-            style:{
-              background:better?T.lime+"15":T.red+"15",
-              border:`1px solid ${better?T.lime:T.red}30`,
-              borderRadius:8,padding:"4px 10px",textAlign:"center"
-            }
-          },
-            React.createElement('div', {style:{fontSize:14,fontWeight:900,color:better?T.lime:T.red}}),
-              (better?"▲":"▼")+" "+(diff>0?"+":"")+Math.round(diff*100)/100+m.unit,
-            React.createElement('div', {style:{fontSize:9,color:T.textDim}}),(pct>0?"+":"")+pct+"%"),
-        ),
-
-        // Input pair
-        React.createElement('div', {style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}},
-          React.createElement('div', null,
-            React.createElement('div', {style:{fontSize:9,color:T.textDim,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:4}},"🟡 Départ (Mars)"),
-            React.createElement('input', {
-              className:"inp",
-              placeholder:m.placeholder,
-              value:startVal,
-              onChange:(e)=>saveProgData(m.key+"_start",e.target.value),
-              style:{fontSize:14,fontWeight:700,textAlign:"center",padding:"10px 8px"}
-            }),
-          ),
-          React.createElement('div', null,
-            React.createElement('div', {style:{fontSize:9,color:m.color,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:4}},"🟢 Maintenant"),
-            React.createElement('input', {
-              className:"inp",
-              placeholder:m.placeholder,
-              value:nowVal,
-              onChange:(e)=>saveProgData(m.key+"_now",e.target.value),
-              style:{fontSize:14,fontWeight:700,textAlign:"center",padding:"10px 8px",borderColor:nowVal?m.color+"50":undefined}
-            }),
-          ),
-        ),
-
-        // Progress bar (numeric only)
-        hasNum && !isTime && React.createElement('div', {style:{marginTop:10}},
-          React.createElement('div', {style:{height:4,background:T.border,borderRadius:2,overflow:"hidden"}},
-            React.createElement('div', {style:{
-              height:"100%",
-              width:Math.min(100,Math.max(0,(nNum/sNum)*50))+"%",
-              background:`linear-gradient(90deg,${m.color},${m.color}80)`,
-              borderRadius:2,
-              transition:"width 0.6s ease",
-              boxShadow:`0 0 8px ${m.color}60`,
-            }})
-          )
-        ),
-
-        // Motivational message
-        better===true && React.createElement('div', {style:{marginTop:8,fontSize:11,color:T.lime,fontWeight:700}},"🔥 En progression — continue !"),
-        better===false && diff!==null && React.createElement('div', {style:{marginTop:8,fontSize:11,color:T.textDim}},"💪 Travaille encore — ça viendra !"),
-      );
-    })
-  ),
-
-  // Summary card
-  React.createElement('div', {style:{marginTop:16,background:"linear-gradient(135deg,#a3ff4f12,#07090f)",border:"1px solid #a3ff4f25",borderRadius:16,padding:"16px 18px"}},
-    React.createElement('div', {style:{fontSize:12,fontWeight:700,color:T.lime,marginBottom:8}},"📊 Résumé progression"),
-    React.createElement('div', {style:{display:"flex",gap:16,flexWrap:"wrap"}},
-      ...[
-        {label:"Métriques renseignées", val: PROG_METRICS.filter(m=>progData[m.key+"_start"]&&progData[m.key+"_now"]).length+"/"+PROG_METRICS.length, c:T.cyan},
-        {label:"En progression", val: PROG_METRICS.filter(m=>{
-          const s=parseFloat(progData[m.key+"_start"]); const n=parseFloat(progData[m.key+"_now"]);
-          if(isNaN(s)||isNaN(n)||s===0) return false;
-          const isTime=m.unit==="/km"||m.key==="skierg"||m.key==="hyrox_t";
-          return isTime||m.key==="poids" ? n<s : n>s;
-        }).length, c:T.lime},
-      ].map(({label,val,c})=>
-        React.createElement('div', {key:label},
-          React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:28,fontWeight:900,color:c}},val),
-          React.createElement('div', {style:{fontSize:10,color:T.textDim}},label),
-        )
-      )
-    )
-  )
-);
-```
-
-};
-
-// ── MAIN RENDER ───────────────────────────────────────────────────────────
-return React.createElement(‘div’, {style:{minHeight:“100vh”,background:T.bg,color:T.text}},
-
-```
-// HEADER — premium glass
-React.createElement('div', {className:"header",style:{padding:"12px 16px 0"}},
-  React.createElement('div', {style:{maxWidth:1100,margin:"0 auto"}},
-    React.createElement('div', {style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
-      React.createElement('div', null,
-        React.createElement('div', {style:{display:"flex",gap:6,alignItems:"center",marginBottom:3}},
-          React.createElement('span', {style:{
-            background:"linear-gradient(135deg,#ff6b35,#ff4757)",
-            color:T.bg,fontWeight:900,fontSize:9,
-            padding:"2px 8px",borderRadius:4,
-            fontFamily:"'Barlow Condensed',Arial",
-            letterSpacing:"0.08em"
-          }},"⚡ PRÉPA ATHLÈTE"),
-        ),
-        React.createElement('h1', {style:{
-          fontFamily:"'Barlow Condensed',Arial",
-          fontSize:20,fontWeight:900,color:T.text,
-          margin:0,letterSpacing:"0.04em",
-          textTransform:"uppercase",
-        }},"DASHBOARD SPORT"),
-        React.createElement('div', {style:{color:T.textDim,fontSize:9,marginTop:1,letterSpacing:"0.03em"}},"27 ans · 1m72 · 71kg · Mars–Oct 2025"),
-      ),
-      React.createElement('div', {style:{display:"flex",gap:5}},
-        ...[["Sub 45'","10km",T.cyan],["Sub 1h15","Hyrox",T.orange]].map(([v,l,c])=>
-          React.createElement('div', {key:l,style:{
-            background:c+"10",
-            border:`1px solid ${c}25`,
-            borderRadius:10,padding:"6px 10px",textAlign:"center",
-          }},
-            React.createElement('div', {style:{fontFamily:"'Barlow Condensed',Arial",fontSize:14,fontWeight:900,color:c,letterSpacing:"0.02em"}}, v),
-            React.createElement('div', {style:{fontSize:8,color:T.textDim,textTransform:"uppercase",letterSpacing:"0.06em"}}, l),
-          )
-        )
-      )
-    ),
-    // Tabs
-    React.createElement('div', {className:"tabs-scroll"},
-      ...TABS.map((t,i)=>React.createElement('button', {
-        key:i,
-        onClick:()=>setTab(i),
-        className:"tab-btn"+(tab===i?" active":""),
-      }, t))
-    )
-  )
-),
-
-// CONTENT
-React.createElement('div', {style:{maxWidth:1100,margin:"0 auto",padding:"18px 14px 60px"}},
-  tab===0 && renderToday(),
-  tab===1 && renderSemaine(),
-  tab===2 && renderCalendrier(),
-  tab===3 && renderHyrox(),
-  tab===4 && render10km(),
-  tab===5 && renderNutrition(),
-  tab===6 && renderSuivi(),
-  tab===7 && renderCarnet(),
-  tab===8 && renderStats(),
-  tab===9 && renderNotes(),
-  tab===10 && renderMealPrep(),
-  tab===11 && renderProgres(),
-),
-
-// SESSION MODAL
-selSession && React.createElement(SessionModal, {session:selSession, date:selSessionDate, onClose:()=>{setSelSession(null);setSelSessionDate(null);}}),
-```
-
-);
+  return wrap;
 }
 
-ReactDOM.createRoot(document.getElementById(‘root’)).render(React.createElement(App));
-setTimeout(hideSplash, 300);
+// ── TAB 1: SEMAINE ────────────────────────────────────────────────────────────
+function renderSemaine(){
+  const wrap=div({className:'slide-up fade-in'});
+  wrap.appendChild(mkSection('SEMAINE EN COURS','Clique sur une séance pour les détails'));
+  const col=div({className:'flex flex-col gap8'});
+  const DAY_LABELS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+  getWeekDates(today).forEach((d,i)=>{
+    const s=getSession(d);
+    const isT=isSameDay(d,today);
+    const isPast=d<today&&!isT;
+    const col2=s?s.color:C.muted;
+    const row=div({style:{background:isT?col2+'18':C.card,border:`1px solid ${isT?col2+'60':C.border}`,borderLeft:`4px solid ${col2}`,borderRadius:'12px',padding:'14px 16px',cursor:s?'pointer':'default',opacity:isPast?'.6':'1',display:'flex',alignItems:'center',gap:'14px',transition:'border-color .2s'}});
+    row.appendChild(div({style:{minWidth:'36px',textAlign:'center'}},[
+      div({className:'bc bolder',style:{fontSize:'16px',color:isT?C.lime:C.muted}},'J'+(i+1)),
+    ]));
+    const info=div({style:{flex:1}});
+    const dl=div({className:'flex center gap6 mb4',style:{fontSize:'10px',color:isT?C.lime:C.dim,fontWeight:isT?700:400}},DAY_LABELS[i]+' '+d.getDate()+' '+(d.toLocaleDateString('fr-FR',{month:'short'})));
+    if(isT) dl.appendChild(span({style:{background:C.lime,color:C.bg,fontSize:'8px',fontWeight:'900',padding:'1px 6px',borderRadius:'10px'}},'AUJOURD\'HUI'));
+    if(isPast&&s) dl.appendChild(span({},'✅'));
+    info.appendChild(dl);
+    if(s){
+      info.appendChild(div({className:'bc bolder upper',style:{fontSize:'17px',color:col2}},s.icon+' '+s.label));
+      info.appendChild(div({className:'f11 dim',style:{marginTop:'2px'}},s.focus+' · '+s.duration));
+    } else {
+      info.appendChild(div({className:'f13 muted'},'— Repos —'));
+    }
+    row.appendChild(info);
+    if(s) row.appendChild(div({className:'muted',style:{fontSize:'18px'}},'›'));
+    if(s) row.addEventListener('click',()=>sessionModal(s,d));
+    col.appendChild(row);
+  });
+  wrap.appendChild(col);
+  return wrap;
+}
+
+// ── TAB 2: CALENDRIER ─────────────────────────────────────────────────────────
+function renderCalendrier(){
+  const wrap=div({className:'slide-up fade-in'});
+  wrap.appendChild(mkSection('CALENDRIER MARS → OCTOBRE','Clique sur un jour pour voir la séance'));
+  const legend=div({className:'flex gap6 wrap mb16'});
+  [[C.yellow,'Phase 1 ⚽'],[C.cyan,'Phase 2 🏃'],[C.lime,'10km 🏁'],[C.orange,'Phase 3 🔥'],[C.red,'Hyrox 🔥']].forEach(([c,l])=>{
+    legend.appendChild(div({className:'flex center gap4 f10 dim'},[
+      div({style:{width:'8px',height:'8px',borderRadius:'2px',background:c}}),l,
+    ]));
+  });
+  wrap.appendChild(legend);
+  for(let m=2;m<=9;m++){
+    const ms=new Date(2025,m,1);
+    const mCard=mkCard([],{marginBottom:'12px'});
+    mCard.appendChild(div({className:'bc bolder upper mb12',style:{fontSize:'13px',letterSpacing:'.06em'}},ms.toLocaleDateString('fr-FR',{month:'long',year:'numeric'})));
+    const dayHdr=div({className:'g7 mb4'});
+    ['L','M','M','J','V','S','D'].forEach(d=>dayHdr.appendChild(div({style:{textAlign:'center',fontSize:'9px',color:C.muted,paddingBottom:'4px'}},d)));
+    mCard.appendChild(dayHdr);
+    const grid=div({className:'g7'});
+    const firstDow=ms.getDay();
+    const offset=firstDow===0?6:firstDow-1;
+    for(let i=0;i<offset;i++) grid.appendChild(div({}));
+    const daysInM=new Date(2025,m+1,0).getDate();
+    for(let dd=1;dd<=daysInM;dd++){
+      const date=new Date(2025,m,dd);
+      const s=getSession(date);
+      const phase=getPhase(date);
+      const isT=isSameDay(date,today);
+      const col=phase?phase.color:C.border;
+      const cell=div({style:{textAlign:'center',padding:'3px 1px',borderRadius:'6px',background:isT?C.lime+'30':phase?col+'12':'transparent',border:`1px solid ${isT?C.lime:phase?col+'40':'transparent'}`,cursor:s?'pointer':'default'}});
+      cell.appendChild(div({style:{fontSize:'9px',fontWeight:isT?900:400,color:isT?C.lime:C.text,marginBottom:'1px'}},dd));
+      cell.appendChild(s?div({style:{fontSize:'10px'}},s.icon):div({style:{fontSize:'8px',color:col,opacity:'.4'}},phase?'·':''));
+      if(s) cell.addEventListener('click',()=>sessionModal(s,date));
+      grid.appendChild(cell);
+    }
+    mCard.appendChild(grid);
+    wrap.appendChild(mCard);
+  }
+  return wrap;
+}
+
+// ── TAB 3: HYROX ──────────────────────────────────────────────────────────────
+function renderHyrox(){
+  const wrap=div({className:'slide-up fade-in'});
+  wrap.appendChild(div({style:{background:`linear-gradient(135deg,${C.orange}18,transparent)`,border:`1px solid ${C.orange}35`,borderRadius:'12px',padding:'18px',marginBottom:'16px'}},[
+    div({className:'f10 upper',style:{color:C.orange,marginBottom:'4px'}},'Objectif 18 Octobre 2025 · 27 ans 71kg'),
+    div({className:'bc bolder',style:{fontSize:'40px',color:C.text}},'SUB 1H15'),
+    div({className:'dim f12',style:{marginTop:'4px'}},'Run : 4\'30-4\'45/km · Stations : ~52 min'),
+  ]));
+  const grid=div({style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:'10px'}});
+  STATIONS.forEach((s,i)=>{
+    const card=mkCard([]);
+    card.appendChild(div({className:'flex between mb8'},[
+      div({},[
+        div({className:'f9 muted mb4'},'Station '+(i+1)),
+        div({className:'bold',style:{fontSize:'15px',color:s.color}},s.name),
+      ]),
+      div({style:{textAlign:'right'}},[
+        mkTag(s.dist,s.color),
+        div({className:'dim f11 bold',style:{marginTop:'4px'}},'Objectif < '+s.target),
+      ]),
+    ]));
+    card.appendChild(div({className:'f11 dim',style:{lineHeight:'1.6',marginBottom:'10px'}},s.tips));
+    const pbSec=div({style:{borderTop:`1px solid ${C.border}`,paddingTop:'8px'}});
+    pbSec.appendChild(div({className:'f9 muted upper mb4'},'Mon record'));
+    const row=div({className:'flex gap6'});
+    const inp=h('input',{className:'inp',placeholder:"ex: 3'42",style:{flex:'1',fontSize:'12px',padding:'6px 8px'}});
+    inp.value=pb[s.name]||'';
+    row.appendChild(inp);
+    row.appendChild(btn({style:{background:s.color,color:C.bg,border:'none',borderRadius:'7px',padding:'6px 12px',fontWeight:'700',fontSize:'11px'},onClick:()=>{pb[s.name]=inp.value;S.set('sp_pb',pb);if(inp.value){const msg=pbSec.querySelector('.pb-msg');if(msg)msg.textContent='🏆 PB : '+inp.value;else{const m=div({className:'f11 bold pb-msg',style:{color:s.color,marginTop:'4px'}},'🏆 PB : '+inp.value);pbSec.appendChild(m);}}}},s.color&&'OK'));
+    pbSec.appendChild(row);
+    if(pb[s.name]) pbSec.appendChild(div({className:'f11 bold pb-msg',style:{color:s.color,marginTop:'4px'}},'🏆 PB : '+pb[s.name]));
+    card.appendChild(pbSec);
+    grid.appendChild(card);
+  });
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+// ── TAB 4: 10KM ───────────────────────────────────────────────────────────────
+function renderDixKm(){
+  const wrap=div({className:'slide-up fade-in'});
+  wrap.appendChild(div({style:{background:`linear-gradient(135deg,${C.cyan}15,transparent)`,border:`1px solid ${C.cyan}30`,borderRadius:'12px',padding:'18px',marginBottom:'16px'}},[
+    div({className:'bc bolder',style:{fontSize:'40px',color:C.text}},'SUB 45 MIN'),
+    div({className:'dim f12'},'4\'28/km · 12 semaines · Volume max 54km/sem'),
+  ]));
+  // Bar chart
+  const chart=mkCard([],{marginBottom:'12px'});
+  chart.appendChild(div({className:'bold f12 mb10'},'Volume hebdomadaire'));
+  const bars=div({className:'flex center gap4',style:{height:'70px',alignItems:'flex-end'}});
+  TEN_K.forEach(w=>{
+    const col=div({style:{flex:'1',display:'flex',flexDirection:'column',alignItems:'center'}});
+    col.appendChild(div({style:{fontSize:'7px',color:C.dim,marginBottom:'1px'}},w.km));
+    col.appendChild(div({style:{width:'100%',height:((w.km/54)*56)+'px',background:w.color,borderRadius:'2px 2px 0 0',opacity:'.85'}}));
+    col.appendChild(div({style:{fontSize:'7px',color:C.muted,marginTop:'2px'}},'S'+w.w));
+    bars.appendChild(col);
+  });
+  chart.appendChild(bars);
+  wrap.appendChild(chart);
+  const grid=div({style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(180px,1fr))',gap:'8px'}});
+  TEN_K.forEach(w=>{
+    const k='10k_w'+w.w;
+    const done=checked[k];
+    const card=div({style:{background:done?C.lime+'10':C.card,border:`1px solid ${done?C.lime+'50':C.border}`,borderRadius:'8px',padding:'12px 14px',cursor:'pointer'},onClick:()=>{checked[k]=!checked[k];S.set('sp_c',checked);renderPage(4);}});
+    card.appendChild(div({className:'flex between mb4'},[
+      span({className:'f10 muted'},'Semaine '+w.w),
+      span({style:{fontSize:'13px'}},done?'✅':'○'),
+    ]));
+    card.appendChild(div({className:'bc bolder',style:{fontSize:'22px',color:done?C.lime:w.color}},w.km+' km'));
+    card.appendChild(div({className:'f11 dim',style:{marginTop:'4px'}},w.focus));
+    grid.appendChild(card);
+  });
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+// ── TAB 5: NUTRITION ──────────────────────────────────────────────────────────
+function renderNutrition(){
+  const wrap=div({className:'slide-up fade-in'});
+  wrap.appendChild(mkSection('NUTRITION','Adapté 71kg · Multi-sport · Périodisé'));
+  const macGrid=div({style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(155px,1fr))',gap:'10px',marginBottom:'14px'}});
+  [{l:'Repos',p:135,g:240,f:75,k:2200,c:C.purple},{l:'Léger',p:148,g:320,f:78,k:2600,c:C.yellow},{l:'Intensif',p:160,g:400,f:80,k:2950,c:C.orange},{l:'Hyrox',p:165,g:440,f:82,k:3100,c:C.red},{l:'Veille course',p:140,g:470,f:72,k:3000,c:C.lime}].forEach(n=>{
+    const card=mkCard([]);
+    card.style.borderTop=`3px solid ${n.c}`;
+    card.appendChild(div({className:'f9 upper mb6',style:{color:n.c}},n.l));
+    card.appendChild(div({className:'bc bolder mb6',style:{fontSize:'22px',color:C.text}},n.k+' kcal'));
+    const macRow=div({className:'flex gap8'});
+    [['P',n.p+'g','#ff8f70'],['G',n.g+'g',C.cyan],['L',n.f+'g',C.yellow]].forEach(([k,v,c])=>{
+      macRow.appendChild(div({},[
+        div({className:'bolder',style:{fontSize:'13px',color:c}},v),
+        div({className:'f8 muted'},k==='P'?'Prot':k==='G'?'Gluc':'Lip'),
+      ]));
+    });
+    card.appendChild(macRow);
+    macGrid.appendChild(card);
+  });
+  wrap.appendChild(macGrid);
+  const row2=div({className:'g2'});
+  const timCard=mkCard([]);
+  timCard.appendChild(div({className:'bold f12 mb10'},'⏱️ Timing jour intense'));
+  [['7h','Petit-déj','Avoine 80g + banane + 3 oeufs',C.yellow],['12h30','Déjeuner','Riz 150g + poulet + légumes',C.cyan],['16h','Pré-training','Pain + beurre cacahuète + banane',C.lime],['J+30\'','Post ⚠️','Whey 30g + lait + banane CRITIQUE',C.red],['19h30','Dîner','Saumon + patate douce + légumes',C.orange]].forEach(([t,m,d,c])=>{
+    timCard.appendChild(div({className:'flex gap8 mb8'},[
+      div({className:'bold f10',style:{minWidth:'40px',color:c}},t),
+      div({},[div({className:'bold f11',style:{color:C.text}},m),div({className:'f10 dim'},d)]),
+    ]));
+  });
+  row2.appendChild(timCard);
+  const supCard=mkCard([]);
+  supCard.appendChild(div({className:'bold f12 mb10',style:{color:C.lime}},'💊 Suppléments'));
+  [['Créatine','5g/j tous les jours',C.orange],['Magnésium','300mg soir',C.cyan],['Caféine','200mg avant compét.',C.lime],['Vitamine D3','2000 UI/j',C.yellow],['Whey','Si besoin post-training',C.purple]].forEach(([s,d,c])=>{
+    supCard.appendChild(div({className:'mb8'},[div({className:'bold f11',style:{color:c}},s),div({className:'f10 dim'},d)]));
+  });
+  row2.appendChild(supCard);
+  wrap.appendChild(row2);
+  return wrap;
+}
+
+// ── TAB 6: SUIVI ──────────────────────────────────────────────────────────────
+function renderSuivi(){
+  const wrap=div({className:'slide-up fade-in'});
+  const row=div({className:'g2 mb12'});
+  // Checklist
+  const chkCard=mkCard([]);
+  chkCard.appendChild(div({className:'bold f12 mb10'},'📋 Checklist semaine'));
+  const DAY_LABELS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+  getWeekDates(today).forEach((d,i)=>{
+    const s=getSession(d);
+    const k='week_'+d.toISOString().split('T')[0];
+    const col=s?s.color:C.muted;
+    const isT=isSameDay(d,today);
+    const item=div({style:{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',background:checked[k]?col+'12':C.s1,border:`1px solid ${checked[k]?col+'40':isT?col+'50':C.border}`,borderRadius:'7px',cursor:'pointer',marginBottom:'5px'},onClick:()=>{checked[k]=!checked[k];S.set('sp_c',checked);renderPage(6);}});
+    const box=div({style:{width:'16px',height:'16px',borderRadius:'4px',border:`2px solid ${checked[k]?col:C.muted}`,background:checked[k]?col:'transparent',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'10px',color:C.bg,fontWeight:'900',flexShrink:'0'}},checked[k]?'✓':'');
+    item.appendChild(box);
+    const lbl=div({style:{flex:1}});
+    lbl.appendChild(div({style:{fontSize:'10px',color:isT?C.lime:C.muted}},DAY_LABELS[i]+' '+d.getDate()));
+    if(s) lbl.appendChild(div({style:{fontSize:'11px',color:checked[k]?col:C.dim}},s.icon+' '+s.label));
+    item.appendChild(lbl);
+    chkCard.appendChild(item);
+  });
+  row.appendChild(chkCard);
+  // Goals
+  const goalCard=mkCard([]);
+  goalCard.appendChild(div({className:'bold f12 mb10'},'🎯 Objectifs'));
+  [['10km sub 45 min',C.cyan,'goal_10k'],['Hyrox sub 1h15',C.orange,'goal_hyrox'],['Squat 120 kg',C.lime,'goal_squat'],['SDT 160 kg',C.red,'goal_dl'],['Bench 100 kg',C.yellow,'goal_bench'],['Ski Erg sub 3\'45',C.cyan,'goal_ski'],['100 Wall Ball',C.purple,'goal_wb'],['Farmer 2×28kg',C.lime,'goal_fc']].forEach(([g,c,k])=>{
+    const item=div({style:{display:'flex',alignItems:'center',gap:'8px',padding:'6px 0',borderBottom:`1px solid ${C.border}`,cursor:'pointer'},onClick:()=>{checked[k]=!checked[k];S.set('sp_c',checked);renderPage(6);}});
+    item.appendChild(div({style:{width:'14px',height:'14px',borderRadius:'50%',border:`2px solid ${checked[k]?c:C.muted}`,background:checked[k]?c:'transparent',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'8px',color:C.bg,fontWeight:'900',flexShrink:'0'}},checked[k]?'✓':''));
+    item.appendChild(span({style:{fontSize:'11px',color:checked[k]?c:C.dim,textDecoration:checked[k]?'line-through':'none'}},g));
+    goalCard.appendChild(item);
+  });
+  row.appendChild(goalCard);
+  wrap.appendChild(row);
+  // PBs
+  const pbCard=mkCard([]);
+  pbCard.appendChild(div({className:'bold f12 mb10'},'🏆 Records Hyrox'));
+  const pbRow=div({className:'flex wrap gap8'});
+  let hasPB=false;
+  STATIONS.forEach(s=>{
+    if(pb[s.name]){
+      hasPB=true;
+      pbRow.appendChild(div({style:{background:s.color+'12',border:`1px solid ${s.color}30`,borderRadius:'7px',padding:'6px 10px'}},[
+        div({className:'f9 muted'},s.name),
+        div({className:'bold',style:{fontSize:'14px',color:s.color}},pb[s.name]),
+      ]));
+    }
+  });
+  if(!hasPB) pbRow.appendChild(div({className:'dim f12'},"Aucun record. Va dans l'onglet Hyrox !"));
+  pbCard.appendChild(pbRow);
+  wrap.appendChild(pbCard);
+  return wrap;
+}
+
+// ── TAB 7: CARNET ─────────────────────────────────────────────────────────────
+function renderCarnet(){
+  const wrap=div({className:'slide-up fade-in'});
+  const LOG_TYPES=[{id:'course',label:'Course',icon:'🏃',color:C.cyan},{id:'muscu',label:'Muscu',icon:'🏋️',color:C.orange},{id:'hyrox',label:'Hyrox',icon:'🔥',color:C.red},{id:'foot',label:'Football',icon:'⚽',color:C.yellow}];
+  const LOG_FIELDS={
+    course:[{key:'distance',label:'Distance (km)',placeholder:'ex: 8.5'},{key:'duree',label:'Durée (min)',placeholder:'ex: 45'},{key:'allure',label:'Allure moyenne',placeholder:"ex: 5'30"},{key:'bpm',label:'BPM moyen',placeholder:'ex: 148'},{key:'bpmMax',label:'BPM max',placeholder:'ex: 172'},{key:'type_seance',label:'Type de séance',placeholder:'ex: Zone 2, Fractionné'},{key:'ressenti',label:'Ressenti (1-10)',placeholder:'ex: 7'},{key:'note',label:'Note libre',placeholder:'ex: Bonnes jambes...'}],
+    muscu:[{key:'seance',label:'Séance',placeholder:'ex: Force haut'},{key:'exercice1',label:'Exercice 1',placeholder:'ex: Squat 4×5 @ 90kg'},{key:'exercice2',label:'Exercice 2',placeholder:'ex: SDT 4×4 @ 120kg'},{key:'exercice3',label:'Exercice 3',placeholder:'ex: Bench 4×5 @ 75kg'},{key:'exercice4',label:'Exercice 4',placeholder:'ex: Tractions 4×8'},{key:'rpe',label:'RPE (1-10)',placeholder:'ex: 7'},{key:'note',label:'Note',placeholder:'ex: PR squat !'}],
+    hyrox:[{key:'skierg',label:'Ski Erg',placeholder:"ex: 3'42"},{key:'sledpush',label:'Sled Push',placeholder:"ex: 1'38"},{key:'sledpull',label:'Sled Pull',placeholder:"ex: 1'52"},{key:'burpee',label:'Burpee Jump',placeholder:"ex: 3'55"},{key:'rowing',label:'Rowing',placeholder:"ex: 3'35"},{key:'farmer',label:'Farmer Carry',placeholder:"ex: 2'20"},{key:'sandbag',label:'Sandbag Lunges',placeholder:"ex: 4'50"},{key:'wallball',label:'Wall Ball',placeholder:"ex: 6'45"},{key:'total',label:'Temps total',placeholder:"ex: 1h12'30"},{key:'note',label:'Note',placeholder:'ex: Crampes station 6...'}],
+    foot:[{key:'resultat',label:'Résultat',placeholder:'ex: Victoire 3-1'},{key:'buts',label:'Buts',placeholder:'ex: 1'},{key:'passes',label:'Passes déc.',placeholder:'ex: 0'},{key:'note_perf',label:'Note (1-10)',placeholder:'ex: 7'},{key:'duree',label:'Temps de jeu (min)',placeholder:'ex: 75'},{key:'note',label:'Note',placeholder:'ex: Bonne pression haute...'}],
+  };
+
+  // Header
+  const hdr=div({className:'flex between center mb16'});
+  hdr.appendChild(div({},[
+    h('h2',{className:'bc bolder upper',style:{fontSize:'22px',margin:0}},"CARNET D'ENTRAÎNEMENT"),
+    div({className:'dim f12',style:{marginTop:'3px'}},logs.length+' séance'+(logs.length!==1?'s':'')),
+  ]));
+  const addBtn=btn({className:'btn-primary',style:{padding:'10px 16px',fontSize:'13px'},onClick:toggleAddForm},'+ Ajouter');
+  hdr.appendChild(addBtn);
+  wrap.appendChild(hdr);
+
+  // Add form (hidden by default)
+  let logType='course';
+  let formData={};
+  const formWrap=div({id:'carnet-form',style:{display:'none',marginBottom:'16px'}});
+
+  function buildForm(){
+    formWrap.innerHTML='';
+    const card=mkCard([]);
+    card.style.border=`1px solid ${LOG_TYPES.find(t=>t.id===logType).color}40`;
+    // Type selector
+    const typeRow=div({className:'flex gap6 mb14'});
+    LOG_TYPES.forEach(t=>{
+      typeRow.appendChild(btn({style:{flex:'1',background:logType===t.id?t.color:C.s1,color:logType===t.id?C.bg:C.dim,border:`1px solid ${logType===t.id?t.color:C.border}`,borderRadius:'8px',padding:'8px 4px',fontSize:'11px',fontWeight:'700'},onClick:()=>{logType=t.id;formData={};buildForm();}},t.icon+' '+t.label));
+    });
+    card.appendChild(typeRow);
+    // Date
+    const dateInp=h('input',{className:'inp mb10',type:'date'});
+    dateInp.value=todayKey;
+    dateInp.addEventListener('change',e=>formData.date=e.target.value);
+    card.appendChild(div({className:'f10 dim mb4'},'Date'));
+    card.appendChild(dateInp);
+    // Fields grid
+    const fGrid=div({style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'14px'}});
+    (LOG_FIELDS[logType]||[]).forEach(f=>{
+      const fw=div({style:{gridColumn:f.key==='note'?'span 2':'span 1'}});
+      fw.appendChild(div({className:'f10 dim mb4'},f.label));
+      const inp=h('input',{className:'inp',placeholder:f.placeholder});
+      inp.value=formData[f.key]||'';
+      inp.addEventListener('input',e=>formData[f.key]=e.target.value);
+      fw.appendChild(inp);
+      fGrid.appendChild(fw);
+    });
+    card.appendChild(fGrid);
+    card.appendChild(btn({className:'btn-primary',style:{width:'100%'},onClick:()=>{
+      const entry={...formData,type:logType,date:formData.date||todayKey,id:Date.now()};
+      logs=[entry,...logs];S.set('sp_logs',logs);
+      formWrap.style.display='none';renderPage(7);
+    }},'✓ Enregistrer la séance'));
+    formWrap.appendChild(card);
+  }
+
+  function toggleAddForm(){
+    if(formWrap.style.display==='none'){buildForm();formWrap.style.display='block';addBtn.textContent='✕ Annuler';}
+    else{formWrap.style.display='none';addBtn.textContent='+ Ajouter';}
+  }
+
+  wrap.appendChild(formWrap);
+
+  // Charts
+  const courseLogs=logs.filter(l=>l.type==='course');
+  if(logs.length>1){
+    const chartCard=mkCard([],{marginBottom:'16px'});
+    chartCard.appendChild(div({className:'bold f13 mb12'},'📈 Graphiques de progression'));
+    // Simple allure chart
+    const allureData=courseLogs.filter(l=>l.allure).slice(-10).map(l=>{
+      const p=l.allure.replace("'",'\'').split(/[':]/);
+      return{val:Math.round((parseFloat(p[0]||0)+(parseFloat(p[1]||0)/60))*100)/100,label:l.date.slice(5)};
+    });
+    if(allureData.length>1){
+      chartCard.appendChild(div({className:'f11 dim mb8'},'Allure course (min/km) — plus bas = plus rapide'));
+      const max=Math.max(...allureData.map(d=>d.val)),min2=Math.min(...allureData.map(d=>d.val)),range=max-min2||1;
+      const bars2=div({className:'flex center gap4',style:{height:'70px',alignItems:'flex-end',marginBottom:'4px'}});
+      allureData.forEach(d=>{
+        const hpx=((d.val-min2)/range)*50+10;
+        const col2=div({style:{flex:'1',display:'flex',flexDirection:'column',alignItems:'center'}});
+        col2.appendChild(div({style:{fontSize:'7px',color:C.dim,marginBottom:'1px'}},d.val+"'"));
+        col2.appendChild(div({style:{width:'100%',height:hpx+'px',background:C.cyan,borderRadius:'2px 2px 0 0',opacity:'.85'}}));
+        col2.appendChild(div({style:{fontSize:'7px',color:C.muted,marginTop:'2px',whiteSpace:'nowrap'}},d.label));
+        bars2.appendChild(col2);
+      });
+      chartCard.appendChild(bars2);
+    } else {
+      chartCard.appendChild(div({className:'dim f12 center',style:{textAlign:'center',padding:'10px 0'}},'Logge 2+ courses pour voir le graphique'));
+    }
+    wrap.appendChild(chartCard);
+  }
+
+  // Logs list
+  const cntRow=div({className:'flex gap6 mb12 wrap center'});
+  cntRow.appendChild(div({className:'bold f12',style:{color:C.text}},'Historique'));
+  LOG_TYPES.forEach(t=>cntRow.appendChild(span({style:{background:t.color+'18',color:t.color,border:`1px solid ${t.color}30`,borderRadius:'20px',padding:'2px 8px',fontSize:'10px',fontWeight:'700'}},t.icon+' '+logs.filter(l=>l.type===t.id).length)));
+  wrap.appendChild(cntRow);
+
+  if(!logs.length){
+    wrap.appendChild(mkCard([div({style:{textAlign:'center',padding:'24px'}},[div({style:{fontSize:'28px',marginBottom:'8px'}},'📋'),div({className:'dim f13'},"Aucune séance. Clique sur + Ajouter !")])]));
+  }
+
+  const list=div({className:'flex flex-col gap8'});
+  logs.forEach(l=>{
+    const t=LOG_TYPES.find(t=>t.id===l.type)||LOG_TYPES[0];
+    const card=mkCard([]);
+    card.style.borderLeft=`3px solid ${t.color}`;
+    const top=div({className:'flex between mb8'});
+    top.appendChild(div({},[div({className:'f10 muted mb2'},l.date),div({className:'bc bolder upper',style:{fontSize:'16px',color:t.color}},t.icon+' '+t.label)]));
+    top.appendChild(btn({style:{background:'none',border:'none',color:C.muted,fontSize:'16px',padding:'0 4px'},onClick:()=>{logs=logs.filter(x=>x.id!==l.id);S.set('sp_logs',logs);renderPage(7);}},'✕'));
+    card.appendChild(top);
+    if(l.type==='course'){
+      const r=div({className:'flex gap12 wrap'});
+      if(l.distance) r.appendChild(div({style:{textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'18px',color:C.cyan}},l.distance),div({className:'f9 muted'},'km')]));
+      if(l.allure) r.appendChild(div({style:{textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'18px',color:C.lime}},l.allure),div({className:'f9 muted'},'/km')]));
+      if(l.bpm) r.appendChild(div({style:{textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'18px',color:C.red}},l.bpm),div({className:'f9 muted'},'bpm moy')]));
+      if(l.bpmMax) r.appendChild(div({style:{textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'18px',color:C.red}},l.bpmMax),div({className:'f9 muted'},'bpm max')]));
+      card.appendChild(r);
+    } else if(l.type==='muscu'){
+      ['exercice1','exercice2','exercice3','exercice4'].filter(k=>l[k]).forEach(k=>card.appendChild(div({className:'f12 dim',style:{padding:'3px 0',borderBottom:`1px solid ${C.border}`}},l[k])));
+      if(l.rpe) card.appendChild(div({className:'f11 bold',style:{color:C.orange,marginTop:'4px'}},'RPE : '+l.rpe+'/10'));
+    } else if(l.type==='hyrox'){
+      const r=div({className:'flex gap8 wrap'});
+      [{k:'skierg',n:'Ski'},{k:'sledpush',n:'Push'},{k:'sledpull',n:'Pull'},{k:'burpee',n:'Burpee'},{k:'rowing',n:'Row'},{k:'farmer',n:'Farmer'},{k:'sandbag',n:'Lunges'},{k:'wallball',n:'WBall'}].filter(x=>l[x.k]).forEach(x=>r.appendChild(div({style:{background:C.s1,borderRadius:'6px',padding:'4px 8px',textAlign:'center'}},[div({className:'bold f11',style:{color:C.orange}},l[x.k]),div({className:'f8 muted'},x.n)])));
+      if(l.total) r.appendChild(div({style:{background:C.orange+'20',border:`1px solid ${C.orange}40`,borderRadius:'6px',padding:'4px 8px',textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'14px',color:C.orange}},l.total),div({className:'f8 muted'},'TOTAL')]));
+      card.appendChild(r);
+    } else if(l.type==='foot'){
+      const r=div({className:'flex gap12 wrap'});
+      if(l.resultat) r.appendChild(div({className:'bc bolder',style:{fontSize:'14px',color:C.yellow}},l.resultat));
+      if(l.buts) r.appendChild(div({style:{textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'18px',color:C.lime}},l.buts),div({className:'f9 muted'},'buts')]));
+      if(l.passes) r.appendChild(div({style:{textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'18px',color:C.cyan}},l.passes),div({className:'f9 muted'},'passes')]));
+      card.appendChild(r);
+    }
+    if(l.note) card.appendChild(div({className:'f11 dim',style:{fontStyle:'italic',marginTop:'8px',borderTop:`1px solid ${C.border}`,paddingTop:'6px'}},'💬 '+l.note));
+    list.appendChild(card);
+  });
+  wrap.appendChild(list);
+  return wrap;
+}
+
+// ── TAB 8: STATS ─────────────────────────────────────────────────────────────
+function renderStats(){
+  const wrap=div({className:'slide-up fade-in'});
+  const courseLogs=logs.filter(l=>l.type==='course');
+  const totalKm=courseLogs.reduce((s,l)=>s+(parseFloat(l.distance)||0),0);
+  const totalSessions=logs.length;
+  // Streak calc
+  const logDates=[...new Set(logs.map(l=>l.date))].sort();
+  let streakMax=0,cur=0;
+  for(let i=logDates.length-1;i>=0;i--){
+    if(i===logDates.length-1){const diff=Math.round((new Date(today)-new Date(logDates[i]))/864e5);if(diff<=1){cur=1;}else break;}
+    else{const diff=Math.round((new Date(logDates[i+1])-new Date(logDates[i]))/864e5);if(diff===1)cur++;else{if(cur>streakMax)streakMax=cur;cur=0;}}
+  }
+  if(cur>streakMax)streakMax=cur;
+  const streak=cur;
+
+  const BADGES=[
+    {id:'km10',icon:'👟',label:'Premiers 10km',desc:'10km de course loggés',color:C.cyan,unlocked:totalKm>=10},
+    {id:'km50',icon:'🏃',label:'50km au compteur',desc:'50km de course loggés',color:C.cyan,unlocked:totalKm>=50},
+    {id:'km100',icon:'💯',label:'Century Runner',desc:'100km de course loggés',color:C.lime,unlocked:totalKm>=100},
+    {id:'km200',icon:'🔥',label:'200km de feu',desc:'200km de course loggés',color:C.orange,unlocked:totalKm>=200},
+    {id:'s5',icon:'⚡',label:'Lancé !',desc:'5 séances loggées',color:C.yellow,unlocked:totalSessions>=5},
+    {id:'s20',icon:'💪',label:'Régularité',desc:'20 séances loggées',color:C.yellow,unlocked:totalSessions>=20},
+    {id:'s50',icon:'🏅',label:'Athlète sérieux',desc:'50 séances loggées',color:C.orange,unlocked:totalSessions>=50},
+    {id:'s100',icon:'🏆',label:'Centurion',desc:'100 séances loggées',color:C.red,unlocked:totalSessions>=100},
+    {id:'str3',icon:'🔥',label:'3 jours d\'affilée',desc:'Streak de 3 jours',color:C.orange,unlocked:streakMax>=3},
+    {id:'str7',icon:'🗓️',label:'Semaine parfaite',desc:'7 jours consécutifs',color:C.lime,unlocked:streakMax>=7},
+    {id:'str14',icon:'⚔️',label:'Guerrier',desc:'14 jours sans arrêt',color:C.red,unlocked:streakMax>=14},
+    {id:'hyrox1',icon:'🔥',label:'Premier Hyrox',desc:'1 simulation loggée',color:C.red,unlocked:logs.filter(l=>l.type==='hyrox').length>=1},
+    {id:'muscu10',icon:'🏋️',label:'Iron Man',desc:'10 séances muscu',color:C.orange,unlocked:logs.filter(l=>l.type==='muscu').length>=10},
+    {id:'foot5',icon:'⚽',label:'Joueur régulier',desc:'5 foot loggés',color:C.yellow,unlocked:logs.filter(l=>l.type==='foot').length>=5},
+    {id:'goal10k',icon:'🏁',label:'10km validé !',desc:'Objectif 10km atteint',color:C.lime,unlocked:!!goalP['10km_done']},
+    {id:'goalhrx',icon:'🔥',label:'Hyrox validé !',desc:'Objectif Hyrox atteint',color:C.red,unlocked:!!goalP['hyrox_done']},
+    {id:'hydra7',icon:'💧',label:'Hydrathète',desc:'7 jours hydratation',color:C.cyan,unlocked:Object.keys(hydra).filter(k=>hydra[k]>0).length>=7},
+  ];
+
+  wrap.appendChild(mkSection('STATS & ACHIEVEMENTS',BADGES.filter(b=>b.unlocked).length+'/'+BADGES.length+' badges débloqués'));
+
+  // KPIs
+  const kGrid=div({className:'g3 mb16'});
+  [[Math.round(totalKm*10)/10,'km courus',C.cyan],[totalSessions,'séances',C.lime],[streak+'🔥','jours streak',C.orange],[courseLogs.length,'runs',C.cyan],[logs.filter(l=>l.type==='muscu').length,'muscus',C.orange],[logs.filter(l=>l.type==='hyrox').length,'hyrox',C.red]].forEach(([v,l,c])=>{
+    kGrid.appendChild(mkCard([
+      div({className:'bc bolder',style:{fontSize:'32px',color:c,lineHeight:'1',marginBottom:'4px'}},v),
+      div({className:'bold f11'},l),
+    ],{textAlign:'center',padding:'14px 10px'}));
+  });
+  wrap.appendChild(kGrid);
+
+  // Unlocked
+  const unlocked=BADGES.filter(b=>b.unlocked);
+  const locked=BADGES.filter(b=>!b.unlocked);
+  if(unlocked.length){
+    wrap.appendChild(div({className:'bold f12 mb10'},'🏅 Badges débloqués ('+unlocked.length+')'));
+    const ug=div({style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(150px,1fr))',gap:'8px',marginBottom:'16px'}});
+    unlocked.forEach(b=>{
+      const card=div({style:{background:`linear-gradient(135deg,${b.color}20,${C.card})`,border:`1px solid ${b.color}60`,borderRadius:'12px',padding:'14px 12px',textAlign:'center',position:'relative'}});
+      card.appendChild(div({style:{fontSize:'28px',marginBottom:'6px'}},b.icon));
+      card.appendChild(div({className:'bold f12 mb4',style:{color:b.color}},b.label));
+      card.appendChild(div({className:'f9 dim'},b.desc));
+      card.appendChild(span({style:{position:'absolute',top:'6px',right:'8px',fontSize:'10px',color:b.color,fontWeight:'700'}},'✓'));
+      ug.appendChild(card);
+    });
+    wrap.appendChild(ug);
+  } else {
+    wrap.appendChild(mkCard([div({style:{textAlign:'center',padding:'20px'}},[div({style:{fontSize:'30px',marginBottom:'8px'}},'🔒'),div({className:'dim f12'},'Logge tes séances pour débloquer tes badges !')])],{marginBottom:'16px'}));
+  }
+
+  wrap.appendChild(div({className:'bold f12 mb10',style:{color:C.dim}},'🔒 À débloquer ('+locked.length+')'));
+  const lg=div({style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(150px,1fr))',gap:'8px'}});
+  locked.forEach(b=>{
+    const card=div({style:{background:C.s1,border:`1px solid ${C.border}`,borderRadius:'12px',padding:'14px 12px',textAlign:'center',opacity:'.5'}});
+    card.appendChild(div({style:{fontSize:'28px',marginBottom:'6px',filter:'grayscale(1)'}},b.icon));
+    card.appendChild(div({className:'bold f12 mb4 muted'},b.label));
+    card.appendChild(div({className:'f9 muted'},b.desc));
+    lg.appendChild(card);
+  });
+  wrap.appendChild(lg);
+  return wrap;
+}
+
+// ── TAB 9: NOTES ─────────────────────────────────────────────────────────────
+function renderNotes(){
+  const wrap=div({className:'slide-up fade-in'});
+  const NOTE_TAGS=[{id:'general',label:'Général',icon:'📝',color:C.dim},{id:'blessure',label:'Blessure',icon:'🤕',color:C.red},{id:'sensation',label:'Sensation',icon:'💡',color:C.yellow},{id:'nutrition',label:'Nutrition',icon:'🥗',color:C.lime},{id:'mental',label:'Mental',icon:'🧠',color:C.purple},{id:'pr',label:'Record',icon:'🏆',color:C.orange}];
+  let noteTag='general',noteFilter='all';
+  let showForm=false;
+
+  const hdr=div({className:'flex between center mb16'});
+  hdr.appendChild(div({},[h('h2',{className:'bc bolder upper',style:{fontSize:'22px',margin:0}},'NOTES RAPIDES'),div({className:'dim f12',style:{marginTop:'3px'}},notes.length+' note'+(notes.length!==1?'s':''))]));
+  const addBtn=btn({className:'btn-primary',style:{padding:'10px 16px',fontSize:'13px'},onClick:toggleForm},'+ Note');
+  hdr.appendChild(addBtn);
+  wrap.appendChild(hdr);
+
+  const formDiv=div({style:{display:'none',marginBottom:'16px'}});
+  let noteText='',noteDate=todayKey;
+
+  function buildNoteForm(){
+    formDiv.innerHTML='';
+    const card=mkCard([]);
+    card.style.border=`1px solid ${C.orange}40`;
+    const tagRow=div({className:'flex gap5 wrap mb12'});
+    NOTE_TAGS.forEach(t=>{
+      tagRow.appendChild(btn({style:{background:noteTag===t.id?t.color:C.s1,color:noteTag===t.id?C.bg:C.dim,border:`1px solid ${noteTag===t.id?t.color:C.border}`,borderRadius:'20px',padding:'4px 10px',fontSize:'11px',fontWeight:'700'},onClick:()=>{noteTag=t.id;buildNoteForm();}},t.icon+' '+t.label));
+    });
+    card.appendChild(tagRow);
+    const dateInp=h('input',{className:'inp mb10',type:'date'});dateInp.value=noteDate;dateInp.addEventListener('change',e=>noteDate=e.target.value);
+    card.appendChild(dateInp);
+    const ta=h('textarea',{className:'inp mb12',rows:'4',placeholder:'Ta note... (blessure, sensation, PR, observation)'});ta.value=noteText;ta.addEventListener('input',e=>noteText=e.target.value);
+    card.appendChild(ta);
+    card.appendChild(btn({className:'btn-primary',style:{width:'100%'},onClick:()=>{
+      if(!noteText.trim())return;
+      notes=[{text:noteText,tag:noteTag,date:noteDate,id:Date.now()},...notes];
+      S.set('sp_notes',notes);noteText='';renderPage(9);
+    }},'✓ Enregistrer'));
+    formDiv.appendChild(card);
+  }
+
+  function toggleForm(){if(formDiv.style.display==='none'){buildNoteForm();formDiv.style.display='block';addBtn.textContent='✕ Annuler';}else{formDiv.style.display='none';addBtn.textContent='+ Note';}}
+  wrap.appendChild(formDiv);
+
+  const filtered=noteFilter==='all'?notes:notes.filter(n=>n.tag===noteFilter);
+  if(!notes.length){wrap.appendChild(mkCard([div({style:{textAlign:'center',padding:'24px'}},[div({style:{fontSize:'28px',marginBottom:'8px'}},'🗒️'),div({className:'dim f13'},"Aucune note. Clique sur + Note !")])]));return wrap;}
+
+  const list=div({className:'flex flex-col gap8'});
+  filtered.forEach(n=>{
+    const tag=NOTE_TAGS.find(t=>t.id===n.tag)||NOTE_TAGS[0];
+    const card=mkCard([]);card.style.borderLeft=`3px solid ${tag.color}`;
+    const top=div({className:'flex between center mb6'});
+    top.appendChild(div({className:'flex center gap6'},[span({style:{background:tag.color+'18',color:tag.color,border:`1px solid ${tag.color}30`,borderRadius:'20px',padding:'2px 8px',fontSize:'10px',fontWeight:'700'}},tag.icon+' '+tag.label),span({className:'f10 muted'},n.date)]));
+    top.appendChild(btn({style:{background:'none',border:'none',color:C.muted,fontSize:'16px',cursor:'pointer'},onClick:()=>{notes=notes.filter(x=>x.id!==n.id);S.set('sp_notes',notes);renderPage(9);}},'✕'));
+    card.appendChild(top);
+    card.appendChild(div({style:{fontSize:'13px',color:C.text,lineHeight:'1.7',whiteSpace:'pre-wrap'}},n.text));
+    list.appendChild(card);
+  });
+  wrap.appendChild(list);
+  return wrap;
+}
+
+// ── TAB 10: MEAL PREP ────────────────────────────────────────────────────────
+function renderMealPrep(){
+  const wrap=div({className:'slide-up fade-in'});
+  wrap.appendChild(mkSection('MEAL PREP','Plan repas adapté à tes séances'));
+  const PLANS={
+    1:{type:'Force haut',kcal:2950,icon:'🏋️',meals:[{time:'7h00',name:'Petit-déj',items:['Avoine 80g + lait','2 oeufs brouillés','Banane','Café noir'],kcal:680,p:32,g:95,f:18},{time:'10h00',name:'Collation',items:['Yaourt grec 200g','Myrtilles 100g','Miel'],kcal:250,p:18,g:30,f:4},{time:'12h30',name:'Déjeuner',items:['Riz basmati 150g','Poulet 180g','Brocolis 200g','Huile olive'],kcal:680,p:48,g:80,f:12},{time:'15h30',name:'Pré-training',items:['Pain complet 2 tranches','Beurre cacahuète 30g','Banane'],kcal:420,p:14,g:52,f:16},{time:'Après training',name:'Post ⚠️',items:['Whey 30g + lait 300ml','Banane + miel'],kcal:380,p:38,g:42,f:6},{time:'19h30',name:'Dîner',items:['Saumon 180g','Patate douce 250g','Haricots verts'],kcal:540,p:42,g:58,f:14}]},
+    2:{type:'Run Zone 2',kcal:2600,icon:'🏃',meals:[{time:'7h00',name:'Petit-déj',items:['Avoine 70g + eau','1 oeuf + blanc','Pomme'],kcal:550,p:24,g:82,f:10},{time:'12h30',name:'Déjeuner',items:['Pâtes 130g','Thon 150g','Tomates cerises','Huile olive'],kcal:620,p:44,g:72,f:14},{time:'15h30',name:'Pré-run',items:['Banane','Barre céréales'],kcal:280,p:6,g:52,f:4},{time:'Après run',name:'Post',items:['Shake whey 25g','Lait + fruit'],kcal:320,p:30,g:36,f:5},{time:'19h30',name:'Dîner',items:['Poulet 160g','Riz 120g','Légumes rôtis'],kcal:580,p:42,g:62,f:12}]},
+    3:{type:'Hyrox',kcal:2950,icon:'🔥',meals:[{time:'7h00',name:'Petit-déj',items:['Avoine 90g','Lait entier','Banane + miel','3 blancs oeufs'],kcal:700,p:36,g:105,f:14},{time:'10h00',name:'Collation',items:['Fromage blanc 200g','Granola 40g'],kcal:300,p:22,g:34,f:6},{time:'12h30',name:'Déjeuner',items:['Riz 150g','Boeuf haché 5% 180g','Poivrons'],kcal:660,p:46,g:72,f:14},{time:'15h30',name:'Pré-Hyrox',items:['Pâtes 80g','Sauce tomate','Banane'],kcal:450,p:14,g:82,f:4},{time:'Après Hyrox',name:'Post ⚠️',items:['Whey 35g + lait','Riz au lait','Banane'],kcal:480,p:42,g:58,f:8},{time:'19h30',name:'Dîner',items:['Saumon 160g','Patate douce 200g','Brocolis'],kcal:520,p:40,g:52,f:14}]},
+    5:{type:'Football',kcal:2950,icon:'⚽',meals:[{time:'7h00',name:'Petit-déj',items:['Avoine 90g + lait','Banane + miel','2 oeufs'],kcal:700,p:32,g:105,f:16},{time:'12h30',name:'Déjeuner',items:['Pâtes 150g','Bolognaise maison'],kcal:720,p:42,g:88,f:18},{time:'15h00',name:'Pré-foot (2h avant)',items:['Riz 100g','Poulet 120g','Compote'],kcal:450,p:34,g:58,f:6},{time:'Après foot',name:'Post ⚠️',items:['Boisson recovery','Whey 30g','Banane'],kcal:420,p:36,g:48,f:6},{time:'20h30',name:'Dîner léger',items:['Oeufs brouillés x4','Toast complet','Avocat'],kcal:480,p:28,g:32,f:24}]},
+    6:{type:'Long Run',kcal:2950,icon:'🏃',meals:[{time:'7h00',name:'Petit-déj (2h avant)',items:['Avoine 90g + lait','Banane + miel','Café'],kcal:680,p:26,g:115,f:14},{time:'Pendant +45min',name:'Ravitaillement',items:['Gel énergétique x2','Eau 500ml'],kcal:200,p:0,g:48,f:0},{time:'Après run',name:'Post ⚠️ PRIORITÉ',items:['Whey 35g + lait','Riz au lait','Banane + miel'],kcal:580,p:44,g:72,f:10},{time:'12h30',name:'Déjeuner',items:['Pâtes 160g','Viande rouge 180g','Légumes'],kcal:720,p:48,g:82,f:18},{time:'19h30',name:'Dîner',items:['Saumon 180g','Riz 120g','Légumes verts'],kcal:580,p:44,g:58,f:16}]},
+    0:{type:'Match / Récup',kcal:2200,icon:'😴',meals:[{time:'8h30',name:'Petit-déj tranquille',items:['Pancakes avoine x3','Miel + fruits rouges','Café'],kcal:580,p:24,g:88,f:14},{time:'12h30',name:'Déjeuner copieux',items:['Viande rouge 200g','Patate douce 300g','Légumes rôtis'],kcal:680,p:46,g:68,f:20},{time:'16h00',name:'Collation',items:['Fromage blanc','Fruits'],kcal:220,p:18,g:24,f:4},{time:'19h30',name:'Dîner léger',items:['Poulet 150g','Salade composée'],kcal:480,p:36,g:36,f:14}]},
+  };
+  const DEFAULT_PLAN={type:'Repos',kcal:2200,icon:'😴',meals:[{time:'Flexible',name:'Repas équilibrés',items:['3 repas complets','Focus récupération'],kcal:2200,p:135,g:240,f:75}]};
+
+  const todayDow=today.getDay();
+  let selDay=todayDow;
+
+  const selWrap=div({});
+  function renderDaySel(){
+    selWrap.innerHTML='';
+    const dayGrid=div({className:'g7 mb16'});
+    [1,2,3,5,6,0].forEach(d=>{
+      const plan=PLANS[d]||DEFAULT_PLAN;
+      const isSel=d===selDay;const isT=d===todayDow;
+      const cell=div({style:{background:isSel?C.orange:C.s1,border:`1px solid ${isSel?C.orange:isT?C.lime+'60':C.border}`,borderRadius:'8px',padding:'8px 4px',textAlign:'center',cursor:'pointer',transition:'all .15s'},onClick:()=>{selDay=d;renderDaySel();}});
+      cell.appendChild(div({style:{fontSize:'14px',marginBottom:'2px'}},plan.icon));
+      cell.appendChild(div({style:{fontSize:'8px',fontWeight:'700',color:isSel?C.bg:isT?C.lime:C.dim}},['LUN','MAR','MER','JEU','VEN','SAM','DIM'][[1,2,3,4,5,6,0].indexOf(d)]||'?'));
+      if(isT&&!isSel) cell.appendChild(div({style:{width:'4px',height:'4px',borderRadius:'50%',background:C.lime,margin:'2px auto 0'}}));
+      dayGrid.appendChild(cell);
+    });
+    selWrap.appendChild(dayGrid);
+    const plan=PLANS[selDay]||DEFAULT_PLAN;
+    const hdrCard=div({style:{background:`linear-gradient(135deg,${C.orange}15,${C.card})`,border:`1px solid ${C.orange}30`,borderRadius:'12px',padding:'14px 18px',marginBottom:'16px'}});
+    hdrCard.appendChild(div({className:'flex between center'},[
+      div({},[div({className:'f10 dim mb2'},['','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'][selDay]||''),div({className:'bc bolder',style:{fontSize:'22px',color:C.text}},plan.type)]),
+      div({style:{textAlign:'right'}},[div({className:'bc bolder',style:{fontSize:'32px',color:C.orange}},plan.kcal),div({className:'f10 dim'},'kcal')]),
+    ]));
+    const totalP=plan.meals.reduce((s,m)=>s+m.p,0),totalG=plan.meals.reduce((s,m)=>s+m.g,0),totalF=plan.meals.reduce((s,m)=>s+m.f,0);
+    const macRow=div({className:'flex gap8 mt10'});
+    [['P',totalP+'g','#ff8f70'],['G',totalG+'g',C.cyan],['L',totalF+'g',C.yellow]].forEach(([k,v,c])=>macRow.appendChild(div({style:{background:c+'15',border:`1px solid ${c}30`,borderRadius:'6px',padding:'4px 10px',textAlign:'center'}},[div({className:'bc bolder',style:{fontSize:'14px',color:c}},v),div({className:'f8 muted'},k==='P'?'Protéines':k==='G'?'Glucides':'Lipides')])));
+    hdrCard.appendChild(macRow);
+    selWrap.appendChild(hdrCard);
+    const mList=div({className:'flex flex-col gap10'});
+    plan.meals.forEach((m,i)=>{
+      const mk='meal_'+selDay+'_'+i;
+      const done=mealC[mk];
+      const isPost=m.name.includes('Post');
+      const card=mkCard([]);
+      card.style.borderLeft=`3px solid ${isPost?C.red:C.lime}`;
+      card.style.opacity=done?'0.65':'1';
+      const top=div({className:'flex between mb8'});
+      top.appendChild(div({},[div({style:{fontSize:'10px',color:isPost?C.red:C.dim,fontWeight:isPost?700:400,marginBottom:'2px'}},m.time),div({className:'bold',style:{fontSize:'15px',color:done?C.muted:C.text}},m.name)]));
+      const right=div({className:'flex center gap8'});
+      right.appendChild(div({style:{textAlign:'right'}},[div({className:'bold',style:{fontSize:'14px',color:C.orange}},m.kcal+' kcal'),div({className:'f9 muted'},'P:'+m.p+'g G:'+m.g+'g')]));
+      const chkBtn=div({style:{width:'26px',height:'26px',borderRadius:'50%',border:`2px solid ${done?C.lime:C.border}`,background:done?C.lime:'transparent',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'12px',color:C.bg,fontWeight:'900',flexShrink:'0',transition:'all .2s'},onClick:()=>{mealC[mk]=!mealC[mk];S.set('sp_mealc',mealC);renderDaySel();}},done?'✓':'');
+      right.appendChild(chkBtn);
+      top.appendChild(right);card.appendChild(top);
+      const items=div({className:'flex wrap gap5'});
+      m.items.forEach(it=>items.appendChild(div({style:{background:C.s1,borderRadius:'5px',padding:'3px 8px',fontSize:'11px',color:C.dim}},it)));
+      card.appendChild(items);
+      mList.appendChild(card);
+    });
+    selWrap.appendChild(mList);
+  }
+  renderDaySel();
+  wrap.appendChild(selWrap);
+  return wrap;
+}
+
+// ── TAB 11: PROGRÈS ──────────────────────────────────────────────────────────
+function renderProgres(){
+  const wrap=div({className:'slide-up fade-in'});
+  wrap.appendChild(mkSection('PROGRESSION','Compare tes perfs de départ vs aujourd\'hui'));
+  wrap.appendChild(div({style:{background:`linear-gradient(135deg,${C.orange}20,${C.cyan}10)`,border:'1px solid rgba(255,107,53,.25)',borderRadius:'16px',padding:'18px 20px',marginBottom:'20px',display:'flex',alignItems:'center',gap:'14px'}},[
+    div({style:{fontSize:'36px'}},'📈'),
+    div({},[div({className:'bold f13 mb4'},'Saisis tes valeurs de départ (Mars 2025) et actuelles'),div({className:'dim f11'},'La progression s\'affiche automatiquement')]),
+  ]));
+  const METRICS=[
+    {key:'allure',label:'Allure 10km',icon:'🏃',color:C.cyan,unit:'/km',placeholder:"ex: 5'45"},
+    {key:'hyrox_t',label:'Temps Hyrox',icon:'🔥',color:C.orange,unit:'',placeholder:'ex: 1h30'},
+    {key:'squat',label:'Squat',icon:'🏋️',color:C.lime,unit:'kg',placeholder:'ex: 80'},
+    {key:'deadlift',label:'Deadlift',icon:'🏋️',color:C.red,unit:'kg',placeholder:'ex: 100'},
+    {key:'bench',label:'Bench press',icon:'🏋️',color:C.yellow,unit:'kg',placeholder:'ex: 70'},
+    {key:'poids',label:'Poids corporel',icon:'⚖️',color:C.purple,unit:'kg',placeholder:'ex: 73'},
+    {key:'skierg',label:'Ski Erg 1000m',icon:'🎿',color:C.cyan,unit:'',placeholder:"ex: 4'10"},
+    {key:'vma',label:'VMA estimée',icon:'⚡',color:C.pink,unit:'km/h',placeholder:'ex: 14'},
+  ];
+
+  const col=div({className:'flex flex-col gap12'});
+  METRICS.forEach(m=>{
+    const sv=progD[m.key+'_start']||'';
+    const nv=progD[m.key+'_now']||'';
+    const sNum=parseFloat(sv),nNum=parseFloat(nv);
+    const hasNum=!isNaN(sNum)&&!isNaN(nNum)&&sNum!==0;
+    const isDown=m.unit==='/km'||m.key==='skierg'||m.key==='hyrox_t'||m.key==='poids';
+    const diff=hasNum?Math.round((nNum-sNum)*100)/100:null;
+    const pct=hasNum?Math.round(((nNum-sNum)/sNum)*100):null;
+    const better=diff!==null?(isDown?diff<0:diff>0):null;
+
+    const card=mkCard([]);
+    card.style.borderLeft=`3px solid ${m.color}`;
+    const top=div({className:'flex between mb12'});
+    top.appendChild(div({},[div({className:'f11 dim mb2'},m.icon+' '+m.label),div({className:'bc bolder upper',style:{fontSize:'17px',color:m.color}},m.label)]));
+    if(diff!==null){
+      const badge=div({style:{background:better?C.lime+'15':C.red+'15',border:`1px solid ${better?C.lime:C.red}30`,borderRadius:'8px',padding:'4px 10px',textAlign:'center'}});
+      badge.appendChild(div({className:'bold',style:{fontSize:'14px',color:better?C.lime:C.red}},(better?'▲ ':'▼ ')+(diff>0?'+':'')+diff+m.unit));
+      badge.appendChild(div({className:'f9 dim'},(pct>0?'+':'')+pct+'%'));
+      top.appendChild(badge);
+    }
+    card.appendChild(top);
+    const inpGrid=div({className:'g2'});
+    // Start
+    const startWrap=div({});
+    startWrap.appendChild(div({className:'f9 dim upper tracked mb4'},'🟡 Départ (Mars)'));
+    const startInp=h('input',{className:'inp',placeholder:m.placeholder,style:{fontSize:'14px',fontWeight:'700',textAlign:'center',padding:'10px 8px'}});
+    startInp.value=sv;
+    startInp.addEventListener('input',e=>{progD[m.key+'_start']=e.target.value;S.set('sp_prog',progD);});
+    startWrap.appendChild(startInp);
+    inpGrid.appendChild(startWrap);
+    // Now
+    const nowWrap=div({});
+    nowWrap.appendChild(div({className:'f9 upper tracked mb4',style:{color:m.color}},'🟢 Maintenant'));
+    const nowInp=h('input',{className:'inp',placeholder:m.placeholder,style:{fontSize:'14px',fontWeight:'700',textAlign:'center',padding:'10px 8px',borderColor:nv?m.color+'50':undefined}});
+    nowInp.value=nv;
+    nowInp.addEventListener('input',e=>{progD[m.key+'_now']=e.target.value;S.set('sp_prog',progD);});
+    nowWrap.appendChild(nowInp);
+    inpGrid.appendChild(nowWrap);
+    card.appendChild(inpGrid);
+    if(better===true) card.appendChild(div({className:'bold f11',style:{color:C.lime,marginTop:'8px'}},'🔥 En progression — continue !'));
+    col.appendChild(card);
+  });
+  wrap.appendChild(col);
+  return wrap;
+}
+
+// ── TABS SETUP ────────────────────────────────────────────────────────────────
+const TABS=[
+  {id:0,label:"📍 Aujourd'hui",render:renderToday},
+  {id:1,label:"📅 Semaine",render:renderSemaine},
+  {id:2,label:"🗓️ Calendrier",render:renderCalendrier},
+  {id:3,label:"🔥 Hyrox",render:renderHyrox},
+  {id:4,label:"🏃 10km",render:renderDixKm},
+  {id:5,label:"🍽️ Nutrition",render:renderNutrition},
+  {id:6,label:"✅ Suivi",render:renderSuivi},
+  {id:7,label:"📝 Carnet",render:renderCarnet},
+  {id:8,label:"📊 Stats",render:renderStats},
+  {id:9,label:"🗒️ Notes",render:renderNotes},
+  {id:10,label:"🍕 Repas",render:renderMealPrep},
+  {id:11,label:"📈 Progrès",render:renderProgres},
+];
+
+let currentTab=0;
+
+function renderPage(i){
+  const page=document.getElementById('page-'+i);
+  if(!page)return;
+  page.innerHTML='';
+  page.appendChild(TABS[i].render());
+}
+
+function switchTab(i){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+i).classList.add('active');
+  document.querySelectorAll('.tab')[i].classList.add('active');
+  if(!document.getElementById('page-'+i).children.length) renderPage(i);
+  currentTab=i;
+}
+
+// Build tabs
+const tabsEl=document.getElementById('tabs');
+TABS.forEach((t,i)=>{
+  const b=btn({className:'tab'+(i===0?' active':''),onClick:()=>switchTab(i)},t.label);
+  tabsEl.appendChild(b);
+});
+
+// Render first page
+renderPage(0);
+
+// Splash dismiss
+setTimeout(()=>{
+  const s=document.getElementById('splash');
+  if(s){s.classList.add('hide');setTimeout(()=>{if(s.parentNode)s.remove();},700);}
+},800);
 </script>
 
 </body>
