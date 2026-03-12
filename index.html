@@ -268,11 +268,13 @@ scrollbar-width:none;
 <script type="text/babel">
 const {useState, useEffect, useCallback} = React;
 
-// Splash screen dismiss
-setTimeout(()=>{
+// Splash screen dismiss — wait for React to be ready
+function hideSplash(){
 const s=document.getElementById(‘splash’);
-if(s){s.classList.add(‘hide’);setTimeout(()=>s.remove(),700);}
-},1800);
+if(s){s.classList.add(‘hide’);setTimeout(()=>{if(s.parentNode)s.remove();},700);}
+}
+// Fallback: hide after 5s no matter what
+setTimeout(hideSplash, 5000);
 
 const T={
 bg:”#07090f”,s1:”#0d1220”,s2:”#121a2e”,card:”#0f1623”,
@@ -2071,6 +2073,7 @@ selSession && React.createElement(SessionModal, {session:selSession, date:selSes
 }
 
 ReactDOM.createRoot(document.getElementById(‘root’)).render(React.createElement(App));
+setTimeout(hideSplash, 300);
 </script>
 
 </body>
