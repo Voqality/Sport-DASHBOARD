@@ -101,14 +101,7 @@ textarea{resize:none}
 </head>
 <body>
 
-<!-- SPLASH -->
-
-<div id="splash">
-  <div class="sp-logo float">⚡</div>
-  <div class="sp-title">Dashboard Sport</div>
-  <div class="sp-sub">27 ans · 71kg · Mars–Octobre 2025</div>
-  <div class="sp-bar"><div class="sp-fill"></div></div>
-</div>
+<!-- NO SPLASH -->
 
 <!-- AMBIENT ORBS -->
 
@@ -128,7 +121,7 @@ textarea{resize:none}
             <span style="background:linear-gradient(135deg,#ff6b35,#ff4757);color:#07090f;font-weight:900;font-size:9px;padding:2px 8px;border-radius:4px;font-family:'Barlow Condensed',Arial;letter-spacing:.08em">⚡ PRÉPA ATHLÈTE</span>
           </div>
           <h1 class="bc bolder upper" style="font-size:20px;letter-spacing:.04em">DASHBOARD SPORT</h1>
-          <div class="f9 dim" style="margin-top:1px;letter-spacing:.03em">27 ans · 1m72 · 71kg · Mars–Oct 2025</div>
+          <div class="f9 dim" style="margin-top:1px;letter-spacing:.03em">27 ans · 1m72 · 71kg · Mars–Oct 2026</div>
         </div>
         <div class="flex gap6">
           <div style="background:#00d4ff10;border:1px solid #00d4ff25;border-radius:10px;padding:6px 10px;text-align:center">
@@ -198,11 +191,14 @@ const h=(tag,attrs={},children=[])=>{
     else if(k.startsWith('on')) el.addEventListener(k.slice(2).toLowerCase(),v);
     else el.setAttribute(k,v);
   });
-  children.forEach(c=>{
-    if(c===null||c===undefined||c===false) return;
-    if(typeof c==='string'||typeof c==='number') el.appendChild(document.createTextNode(c));
-    else if(c instanceof Node) el.appendChild(c);
-  });
+  const append=(c)=>{
+    if(c===null||c===undefined||c===false||c==='') return;
+    if(Array.isArray(c)){c.forEach(append);return;}
+    if(typeof c==='string'||typeof c==='number'){el.appendChild(document.createTextNode(String(c)));return;}
+    if(c instanceof Node){el.appendChild(c);return;}
+  };
+  if(Array.isArray(children)) children.forEach(append);
+  else append(children);
   return el;
 };
 const div=(a,c)=>h('div',a,c);
@@ -225,11 +221,11 @@ function getWeekDates(ref){
 
 // ── PHASE / SESSION DATA ──────────────────────────────────────────────────────
 const PHASE_RANGES=[
-  {phase:0,start:new Date(2025,2,10),end:new Date(2025,5,15),label:"Phase 1",color:C.yellow,icon:"⚽"},
-  {phase:1,start:new Date(2025,5,16),end:new Date(2025,7,31),label:"Phase 2",color:C.cyan,icon:"🏃"},
-  {phase:2,start:new Date(2025,8,20),end:new Date(2025,8,20),label:"10KM",color:C.lime,icon:"🏁"},
-  {phase:3,start:new Date(2025,8,22),end:new Date(2025,9,17),label:"Phase 3",color:C.orange,icon:"🔥"},
-  {phase:4,start:new Date(2025,9,18),end:new Date(2025,9,18),label:"HYROX",color:C.red,icon:"🔥"},
+  {phase:0,start:new Date(2026,2,10),end:new Date(2026,5,15),label:"Phase 1",color:C.yellow,icon:"⚽"},
+  {phase:1,start:new Date(2026,5,16),end:new Date(2026,7,31),label:"Phase 2",color:C.cyan,icon:"🏃"},
+  {phase:2,start:new Date(2026,8,20),end:new Date(2026,8,20),label:"10KM",color:C.lime,icon:"🏁"},
+  {phase:3,start:new Date(2026,8,22),end:new Date(2026,9,17),label:"Phase 3",color:C.orange,icon:"🔥"},
+  {phase:4,start:new Date(2026,9,18),end:new Date(2026,9,18),label:"HYROX",color:C.red,icon:"🔥"},
 ];
 
 function getPhase(date){
@@ -352,8 +348,8 @@ function renderToday(){
   const weekDates=getWeekDates(today);
   const todaySession=getSession(today);
   const todayPhase=getPhase(today);
-  const d10k=Math.ceil((new Date(2025,8,20)-today)/(864e5));
-  const dHyrox=Math.ceil((new Date(2025,9,18)-today)/(864e5));
+  const d10k=Math.ceil((new Date(2026,8,20)-today)/(864e5));
+  const dHyrox=Math.ceil((new Date(2026,9,18)-today)/(864e5));
   const hydraGoal=todaySession?(todaySession.duration==='Off'?2:3):2.5;
   const hydraToday=(hydra[todayKey]||0);
   const GOALS_DEF=[
@@ -554,7 +550,7 @@ function renderCalendrier(){
   });
   wrap.appendChild(legend);
   for(let m=2;m<=9;m++){
-    const ms=new Date(2025,m,1);
+    const ms=new Date(2026,m,1);
     const mCard=mkCard([],{marginBottom:'12px'});
     mCard.appendChild(div({className:'bc bolder upper mb12',style:{fontSize:'13px',letterSpacing:'.06em'}},ms.toLocaleDateString('fr-FR',{month:'long',year:'numeric'})));
     const dayHdr=div({className:'g7 mb4'});
@@ -564,9 +560,9 @@ function renderCalendrier(){
     const firstDow=ms.getDay();
     const offset=firstDow===0?6:firstDow-1;
     for(let i=0;i<offset;i++) grid.appendChild(div({}));
-    const daysInM=new Date(2025,m+1,0).getDate();
+    const daysInM=new Date(2026,m+1,0).getDate();
     for(let dd=1;dd<=daysInM;dd++){
-      const date=new Date(2025,m,dd);
+      const date=new Date(2026,m,dd);
       const s=getSession(date);
       const phase=getPhase(date);
       const isT=isSameDay(date,today);
@@ -587,7 +583,7 @@ function renderCalendrier(){
 function renderHyrox(){
   const wrap=div({className:'slide-up fade-in'});
   wrap.appendChild(div({style:{background:`linear-gradient(135deg,${C.orange}18,transparent)`,border:`1px solid ${C.orange}35`,borderRadius:'12px',padding:'18px',marginBottom:'16px'}},[
-    div({className:'f10 upper',style:{color:C.orange,marginBottom:'4px'}},'Objectif 18 Octobre 2025 · 27 ans 71kg'),
+    div({className:'f10 upper',style:{color:C.orange,marginBottom:'4px'}},'Objectif 18 Oct 2026 · 27 ans 71kg'),
     div({className:'bc bolder',style:{fontSize:'40px',color:C.text}},'SUB 1H15'),
     div({className:'dim f12',style:{marginTop:'4px'}},'Run : 4\'30-4\'45/km · Stations : ~52 min'),
   ]));
@@ -1215,12 +1211,6 @@ TABS.forEach((t,i)=>{
 
 // Render first page
 renderPage(0);
-
-// Splash dismiss
-setTimeout(()=>{
-  const s=document.getElementById('splash');
-  if(s){s.classList.add('hide');setTimeout(()=>{if(s.parentNode)s.remove();},700);}
-},800);
 </script>
 
 </body>
